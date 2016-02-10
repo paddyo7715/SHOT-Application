@@ -1,0 +1,40 @@
+<?php
+
+/* This will automatically open a database connection and check if the session has expired */
+  require("common.php");
+  set_error_handler("customError");
+
+  $sourceid = $_POST['Source_ID'];   
+  $Incident_ID = $_POST['Incident_ID']; 
+
+
+//Delete the Incident Source
+
+    $sql = "DELETE from Incident_Source WHERE Source_ID = $sourceid and Incident_ID = $Incident_ID";
+//    error_log($sql);
+    if ($resultdb = $mysqli->query($sql) != TRUE) {
+      trigger_error("Error Deleting Incident Source Record in Database!");
+    }
+
+  $result = array();
+  $sql = "SELECT Source_ID, I.Source_Type_ID, Source, Title, Author, Source_Date, Link, I.Newspaper_ID, Newspaper, Abstract  FROM Incident_Source I LEFT OUTER JOIN Source_Type s on i.Source_Type_ID = s.Source_Type_ID left outer join Newspapers n on i.Newspaper_ID = n.Newspaper_ID where Incident_ID = $Incident_ID  order by Source_ID";
+  error_log($sql);
+  if ($resultdb = $mysqli->query($sql)) {
+	while($record = $resultdb->fetch_assoc()) {
+		array_push($result, $record);
+	}
+       $resultdb->close();
+  }
+  else { trigger_error("Error Retrieving incidents sources from Database!"); } 
+
+//send back information to extjs
+  echo json_encode(array(
+	"success" => $mysqli->connect_errno == 0,
+	"Incident_Source" => $result
+
+  ));	
+
+/* close connection */
+  $mysqli->close();
+
+?>

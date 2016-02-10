@@ -1,0 +1,12 @@
+{
+    "success": true,
+    "Officer_Assignment": [
+         {'Assignment_ID': '1','Assignment': 'Detective / Investigator'},
+         {'Assignment_ID': '2','Assignment': 'Federal Agent'},
+         {'Assignment_ID': '3','Assignment': 'Narcotics'},
+         {'Assignment_ID': '4','Assignment': 'Patrol Officer'},
+         {'Assignment_ID': '5','Assignment': 'Plain Clothes (Undercover)'},
+         {'Assignment_ID': '6','Assignment': 'SWAT Team'}
+    ]
+
+}

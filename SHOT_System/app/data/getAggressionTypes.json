@@ -1,0 +1,5 @@
+{
+    "success": true,
+"Aggression_Type":[{"Type_of_Agression_ID":"1","Aggression_Type":"ALTERCATION (verbal)"},{"Type_of_Agression_ID":"2","Aggression_Type":"PHYSICAL ATTACK (use of body)"},{"Type_of_Agression_ID":"3","Aggression_Type":"brandish weapon"},{"Type_of_Agression_ID":"4","Aggression_Type":"FIRED GUN"},{"Type_of_Agression_ID":"5","Aggression_Type":"USED WEAPON"}]
+
+}

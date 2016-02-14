@@ -11,7 +11,7 @@
 
   if ($Action == "A")
   {
-    $sql = "INSERT INTO Officer_Status (Status) VALUES ('$Status')"; 
+    $sql = "INSERT INTO officer_status (Status) VALUES ('$Status')"; 
 
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Adding Officer Status to Database!");
@@ -19,7 +19,7 @@
   }  
   elseif ($Action == "U")
   {
-    $sql = "UPDATE Officer_Status set Status = '$Status' WHERE Status_ID = $Status_ID"; 
+    $sql = "UPDATE officer_status set Status = '$Status' WHERE Status_ID = $Status_ID"; 
 
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Updating Status in Database!");
@@ -27,7 +27,7 @@
   }  
   elseif ($Action == "D")
   {
-    $sql = "DELETE FROM Officer_Status WHERE Status_ID = $Status_ID"; 
+    $sql = "DELETE FROM officer_status WHERE Status_ID = $Status_ID"; 
 
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Deleting Status from Database!  This Status may be used by an officer");
@@ -36,7 +36,7 @@
 
 
 
-  $sql = "SELECT Status_ID, Status FROM Officer_Status order by Status";
+  $sql = "SELECT Status_ID, Status FROM officer_status order by Status";
 
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {

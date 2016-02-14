@@ -19,7 +19,7 @@
   $last_id = 0;
 
 
-    $sql = "INSERT INTO Suspect (Suspect_Name,Gender,Race_ID) VALUES ($Suspect_Name, $Gender, $Race_ID)"; 
+    $sql = "INSERT INTO suspect (Suspect_Name,Gender,Race_ID) VALUES ($Suspect_Name, $Gender, $Race_ID)"; 
     error_log($sql);
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Adding Subject to Database!");

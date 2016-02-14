@@ -16,7 +16,7 @@
   set_error_handler("customError");
 
   $num_rows = 0;
-  $sql = "SELECT Incident_ID, Incident_Name, Date_Occured, City, State FROM Incident I, State S where $likeclause  I.State_ID = S.State_ID order by Incident_Name";
+  $sql = "SELECT Incident_ID, Incident_Name, Date_Occured, City, State FROM incident I, state S where $likeclause  I.State_ID = S.State_ID order by Incident_Name";
   error_log($sql);
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {

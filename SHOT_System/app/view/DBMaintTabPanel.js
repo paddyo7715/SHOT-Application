@@ -214,21 +214,6 @@ Ext.define('Packt.view.DBMaintTabPanel', {
     },
     {
         xtype: 'panel',
-        title: 'States',
-        padding: '10,0,0,0',
-        layout: {
-           type: 'vbox',
-           align: 'center'
-        },   
-        items: [
-        {
-          xtype: 'StateGrid',
-          border: 0
-        }]
-
-    },
-    {
-        xtype: 'panel',
         title: 'Subjects',
         padding: '10,0,0,0',
         layout: {

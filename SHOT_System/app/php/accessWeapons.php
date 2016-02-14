@@ -11,7 +11,7 @@
 
   if ($Action == "A")
   {
-    $sql = "INSERT INTO Weapons (Weapons_Type) VALUES ('$Weapons_Type')"; 
+    $sql = "INSERT INTO weapons (Weapons_Type) VALUES ('$Weapons_Type')"; 
 
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Adding Weapon to Database!");
@@ -19,7 +19,7 @@
   }  
   elseif ($Action == "U")
   {
-    $sql = "UPDATE Weapons set Weapons_Type = '$Weapons_Type' WHERE Weapons_ID = $Weapons_ID"; 
+    $sql = "UPDATE weapons set Weapons_Type = '$Weapons_Type' WHERE Weapons_ID = $Weapons_ID"; 
 
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Updating Weapon in Database!");
@@ -27,14 +27,14 @@
   }  
   elseif ($Action == "D")
   {
-    $sql = "DELETE FROM Weapons WHERE Weapons_ID = $Weapons_ID"; 
+    $sql = "DELETE FROM weapons WHERE Weapons_ID = $Weapons_ID"; 
 
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Deleting Weapon from Database!  This Weapon may be used in an Incident");
     }
   }  
 
-  $sql = "SELECT Weapons_ID, Weapons_Type FROM Weapons order by Weapons_Type";
+  $sql = "SELECT Weapons_ID, Weapons_Type FROM weapons order by Weapons_Type";
 
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {

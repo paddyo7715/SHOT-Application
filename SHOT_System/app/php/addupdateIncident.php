@@ -16,7 +16,6 @@
   $Address2 = $_POST['id_address2']; 
   $dateoccurred = $_POST['id_dateoccurred']; 
   $officersscene = $_POST['id_officersscene']; 
-  $location = $_POST['id_location']; 
   $locationdet = $_POST['id_locationdet']; 
   $officersfiredguns = $_POST['id_officersfiredguns']; 
   $officersshotsfired = $_POST['id_officersshotsfired']; 
@@ -38,7 +37,6 @@
   $Address2 = StringorNULL($Address2);
   $dateoccurred = StringorNULL($dateoccurred);
   $officersscene = NumberorNULL($officersscene);
-  $location = StringorNULL($location);
   $locationdet = StringorNULL($locationdet);
   $officersfiredguns = NumberorNULL($officersfiredguns);
   $officersshotsfired = NumberorNULL($officersshotsfired);
@@ -54,7 +52,7 @@
 //Add or update depending on if an incident number is supplied or not
   if ($Incidentnum == "")
   {
-    $sql = "INSERT INTO Incident (Incident_Name,User_id,Number_Officers_on_Scene,Date_Occured,Address_1,Address_2,City,State_ID,ZIP_CODE,Location_ID,Location_Detail_ID,Lawsuit,Time,Approx_Time,Off_Fired_Guns,latitude, longitude, Total_Officer_Shots_Fired,Indoors) VALUES ($Incidentname, $user, $officersscene, $dateoccurred, $Address1, $Address2, $City, $State, $zipcode, $location, $locationdet, $lawsuit, $time, $approx_time, $officersfiredguns, $latitude, $longitude, $officersshotsfired, $indoors)"; 
+    $sql = "INSERT INTO incident (Incident_Name,User_id,Number_Officers_on_Scene,Date_Occured,Address_1,Address_2,City,State_ID,ZIP_CODE,Location_Detail_ID,Lawsuit,Time,Approx_Time,Off_Fired_Guns,latitude, longitude, Total_Officer_Shots_Fired,Indoors) VALUES ($Incidentname, $user, $officersscene, $dateoccurred, $Address1, $Address2, $City, $State, $zipcode, $locationdet, $lawsuit, $time, $approx_time, $officersfiredguns, $latitude, $longitude, $officersshotsfired, $indoors)"; 
 
 //    error_log($sql);
     if ($resultdb = $mysqli->query($sql) != TRUE) {
@@ -65,7 +63,7 @@
   }
   else
   {
-    $sql = "UPDATE Incident set Incident_Name = $Incidentname, User_id = $user, Number_Officers_on_Scene = $officersscene, Date_Occured = $dateoccurred, Address_1 = $Address1, Address_2 = $Address2, City = $City, State_ID = $State, ZIP_CODE = $zipcode, Location_ID = $location, Location_Detail_ID = $locationdet, Lawsuit = $lawsuit,Time = $time, Approx_Time = $approx_time, Off_Fired_Guns = $officersfiredguns, latitude = $latitude, longitude = $longitude, Total_Officer_Shots_Fired = $officersshotsfired, Indoors = $indoors WHERE Incident_ID = $Incidentnum";
+    $sql = "UPDATE incident set Incident_Name = $Incidentname, User_id = $user, Number_Officers_on_Scene = $officersscene, Date_Occured = $dateoccurred, Address_1 = $Address1, Address_2 = $Address2, City = $City, State_ID = $State, ZIP_CODE = $zipcode, Location_Detail_ID = $locationdet, Lawsuit = $lawsuit,Time = $time, Approx_Time = $approx_time, Off_Fired_Guns = $officersfiredguns, latitude = $latitude, longitude = $longitude, Total_Officer_Shots_Fired = $officersshotsfired, Indoors = $indoors WHERE Incident_ID = $Incidentnum";
 //    error_log($sql);
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Updating Incident Record in Database!");
@@ -75,7 +73,7 @@
   }
 
   $result = array();
-  $sql = "SELECT Incident_ID, Incident_Name, Date_Occured, City, State FROM Incident I, State S where I.State_ID = S.State_ID order by Incident_Name";
+  $sql = "SELECT Incident_ID, Incident_Name, Date_Occured, City, State FROM incident I, state S where I.State_ID = S.State_ID order by Incident_Name";
 error_log($sql);
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {

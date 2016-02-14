@@ -11,7 +11,7 @@
 
   if ($Action == "A")
   {
-    $sql = "INSERT INTO Officer_Call_Type (Call_Type) VALUES ('$Call_Type')"; 
+    $sql = "INSERT INTO officer_call_type (Call_Type) VALUES ('$Call_Type')"; 
 
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Adding Call Type to Database!");
@@ -19,7 +19,7 @@
   }  
   elseif ($Action == "U")
   {
-    $sql = "UPDATE Officer_Call_Type set Call_Type = '$Call_Type' WHERE Call_Type_ID = $Call_Type_ID"; 
+    $sql = "UPDATE officer_call_type set Call_Type = '$Call_Type' WHERE Call_Type_ID = $Call_Type_ID"; 
 
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Updating Officer Call Type Database!");
@@ -27,7 +27,7 @@
   }  
   elseif ($Action == "D")
   {
-    $sql = "DELETE FROM Officer_Call_Type WHERE Call_Type_ID = $Call_Type_ID"; 
+    $sql = "DELETE FROM officer_call_type WHERE Call_Type_ID = $Call_Type_ID"; 
 
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Deleting Officer Call Type to Database!  This Officer Call Type may be used in an Incident");
@@ -35,7 +35,7 @@
   }  
 
 
-  $sql = "SELECT Call_Type_ID, Call_Type FROM Officer_Call_Type order by Call_Type";
+  $sql = "SELECT Call_Type_ID, Call_Type FROM officer_call_type order by Call_Type";
 
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {

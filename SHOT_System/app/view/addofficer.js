@@ -8,9 +8,10 @@ Ext.define('Packt.view.addofficer', {
       type: 'vbox',
       align: 'left'
     },
-    header:{
-        title: 'Add New Officer'
-    },
+//    header:{
+//        title: 'Add New Officer'
+//    },
+    header: false,
     id: 'addofficer',
     border: 0,
     bodyPadding: 30,
@@ -84,8 +85,26 @@ Ext.define('Packt.view.addofficer', {
           maxLength     : 1000,
          name: 'off_additional_info',
          id: 'off_additional_info',
-         fieldLabel: 'Abstract:'
-    } 
+         fieldLabel: 'Additional Info:'
+    },
+    {
+          xtype: 'hiddenfield',
+          name: 'off_add_Action',
+          id: 'off_add_Action',
+          value: ''
+    },
+    {
+          xtype: 'hiddenfield',
+          name: 'off_add_Function',
+          id: 'off_add_Function',
+          value: ''
+    },
+    {
+          xtype: 'hiddenfield',
+          name: 'off_add_officerID',
+          id: 'off_add_officerID',
+          value: ''
+    }
 
 
     ],

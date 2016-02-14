@@ -21,7 +21,7 @@
   $last_id = 0;
 
 
-    $sql = "INSERT INTO Officer (Name,Gender,Race_ID,Additional_Info) VALUES ($Name, $Gender, $Race_ID, $AdditionalInfo)"; 
+    $sql = "INSERT INTO officer (Name,Gender,Race_ID,Additional_Info) VALUES ($Name, $Gender, $Race_ID, $AdditionalInfo)"; 
     error_log($sql);
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Adding Officer to Database!");

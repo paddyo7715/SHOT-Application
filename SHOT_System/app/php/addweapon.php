@@ -7,13 +7,13 @@
   require("common.php");
   set_error_handler("customError");
 
-  $sql = "INSERT INTO Weapons (Weapons_Type) VALUES ('$Weapons_Type')"; 
+  $sql = "INSERT INTO weapons (Weapons_Type) VALUES ('$Weapons_Type')"; 
 
   if ($resultdb = $mysqli->query($sql) != TRUE) {
     trigger_error("Error Adding Weapon Type to Database!");
   }
 
-  $sql = "SELECT Weapons_ID, Weapons_Type FROM Weapons order by Weapons_Type";
+  $sql = "SELECT Weapons_ID, Weapons_Type FROM weapons order by Weapons_Type";
 
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {

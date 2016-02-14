@@ -83,10 +83,10 @@ Ext.define('Packt.controller.cont', {
         'OfficerStatusGrid',
         'RaceGrid',
         'SourceTypeGrid',
-        'StateGrid',
         'SubjectGrid',
         'WeaponsGrid',
         'addLocDetail'
+
     ],
     refs: [
         {
@@ -124,6 +124,10 @@ Ext.define('Packt.controller.cont', {
         {
             ref : 'Incidentgrid',
             selector: 'Incidentgrid'
+        },
+        {
+            ref : 'DBMaintTabPanel',
+            selector: 'DBMaintTabPanel'
         },
         {
             ref : 'AggressionTypeGrid',
@@ -176,10 +180,6 @@ Ext.define('Packt.controller.cont', {
         {
             ref : 'SourceTypeGrid',
             selector: 'SourceTypeGrid'
-        },
-        {
-            ref : 'StateGrid',
-            selector: 'StateGrid'
         },
         {
             ref : 'SubjectGrid',
@@ -261,6 +261,9 @@ Ext.define('Packt.controller.cont', {
 	this.control({'NewspapersGrid button#newspgridaddbtn' : { click: this.clickDBMaintaddNewspapers } }); 
 	this.control({'NewspapersGrid button#newspgrideditbtn' : { click: this.onButtonClickeditNewspapers } }); 
 	this.control({'NewspapersGrid button#newspgriddelete' : { click: this.onButtonClickdeleteNewspapers } }); 
+	this.control({'officersGrid button#officergridaddbtn' : { click: this.clickofficeraddDB } }); 
+	this.control({'officersGrid button#officergrideditbtn' : { click: this.DBMainEditOfficer } }); 
+	this.control({'officersGrid button#officergriddelete' : { click: this.onButtonClickdeleteOfficer } }); 
 	this.control({'OfficerAssignmentGrid button#offassgridaddbtn' : { click: this.clickDBMaintaddOfficerAssignments } }); 
 	this.control({'OfficerAssignmentGrid button#offassgrideditbtn' : { click: this.onButtonClickeditOfficerAssignment } }); 
 	this.control({'OfficerAssignmentGrid button#offassgriddelete' : { click: this.onButtonClickdeleteOffAssignment } }); 
@@ -282,6 +285,9 @@ Ext.define('Packt.controller.cont', {
 	this.control({'SourceTypeGrid button#sourcetypegridaddbtn' : { click: this.clickDBMaintaddSourceType } }); 
 	this.control({'SourceTypeGrid button#sourcetypegrideditbtn' : { click: this.onButtonClickeditSourceType } }); 
 	this.control({'SourceTypeGrid button#sourcetypegriddelete' : { click: this.onButtonClickdeleteSourceTye } }); 
+	this.control({'SubjectGrid button#subjectgridaddbtn' : { click: this.clickDBaddsuspectbtn } }); 
+	this.control({'SubjectGrid button#subjectgrideditbtn' : { click: this.clickDBeditsuspectbtn } }); 
+	this.control({'SubjectGrid button#subjectgriddelete' : { click: this.onButtonClickdeleteSubjects } }); 
 	this.control({'WeaponsGrid button#weaponsgridaddbtn' : { click: this.clickDBMaintaddWeapons } }); 
 	this.control({'WeaponsGrid button#weaponsgrideditbtn' : { click: this.onButtonClickeditWeapons } }); 
 	this.control({'WeaponsGrid button#weaponsgriddelete' : { click: this.onButtonClickdeleteWeapon } }); 
@@ -388,9 +394,7 @@ Ext.define('Packt.controller.cont', {
     onButtonClickDatabase: function(button, e, options) {
 
            this.getAggressionTypes();
-//           var dbtabpanel = Ext.getCmp('DBMaintTabPanel');                     
-//           dbtabpanel.setActiveTab(0);
-//           this.getDBMaintTabPanel().setActiveTab(0);
+           this.getDBMaintTabPanel().setActiveTab(0);
            var cpanel = Ext.getCmp('centerpanel'); 
            cpanel.getLayout().setActiveItem(3);
 
@@ -507,7 +511,6 @@ Ext.define('Packt.controller.cont', {
 			id_address2: id_address2,
 			id_dateoccurred: id_dateoccurred,
 			id_officersscene: id_officersscene,
-			id_location: id_location,
 			id_locationdet: id_locationdet,
 			id_officersfiredguns: id_officersfiredguns,
 			id_officersshotsfired: id_officersshotsfired,
@@ -1361,6 +1364,11 @@ Ext.define('Packt.controller.cont', {
                   xtype: 'addofficer'
               }]
              });
+            Ext.getCmp('off_add_Action').setValue("A");
+//Adding new officer from officer incident grid
+            Ext.getCmp('off_add_Function').setValue("O");  
+            Ext.getCmp('off_add_officerID').setValue("");  
+
             offaddwin.show(); 
 
                            
@@ -1827,7 +1835,7 @@ Ext.define('Packt.controller.cont', {
 
 //Officer Add View
 //=================================
-//click of the select officer search grid button
+//click of the submit button on the add officer view
     onButtonClickofficeraddbtn: function(button, e, options) {
 
     var me = this;
@@ -1843,6 +1851,10 @@ Ext.define('Packt.controller.cont', {
     }
     else
     {
+      var Action = Ext.getCmp('off_add_Action').getValue().trim();
+      var Function = Ext.getCmp('off_add_Function').getValue().trim();
+      var Officer_ID = Ext.getCmp('off_add_officerID').getValue().trim();
+
       var Name = Ext.getCmp('off_name').getValue().trim();
  
       var gmale = Ext.getCmp('offgenderM');
@@ -1866,8 +1878,15 @@ Ext.define('Packt.controller.cont', {
       var label_race = racemodel.get('Race');  
       var Add_info = Ext.getCmp('off_additional_info').getValue().trim();
 
+      var qtext = "";
+      if (Action == 'A')
+        qtext = "Would you like to add this officer?";
+      else
+        qtext = "Would you like to update this officer?";
+
+
       Ext.MessageBox.confirm('Please Confirm',
-         'Would you like to add this officer?',
+         qtext,
          function( choice)
          { 
             if( choice == 'yes')
@@ -1879,14 +1898,17 @@ Ext.define('Packt.controller.cont', {
               loadMask.show();
 
               Ext.Ajax.request({
-                url: 'app/php/addeditofficer.php',
-//                url: 'app/data/addeditofficer.json',
+                url: 'app/php/accessOfficers.php',
                 params: 
                 {
+                        Action: Action,
+                        Function: Function,
 			Name: Name,
 			Gender: input_gender,
 			Race_ID: raceid,
-			AdditionalInfo: Add_info
+			AdditionalInfo: Add_info,
+                        Officer_ID: Officer_ID
+
                 },
                 failure: function(conn, response, options, eOpts)
                 {
@@ -1911,16 +1933,24 @@ Ext.define('Packt.controller.cont', {
                   if (result.success)
                   {
 //                     console.log(result['LAST_INSERT_ID']);
-                     var cpanel = Ext.getCmp('incsourcepanel'); 
-                     loadMask.hide();
-                     
-                     var oid = result['LAST_INSERT_ID'];
 
-                     Ext.getCmp('io_officer_id').setValue(oid);
-                     Ext.getCmp('io_officername').setValue(Name); 
-                     Ext.getCmp('io_gender').setValue(label_gender);
-                     Ext.getCmp('io_race').setValue(label_race);
-                     Ext.getCmp('io_race_id').setValue(raceid);
+                     loadMask.hide();
+                     if (Function == 'O')
+                     {
+                       var cpanel = Ext.getCmp('incsourcepanel'); 
+  
+                     
+                       var oid = result['LAST_INSERT_ID'];
+
+                       Ext.getCmp('io_officer_id').setValue(oid);
+                       Ext.getCmp('io_officername').setValue(Name); 
+                       Ext.getCmp('io_gender').setValue(label_gender);
+                       Ext.getCmp('io_race').setValue(label_race);
+                       Ext.getCmp('io_race_id').setValue(raceid);
+                     }
+                     else
+                       Ext.getStore('officer_search').loadData(result['officersearch']);
+
 
                      var win = Ext.getCmp('winoffadd')
                      win.destroy(); 
@@ -1952,6 +1982,7 @@ Ext.define('Packt.controller.cont', {
 
            
     },
+
 //================================
 
 //Incident Officer Grid View
@@ -2535,7 +2566,11 @@ clickincidentsusdetailcancel: function(button, e, options) {
                   xtype: 'addsuspect'
               }]
              });
-            offaddwin.show(); 
+           Ext.getCmp('sus_add_Action').setValue("A");
+//Adding new officer from officer incident grid
+           Ext.getCmp('sus_add_Function').setValue("S");  
+           Ext.getCmp('sus_add_suspectID').setValue(""); 
+           offaddwin.show(); 
 
                            
     },
@@ -2844,6 +2879,10 @@ clickincidentsusdetailcancel: function(button, e, options) {
     }
     else
     {
+      var Action = Ext.getCmp('sus_add_Action').getValue().trim();
+      var Function = Ext.getCmp('sus_add_Function').getValue().trim();
+      var Suspect_ID = Ext.getCmp('sus_add_suspectID').getValue().trim();
+
       var Suspect_Name = Ext.getCmp('sus_name').getValue().trim();
       var gmale = Ext.getCmp('susgenderM');
       var gfemale = Ext.getCmp('susgenderF');
@@ -2865,8 +2904,14 @@ clickincidentsusdetailcancel: function(button, e, options) {
       var racemodel = Ext.getStore('Races').findRecord('Race_ID', raceid);    
       var label_race = racemodel.get('Race');  
 
+      var qtext = "";
+      if (Action == 'A')
+        qtext = "Would you like to add this subject?";
+      else
+        qtext = "Would you like to update this subject?";
+
       Ext.MessageBox.confirm('Please Confirm',
-         'Would you like to add this subject?',
+         qtext,
          function( choice)
          { 
             if( choice == 'yes')
@@ -2878,13 +2923,15 @@ clickincidentsusdetailcancel: function(button, e, options) {
               loadMask.show();
 
               Ext.Ajax.request({
-                url: 'app/php/addsuspect.php',
-//                url: 'app/data/addsuspect.json',
+                url: 'app/php/accessSubjects.php',
                 params: 
                 {
+                        Action: Action,
+                        Function: Function,
 			Suspect_Name: Suspect_Name,
 			Gender: input_gender,
-			Race_ID: raceid
+			Race_ID: raceid,
+                        Suspect_ID: Suspect_ID
                 },
                 failure: function(conn, response, options, eOpts)
                 {
@@ -2911,13 +2958,18 @@ clickincidentsusdetailcancel: function(button, e, options) {
 //                     console.log(result['LAST_INSERT_ID']);
                      loadMask.hide();
                      
-                     var sid = result['LAST_INSERT_ID'];
+                     if (Function == 'S')
+                     {
+                       var sid = result['LAST_INSERT_ID'];
+                       Ext.getCmp('susdet_suspect_id').setValue(sid);
+                       Ext.getCmp('susdet_suspectname').setValue(Suspect_Name); 
+                       Ext.getCmp('susdet_gender').setValue(label_gender);
+                       Ext.getCmp('susdet_race').setValue(label_race);
+                       Ext.getCmp('susdet_race_id').setValue(raceid);
+                     }
+                     else
+                       Ext.getStore('suspect_search').loadData(result['suspectsearch']);
 
-                     Ext.getCmp('susdet_suspect_id').setValue(sid);
-                     Ext.getCmp('susdet_suspectname').setValue(Suspect_Name); 
-                     Ext.getCmp('susdet_gender').setValue(label_gender);
-                     Ext.getCmp('susdet_race').setValue(label_race);
-                     Ext.getCmp('susdet_race_id').setValue(raceid);
 
                      var win = Ext.getCmp('winsusadd')
                      win.destroy(); 
@@ -3261,11 +3313,9 @@ clickincidentsusdetailcancel: function(button, e, options) {
         this.getSourceTypes();
         break;
     case 13:
-        break;
-    case 14:
         this.getallsubjects();
         break;
-    case 15:
+    case 14:
         this.getWeapons();
         break;
     }  
@@ -4330,6 +4380,185 @@ clickincidentsusdetailcancel: function(button, e, options) {
         }
            
     },  
+//Click on the officer add button from the DB Maint Grid
+    clickofficeraddDB: function(button, e, options) {
+
+           var offaddwin = new Ext.Window({
+           id:'winoffadd',
+           layout: 'fit',
+           width: 410,
+           height: 370,
+           modal: true,
+           title: 'Add Officer',
+              items: [
+              {
+                  xtype: 'addofficer'
+              }]
+             });
+            Ext.getCmp('off_add_Action').setValue("A");
+//Adding new officer from officer incident grid
+            Ext.getCmp('off_add_Function').setValue("D");  
+            Ext.getCmp('off_add_officerID').setValue("");  
+
+            offaddwin.show(); 
+
+                           
+    },
+//Click on the edit Officer details button from DB maintenance
+    DBMainEditOfficer: function(button, e, options) {
+
+
+       var me = this;
+       var g = Ext.getCmp('officersGrid'); 
+       if (!g.getSelectionModel().hasSelection())
+       {
+          Ext.Msg.show({
+            title: 'Error!',
+            msg: 'You must first select an Officer from the grid.',
+            icon: Ext.Msg.ERROR,
+            buttons: Ext.Msg.OK
+          });             
+       }
+       else
+       {
+           var offaddwin = new Ext.Window({
+           id:'winoffadd',
+           layout: 'fit',
+           width: 410,
+           height: 370,
+           modal: true,
+           title: 'Edit Officer',
+              items: [
+              {
+                  xtype: 'addofficer'
+              }]
+             });
+
+            var rec = g.getSelectionModel().getSelection()[0]; 
+            Ext.getCmp('off_add_Action').setValue("U");
+//Adding new officer from officer incident grid
+            Ext.getCmp('off_add_Function').setValue("D");  
+            Ext.getCmp('off_add_officerID').setValue(rec.get("Officer_ID"));  
+            Ext.getCmp('off_name').setValue(rec.get("Name"));  
+  
+            var offgenderM = Ext.getCmp('offgenderM');            
+            var offgenderF = Ext.getCmp('offgenderF');
+            var gender = rec.get("Gender");
+            if (gender == "M")
+               offgenderM.setValue(true);
+            else            
+               offgenderF.setValue(true);
+
+  
+            var racename = rec.get("Race")
+            var racemodel = Ext.getStore('Races').findRecord('Race', racename);    
+            var race_id = racemodel.get('Race_ID')
+            Ext.getCmp('off_race').setValue(race_id);  
+            
+            Ext.getCmp('off_additional_info').setValue(rec.get("Additional_Info"));  
+
+
+            offaddwin.show();
+       }
+
+                           
+    },
+
+//Click of the delete button for an officer
+    onButtonClickdeleteOfficer: function(button, e, options) {
+
+
+       var g = Ext.getCmp('officersGrid'); 
+       if (!g.getSelectionModel().hasSelection())
+       {
+          Ext.Msg.show({
+            title: 'Error!',
+            msg: 'You must first select an Officer from the grid.',
+            icon: Ext.Msg.ERROR,
+            buttons: Ext.Msg.OK
+          });             
+       }
+       else
+       {
+         var rec = g.getSelectionModel().getSelection()[0]; 
+         var Officer_ID = rec.get("Officer_ID")
+
+
+         Ext.MessageBox.confirm('Please Confirm',
+          'Are you sure you would like to delete this Officer?',
+          function(choice)
+          { 
+           if( choice == 'yes')
+           {
+
+              var loadMask = new Ext.LoadMask(Ext.getBody(), {
+
+              msg: 'Please Wait...'});
+              loadMask.show();
+
+              Ext.Ajax.request({
+                url: 'app/php/accessOfficers.php',
+                params: 
+                {
+                        Action: 'D',
+                        Function: 'D',
+			Name: '',
+			Gender: '',
+			Race_ID: '',
+			AdditionalInfo: '',
+                        Officer_ID: Officer_ID
+
+                },
+                failure: function(conn, response, options, eOpts)
+                {
+                  loadMask.hide();
+                  Ext.Msg.show({
+                    title: 'Error!',
+                    msg: conn.responseText,
+                    icon: Ext.Msg.ERROR,
+                    buttons: Ext.Msg.OK
+                  });
+                }, 
+                success: function(conn, response, options, eOpts)
+                {
+                  loadMask.hide();
+                  var result = Ext.JSON.decode(conn.responseText, true);
+                  if (!result)
+                  {
+                    result = {};
+                    result.success = false;
+                    result.msg = conn.responseText;
+                  } 
+                  if (result.success)
+                  {
+                       Ext.getStore('officer_search').loadData(result['officersearch']);
+                     loadMask.hide();
+                  }     
+                  else
+                  {
+                    if (result.msg == "no_session")
+                                window.location="index.html";
+                    else
+                    {
+                      loadMask.hide();
+                      Ext.Msg.show({
+                        title: 'Fail!',
+                        msg: result.msg,
+                        icon: Ext.Msg.ERROR,
+                        buttons: Ext.Msg.OK
+                      });
+                    }
+                  }             
+                }  
+              });
+            } 
+         });          
+        }
+           
+    },  
+
+
+
 //Click on Add btn on the DB Main Officer Assignment grid
     clickDBMaintaddOfficerAssignments: function(button, e, options) {
 
@@ -6181,6 +6410,178 @@ clickincidentsusdetailcancel: function(button, e, options) {
         }
            
     },  
+//Click on the suspect add button from DBMaint page
+    clickDBaddsuspectbtn: function(button, e, options) {
+
+           var offaddwin = new Ext.Window({
+           id:'winsusadd',
+           layout: 'fit',
+           width: 410,
+           height: 300,
+           modal: true,
+           title: 'Add Subject',
+              items: [
+              {
+                  xtype: 'addsuspect'
+              }]
+             });
+           Ext.getCmp('sus_add_Action').setValue("A");
+//Adding new officer from officer incident grid
+           Ext.getCmp('sus_add_Function').setValue("D");  
+           Ext.getCmp('sus_add_suspectID').setValue(""); 
+           offaddwin.show(); 
+
+                           
+    },
+
+//Click on the edit suspect details button from DB maintenance
+    clickDBeditsuspectbtn: function(button, e, options) {
+
+
+       var me = this;
+       var g = Ext.getCmp('SubjectGrid'); 
+       if (!g.getSelectionModel().hasSelection())
+       {
+          Ext.Msg.show({
+            title: 'Error!',
+            msg: 'You must first select a subject from the grid.',
+            icon: Ext.Msg.ERROR,
+            buttons: Ext.Msg.OK
+          });             
+       }
+       else
+       {
+           var offaddwin = new Ext.Window({
+           id:'winsusadd',
+           layout: 'fit',
+           width: 410,
+           height: 370,
+           modal: true,
+           title: 'Edit Subject',
+              items: [
+              {
+                  xtype: 'addsuspect'
+              }]
+             });
+
+            var rec = g.getSelectionModel().getSelection()[0]; 
+            Ext.getCmp('sus_add_Action').setValue("U");
+//Adding new subject from subject grid
+            Ext.getCmp('sus_add_Function').setValue("D");  
+            Ext.getCmp('sus_add_suspectID').setValue(rec.get("Suspect_ID"));  
+            Ext.getCmp('sus_name').setValue(rec.get("Suspect_Name"));  
+  
+            var offgenderM = Ext.getCmp('susgenderM');            
+            var offgenderF = Ext.getCmp('susgenderF');
+            var gender = rec.get("Gender");
+            if (gender == "M")
+               offgenderM.setValue(true);
+            else            
+               offgenderF.setValue(true);
+
+  
+            var racename = rec.get("Race")
+            var racemodel = Ext.getStore('Races').findRecord('Race', racename);    
+            var race_id = racemodel.get('Race_ID')
+            Ext.getCmp('sus_race').setValue(race_id);  
+            
+
+            offaddwin.show();
+       }
+
+                           
+    },
+
+//Click of the delete button for a Subject from the Db Main grid
+    onButtonClickdeleteSubjects: function(button, e, options) {
+
+       var g = Ext.getCmp('SubjectGrid'); 
+       if (!g.getSelectionModel().hasSelection())
+       {
+          Ext.Msg.show({
+            title: 'Error!',
+            msg: 'You must first select a subject from the grid.',
+            icon: Ext.Msg.ERROR,
+            buttons: Ext.Msg.OK
+          });             
+       }
+       else
+       {
+         var rec = g.getSelectionModel().getSelection()[0]; 
+         var Suspect_ID = rec.get("Suspect_ID");
+
+         Ext.MessageBox.confirm('Please Confirm',
+          'Are you sure you would like to delete this Subject?',
+          function(choice)
+          { 
+           if( choice == 'yes')
+           {
+
+              var loadMask = new Ext.LoadMask(Ext.getBody(), {
+
+              msg: 'Please Wait...'});
+              loadMask.show();
+
+              Ext.Ajax.request({
+                url: 'app/php/accessSubjects.php',
+                params:  
+                {
+                        Action: 'D',
+                        Function: 'D',
+			Suspect_Name: '',
+			Gender: '',
+			Race_ID: '',
+                        Suspect_ID: Suspect_ID
+                },
+                failure: function(conn, response, options, eOpts)
+                {
+                  loadMask.hide();
+                  Ext.Msg.show({
+                    title: 'Error!',
+                    msg: conn.responseText,
+                    icon: Ext.Msg.ERROR,
+                    buttons: Ext.Msg.OK
+                  });
+                }, 
+                success: function(conn, response, options, eOpts)
+                {
+                  loadMask.hide();
+                  var result = Ext.JSON.decode(conn.responseText, true);
+                  if (!result)
+                  {
+                    result = {};
+                    result.success = false;
+                    result.msg = conn.responseText;
+                  } 
+                  if (result.success)
+                  {
+                     Ext.getStore('suspect_search').loadData(result['suspectsearch']);
+                     loadMask.hide();
+                  }     
+                  else
+                  {
+                    if (result.msg == "no_session")
+                                window.location="index.html";
+                    else
+                    {
+                      loadMask.hide();
+                      Ext.Msg.show({
+                        title: 'Fail!',
+                        msg: result.msg,
+                        icon: Ext.Msg.ERROR,
+                        buttons: Ext.Msg.OK
+                      });
+                    }
+                  }             
+                }  
+              });
+            } 
+         });          
+        }
+           
+    },  
+
+
 //Click on Add btn on the DB Main Weapons grid
     clickDBMaintaddWeapons: function(button, e, options) {
 
@@ -6455,7 +6856,7 @@ clickincidentsusdetailcancel: function(button, e, options) {
            width: 410,
            height: 180,
            modal: true,
-           title: '',
+           title: 'Add Location Detail',
               items: [
               {
                   xtype: 'addLocDetail'
@@ -6490,7 +6891,7 @@ clickincidentsusdetailcancel: function(button, e, options) {
            width: 410,
            height: 180,
            modal: true,
-           title: '',
+           title: 'Edit Location Detail',
               items: [
               {
                   xtype: 'addLocDetail'
@@ -7900,7 +8301,6 @@ clickincidentsusdetailcancel: function(button, e, options) {
               });         
 
     }, 
-
 
 //This method will take the string of select target area ids and return the display value for the target area.
     getTargetAreaString: function(ta_val)

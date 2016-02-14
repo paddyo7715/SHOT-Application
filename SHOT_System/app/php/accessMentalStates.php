@@ -11,7 +11,7 @@
 
   if ($Action == "A")
   {
-  $sql = "INSERT INTO Mental_States (Mental_Status) VALUES ('$Mental_Status')"; 
+  $sql = "INSERT INTO mental_states (Mental_Status) VALUES ('$Mental_Status')"; 
 
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Adding Mental Status to Database!");
@@ -19,7 +19,7 @@
   }  
   elseif ($Action == "U")
   {
-    $sql = "UPDATE Mental_States set Mental_Status = '$Mental_Status' WHERE Mental_Status_ID = $Mental_Status_ID"; 
+    $sql = "UPDATE mental_states set Mental_Status = '$Mental_Status' WHERE Mental_Status_ID = $Mental_Status_ID"; 
 
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Updating Mental Status in Database!");
@@ -27,7 +27,7 @@
   }  
   elseif ($Action == "D")
   {
-    $sql = "DELETE FROM Mental_States WHERE  Mental_Status_ID = $Mental_Status_ID"; 
+    $sql = "DELETE FROM mental_states WHERE  Mental_Status_ID = $Mental_Status_ID"; 
 
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Deleting Mental Status from Database!  This Aggression Type may be used in an Incident");
@@ -35,7 +35,7 @@
   }  
 
 
-  $sql = "SELECT Mental_Status_ID, Mental_Status FROM Mental_States order by Mental_Status";
+  $sql = "SELECT Mental_Status_ID, Mental_Status FROM mental_states order by Mental_Status";
 
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {

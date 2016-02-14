@@ -11,7 +11,7 @@
   set_error_handler("customError");
 
   $num_rows = 0;
-  $sql = "SELECT Suspect_ID, Suspect_Name, Gender, Race FROM Suspect s, Race r where $likeclause  s.Race_ID = r.Race_ID order by Suspect_ID";
+  $sql = "SELECT Suspect_ID, Suspect_Name, Gender, Race FROM suspect s, race r where $likeclause  s.Race_ID = r.Race_ID order by Suspect_ID";
   error_log($sql);
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {

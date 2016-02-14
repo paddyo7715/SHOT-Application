@@ -11,7 +11,7 @@
 
   if ($Action == "A")
   {
-    $sql = "INSERT INTO Officer_Dept_Type (Dept_Type) VALUES ('$Dept_Type')"; 
+    $sql = "INSERT INTO officer_dept_type (Dept_Type) VALUES ('$Dept_Type')"; 
 
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Adding Department Type to Database!");
@@ -19,7 +19,7 @@
   }  
   elseif ($Action == "U")
   {
-    $sql = "UPDATE Officer_Dept_Type set Dept_Type = '$Dept_Type' WHERE Dept_Type_ID = $Dept_Type_ID"; 
+    $sql = "UPDATE officer_dept_type set Dept_Type = '$Dept_Type' WHERE Dept_Type_ID = $Dept_Type_ID"; 
 
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Updating Department in Database!");
@@ -27,7 +27,7 @@
   }  
   elseif ($Action == "D")
   {
-    $sql = "DELETE FROM Officer_Dept_Type WHERE Dept_Type_ID = $Dept_Type_ID"; 
+    $sql = "DELETE FROM officer_dept_type WHERE Dept_Type_ID = $Dept_Type_ID"; 
 
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Deleting Department from Database!  This Department may be used in an Incident");
@@ -36,7 +36,7 @@
 
 
 
-  $sql = "SELECT Dept_Type_ID, Dept_Type FROM Officer_Dept_Type order by Dept_Type";
+  $sql = "SELECT Dept_Type_ID, Dept_Type FROM officer_dept_type order by Dept_Type";
 
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {

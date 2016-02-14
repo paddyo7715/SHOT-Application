@@ -47,7 +47,7 @@
   }
   else { trigger_error("Error Retrieving Location Details from Database!"); } 	
 
-  $sql = "SELECT Location_ID, Location FROM Location";
+  $sql = "SELECT Location_ID, Location FROM location";
 
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {

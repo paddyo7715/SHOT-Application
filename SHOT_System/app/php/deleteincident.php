@@ -11,7 +11,7 @@
 // Set autocommit to off
     mysqli_autocommit($mysqli,FALSE);
 
-    $sql = "DELETE from Incident WHERE Incident_ID = $Incident_ID"; 
+    $sql = "DELETE from incident WHERE Incident_ID = $Incident_ID"; 
 
     error_log($sql);
     if ($resultdb = $mysqli->query($sql) != TRUE) {
@@ -28,7 +28,7 @@
 //    error_log($last_id);
 
   $result = array();
-  $sql = "SELECT Incident_ID, Incident_Name, Date_Occured, City, State FROM Incident I, State S where I.State_ID = S.State_ID order by Incident_Name";
+  $sql = "SELECT Incident_ID, Incident_Name, Date_Occured, City, State FROM incident I, state S where I.State_ID = S.State_ID order by Incident_Name";
   error_log($sql);
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {

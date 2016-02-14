@@ -20,7 +20,7 @@
   require("common.php");
   set_error_handler("customError");
 
-  $sql = "SELECT State_ID, State, Region FROM State";
+  $sql = "SELECT State_ID, State, Region FROM state";
 
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {
@@ -30,7 +30,7 @@
   }
   else { trigger_error("Error Retrieving States from Database!"); } 	
 
-  $sql = "SELECT Location_ID, Location FROM Location";
+  $sql = "SELECT Location_ID, Location FROM location";
 
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {
@@ -40,7 +40,7 @@
   }
   else { trigger_error("Error Retrieving Locations from Database!"); } 
 
-  $sql = "SELECT Location_Detail_ID, Location_Details, Location_ID FROM Location_Detail";
+  $sql = "SELECT Location_Detail_ID, Location_Details, Location_ID FROM location_detail";
 
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {
@@ -50,7 +50,7 @@
   }
   else { trigger_error("Error Retrieving Location Details from Database!"); } 
 
-  $sql = "SELECT Newspaper_ID, Newspaper FROM Newspapers order by Newspaper";
+  $sql = "SELECT Newspaper_ID, Newspaper FROM newspapers order by Newspaper";
 
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {
@@ -60,7 +60,7 @@
   }
   else { trigger_error("Error Retrieving Newspapers from Database!"); } 
 
-  $sql = "SELECT Source_Type_ID, Source FROM Source_Type";
+  $sql = "SELECT Source_Type_ID, Source FROM source_type";
 
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {
@@ -70,7 +70,7 @@
   }
   else { trigger_error("Error Retrieving Sources from Database!"); } 
 
-  $sql = "SELECT Assignment_ID, Assignment FROM Officer_Assignment";
+  $sql = "SELECT Assignment_ID, Assignment FROM officer_assignment";
 
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {
@@ -80,7 +80,7 @@
   }
   else { trigger_error("Error Retrieving Officer Assignments from Database!"); } 
 
-  $sql = "SELECT Call_Type_ID, Call_Type FROM Officer_Call_Type";
+  $sql = "SELECT Call_Type_ID, Call_Type FROM officer_call_type";
 
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {
@@ -90,7 +90,7 @@
   }
   else { trigger_error("Error Retrieving Officer Call Types from Database!"); } 
 
-  $sql = "SELECT Status_ID, Status FROM Officer_Status";
+  $sql = "SELECT Status_ID, Status FROM officer_status";
 
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {
@@ -100,7 +100,7 @@
   }
   else { trigger_error("Error Retrieving Officer Status from Database!"); } 
 
-  $sql = "SELECT Dept_Type_ID, Dept_Type FROM Officer_Dept_Type";
+  $sql = "SELECT Dept_Type_ID, Dept_Type FROM officer_dept_type";
 
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {
@@ -110,7 +110,7 @@
   }
   else { trigger_error("Error Retrieving Officer Dept Type from Database!"); } 
 
-  $sql = "SELECT Department_ID, Department FROM Officer_Department order by Department";
+  $sql = "SELECT Department_ID, Department FROM officer_department order by Department";
 
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {
@@ -120,7 +120,7 @@
   }
   else { trigger_error("Error Retrieving Officer Department from Database!"); } 
 
-  $sql = "SELECT Race_ID, Race FROM Race";
+  $sql = "SELECT Race_ID, Race FROM race";
 
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {
@@ -130,7 +130,7 @@
   }
   else { trigger_error("Error Retrieving Races from Database!"); } 
 
-  $sql = "SELECT Mental_Status_ID, Mental_Status FROM Mental_States";
+  $sql = "SELECT Mental_Status_ID, Mental_Status FROM mental_states";
 
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {
@@ -140,7 +140,7 @@
   }
   else { trigger_error("Error Retrieving Mental States from Database!"); } 
 
-  $sql = "SELECT Weapons_ID, Weapons_Type FROM Weapons";
+  $sql = "SELECT Weapons_ID, Weapons_Type FROM weapons";
 
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {
@@ -150,7 +150,7 @@
   }
   else { trigger_error("Error Retrieving Weapons Types from Database!"); } 
 
-  $sql = "SELECT Type_of_Agression_ID, Aggression_Type FROM Aggression_Type";
+  $sql = "SELECT Type_of_Agression_ID, Aggression_Type FROM aggression_type";
 
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {
@@ -160,7 +160,7 @@
   }
   else { trigger_error("Error Retrieving Aggression Types from Database!"); } 
 
-  $sql = "SELECT Target_Area_ID, Target_Area, Specific_Target_Area FROM Target_Area";
+  $sql = "SELECT Target_Area_ID, Target_Area, Specific_Target_Area FROM target_area";
 
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {

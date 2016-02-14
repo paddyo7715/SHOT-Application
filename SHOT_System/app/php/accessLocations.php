@@ -11,7 +11,7 @@
 
   if ($Action == "A")
   {
-    $sql = "INSERT INTO Location (Location) VALUES ('$Location')"; 
+    $sql = "INSERT INTO location (Location) VALUES ('$Location')"; 
 
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Adding Location to Database!");
@@ -19,7 +19,7 @@
   }  
   elseif ($Action == "U")
   {
-    $sql = "UPDATE Location set Location = '$Location' WHERE Location_ID = $Location_ID"; 
+    $sql = "UPDATE location set Location = '$Location' WHERE Location_ID = $Location_ID"; 
 
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Updating Location to Database!");
@@ -27,7 +27,7 @@
   }  
   elseif ($Action == "D")
   {
-    $sql = "DELETE FROM Location WHERE Location_ID = $Location_ID"; 
+    $sql = "DELETE FROM location WHERE Location_ID = $Location_ID"; 
 
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Deleting Location to Database!  This Location may be used in an Incident");
@@ -35,7 +35,7 @@
   }  
 
 
-  $sql = "SELECT Location_ID, Location FROM Location";
+  $sql = "SELECT Location_ID, Location FROM location";
 //error_log($sql);
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {

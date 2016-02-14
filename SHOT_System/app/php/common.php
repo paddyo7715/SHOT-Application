@@ -76,15 +76,15 @@ function setDBBoolean($f){
 
 session_start();
 
-  if (!isset($_SESSION['dbServer']) || empty($_SESSION['dbServer'])) 
-  {
+if (!isset($_SESSION['dbServer']) || empty($_SESSION['dbServer'])) 
+{
     $result['success'] = false;
     $result['msg'] = "no_session";
     session_destroy();
     echo json_encode($result);
     die();
 
-  }
+}
 
 $server = $_SESSION["dbServer"];
 $user = $_SESSION["dbUser"];
@@ -100,7 +100,5 @@ if ($mysqli->connect_errno) {
     echo json_encode($result);
     exit("Unable to connect to Database");
 }
-
-
 
 ?>

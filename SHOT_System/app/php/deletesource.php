@@ -10,14 +10,14 @@
 
 //Delete the Incident Source
 
-    $sql = "DELETE from Incident_Source WHERE Source_ID = $sourceid and Incident_ID = $Incident_ID";
+    $sql = "DELETE from incident_source WHERE Source_ID = $sourceid and Incident_ID = $Incident_ID";
 //    error_log($sql);
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Deleting Incident Source Record in Database!");
     }
 
   $result = array();
-  $sql = "SELECT Source_ID, I.Source_Type_ID, Source, Title, Author, Source_Date, Link, I.Newspaper_ID, Newspaper, Abstract  FROM Incident_Source I LEFT OUTER JOIN Source_Type s on i.Source_Type_ID = s.Source_Type_ID left outer join Newspapers n on i.Newspaper_ID = n.Newspaper_ID where Incident_ID = $Incident_ID  order by Source_ID";
+  $sql = "SELECT Source_ID, I.Source_Type_ID, Source, Title, Author, Source_Date, Link, I.Newspaper_ID, Newspaper, Abstract  FROM incident_source I LEFT OUTER JOIN source_type s on i.Source_Type_ID = s.Source_Type_ID left outer join newspapers n on i.Newspaper_ID = n.Newspaper_ID where Incident_ID = $Incident_ID  order by Source_ID";
   error_log($sql);
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {

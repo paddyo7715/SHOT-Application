@@ -11,7 +11,7 @@
 
   if ($Action == "A")
   {
-    $sql = "INSERT INTO Officer_Assignment (Assignment) VALUES ('$Assignment')"; 
+    $sql = "INSERT INTO officer_assignment (Assignment) VALUES ('$Assignment')"; 
 
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Adding Officer Assignment to Database!");
@@ -19,7 +19,7 @@
   }  
   elseif ($Action == "U")
   {
-    $sql = "UPDATE Officer_Assignment set Assignment = '$Assignment' WHERE Assignment_ID = $Assignment_ID"; 
+    $sql = "UPDATE officer_assignment set Assignment = '$Assignment' WHERE Assignment_ID = $Assignment_ID"; 
 
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Updating Officer Assignment in Database!");
@@ -27,7 +27,7 @@
   }  
   elseif ($Action == "D")
   {
-    $sql = "DELETE FROM Officer_Assignment WHERE Assignment_ID = $Assignment_ID"; 
+    $sql = "DELETE FROM officer_assignment WHERE Assignment_ID = $Assignment_ID"; 
 
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Deleting Officer Assignment in Database!  This officer assignment may be used in an Incident");
@@ -35,7 +35,7 @@
   }  
 
 
-  $sql = "SELECT Assignment_ID, Assignment FROM Officer_Assignment order by Assignment";
+  $sql = "SELECT Assignment_ID, Assignment FROM officer_assignment order by Assignment";
 
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {

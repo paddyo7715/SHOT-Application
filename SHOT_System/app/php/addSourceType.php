@@ -7,13 +7,13 @@
   require("common.php");
   set_error_handler("customError");
 
-  $sql = "INSERT INTO Source_Type (Source) VALUES ('$Source')"; 
+  $sql = "INSERT INTO source_type (Source) VALUES ('$Source')"; 
 
   if ($resultdb = $mysqli->query($sql) != TRUE) {
     trigger_error("Error Adding Source to Database!");
   }
 
-  $sql = "SELECT Source_Type_ID, Source FROM Source_Type order by Source";
+  $sql = "SELECT Source_Type_ID, Source FROM source_type order by Source";
 
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {

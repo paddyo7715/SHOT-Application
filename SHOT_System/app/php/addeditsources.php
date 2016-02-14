@@ -32,7 +32,7 @@
 //Add or update depending on if an incident_source number is supplied or not
   if ($sourceid == "")
   {
-    $sql = "INSERT INTO Incident_Source (Incident_ID, Source_Type_ID, Title, Author, Source_Date, Link, Newspaper_ID, Abstract) VALUES ($Incident_ID, $sd_SourceType, $sd_Title, $sd_Author, $sd_datewritten, $sd_Link, $sd_newspaper, $sd_abstract)"; 
+    $sql = "INSERT INTO incident_source (Incident_ID, Source_Type_ID, Title, Author, Source_Date, Link, Newspaper_ID, Abstract) VALUES ($Incident_ID, $sd_SourceType, $sd_Title, $sd_Author, $sd_datewritten, $sd_Link, $sd_newspaper, $sd_abstract)"; 
 
     error_log($sql);
     if ($resultdb = $mysqli->query($sql) != TRUE) {
@@ -43,7 +43,7 @@
   }
   else
   {
-    $sql = "UPDATE Incident_Source set Source_Type_ID = $sd_SourceType, Title = $sd_Title, Author = $sd_Author, Source_Date = $sd_datewritten, Link = $sd_Link, Newspaper_ID = $sd_newspaper, Abstract = $sd_abstract WHERE Incident_ID = $Incident_ID";
+    $sql = "UPDATE incident_source set Source_Type_ID = $sd_SourceType, Title = $sd_Title, Author = $sd_Author, Source_Date = $sd_datewritten, Link = $sd_Link, Newspaper_ID = $sd_newspaper, Abstract = $sd_abstract WHERE Incident_ID = $Incident_ID";
 //    error_log($sql);
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Updating Incident Source Record in Database!");
@@ -53,7 +53,7 @@
   }
 
   $result = array();
-  $sql = "SELECT Source_ID, I.Source_Type_ID, Source, Title, Author, Source_Date, Link, I.Newspaper_ID, Newspaper, Abstract  FROM Incident_Source I LEFT OUTER JOIN Source_Type s on i.Source_Type_ID = s.Source_Type_ID left outer join Newspapers n on i.Newspaper_ID = n.Newspaper_ID where Incident_ID = $Incident_ID  order by Source_ID";
+  $sql = "SELECT Source_ID, I.Source_Type_ID, Source, Title, Author, Source_Date, Link, I.Newspaper_ID, Newspaper, Abstract  FROM incident_source I LEFT OUTER JOIN source_type s on I.Source_Type_ID = s.Source_Type_ID left outer join newspapers n on I.Newspaper_ID = n.Newspaper_ID where Incident_ID = $Incident_ID  order by Source_ID";
 //  error_log($sql);
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {

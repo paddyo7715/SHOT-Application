@@ -2,15 +2,13 @@ Ext.define('Packt.view.addsuspect', {
     extend: 'Ext.form.Panel',
     alias: 'widget.addsuspect',
     width: 400,
-    height: 290,
+    height: 200,
 //    layout: 'anchor',
     layout: {
       type: 'vbox',
       align: 'left'
     },
-    header:{
-        title: 'Add New Subject'
-    },
+    header:  false,
     id: 'addsuspect',
     border: 0,
     bodyPadding: 30,
@@ -76,6 +74,24 @@ Ext.define('Packt.view.addsuspect', {
 	  valueField: 'Race_ID',
           allowBlank: false 
     },
+    {
+          xtype: 'hiddenfield',
+          name: 'sus_add_Action',
+          id: 'sus_add_Action',
+          value: ''
+    },
+    {
+          xtype: 'hiddenfield',
+          name: 'sus_add_Function',
+          id: 'sus_add_Function',
+          value: ''
+    },
+    {
+          xtype: 'hiddenfield',
+          name: 'sus_add_suspectID',
+          id: 'sus_add_suspectID',
+          value: ''
+    }
     ],
 
     buttons: [{

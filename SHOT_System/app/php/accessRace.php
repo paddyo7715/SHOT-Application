@@ -11,7 +11,7 @@
 
   if ($Action == "A")
   {
-    $sql = "INSERT INTO Race (Race) VALUES ('$Race')"; 
+    $sql = "INSERT INTO race (Race) VALUES ('$Race')"; 
 
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Adding Race to Database!");
@@ -19,7 +19,7 @@
   }  
   elseif ($Action == "U")
   {
-    $sql = "UPDATE Race set Race = '$Race' WHERE Race_ID = $Race_ID"; 
+    $sql = "UPDATE race set Race = '$Race' WHERE Race_ID = $Race_ID"; 
 
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Updating Race in Database!");
@@ -27,7 +27,7 @@
   }  
   elseif ($Action == "D")
   {
-    $sql = "DELETE FROM Race WHERE Race_ID = $Race_ID"; 
+    $sql = "DELETE FROM race WHERE Race_ID = $Race_ID"; 
 
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Deleting Race from Database!  This Race may be used by an officer or subject");
@@ -36,7 +36,7 @@
 
 
 
-  $sql = "SELECT Race_ID, Race FROM Race order by Race";
+  $sql = "SELECT Race_ID, Race FROM race order by Race";
 
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {

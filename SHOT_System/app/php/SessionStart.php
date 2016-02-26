@@ -1,9 +1,10 @@
 <?php
   session_start();
-  $_SESSION["dbServer"] = "127.0.0.1";
-  $_SESSION["dbUser"] = "xxxxxxxx";
-  $_SESSION["dbPW"] = "xxxxxx";
-  $_SESSION["dbDatabase"] = "xxxxxx";
+  require_once './../../keys.php';
+  $_SESSION["dbServer"] = $DB_Host;
+  $_SESSION["dbUser"] = $DB_User;
+  $_SESSION["dbPW"] = $DB_Pass;
+  $_SESSION["dbDatabase"] = $DB_Name;
 
   header("Location: ../../app.html");
 ?>

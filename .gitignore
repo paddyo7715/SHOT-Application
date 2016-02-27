@@ -216,4 +216,12 @@ pip-log.txt
 .mr.developer.cfg
 
 # SHOT app
-keys.php
+/SHOT_System/keys.php
+/SHOT_System/laravel/vendor
+/SHOT_System/laravel/node_modules
+/SHOT_System/laravel/public/storage
+Homestead.yaml
+Homestead.json
+.env
+/SHOT_System/laravel/bootstrap/cache
+/SHOT_System/laravel/storage

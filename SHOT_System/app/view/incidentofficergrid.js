@@ -17,25 +17,35 @@ Ext.define('Packt.view.incidentofficergrid' ,{
                {
                  xtype: 'displayfield',
                  fieldLabel: 'Incident Officers',
-                 width: 340
+                 width: 310
                },
                { 
                  xtype: 'button',
+                 hidden: true,
                  text: 'Add',
                  id: 'ogaddbtn',
                  itemId: 'ogaddbtn'
                },
                { 
                  xtype: 'button',
+                 hidden: true,
                  text: 'Edit',
                  id: 'ogeditbtn',
                  itemId: 'ogeditbtn'
                },
                { 
                  xtype: 'button',
-                 text: 'delete',
+                 hidden: true,
+                 text: 'Delete',
                  id: 'ogdelete',
                  itemId: 'ogdelete'
+               },
+               { 
+                 xtype: 'button',
+                 hidden: true,
+                 text: 'View',
+                 id: 'ogview',
+                 itemId: 'ogview'
                }
                ]
             }

@@ -9,6 +9,10 @@
   require("common.php");
   set_error_handler("customError");
 
+  $func = "Access Race";
+  $needed_access_functions = array("Access_NewIncident","Access_QueryUpdate");
+  Verify_Security($func, $needed_access_functions);
+
   if ($Action == "A")
   {
     $sql = "INSERT INTO race (Race) VALUES ('$Race')"; 
@@ -17,23 +21,6 @@
       trigger_error("Error Adding Race to Database!");
     }
   }  
-  elseif ($Action == "U")
-  {
-    $sql = "UPDATE race set Race = '$Race' WHERE Race_ID = $Race_ID"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Updating Race in Database!");
-    }
-  }  
-  elseif ($Action == "D")
-  {
-    $sql = "DELETE FROM race WHERE Race_ID = $Race_ID"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Deleting Race from Database!  This Race may be used by an officer or subject");
-    }
-  }  
-
 
 
   $sql = "SELECT Race_ID, Race FROM race order by Race";

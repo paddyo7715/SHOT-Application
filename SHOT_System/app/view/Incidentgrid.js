@@ -33,19 +33,28 @@ Ext.define('Packt.view.Incidentgrid' ,{
                  xtype: 'displayfield',
                  fieldLabel: '',
                  id: 'displayf',
-                 width: 230
+                 width: 200
                },
                { 
                  xtype: 'button',
                  text: 'Edit',
+                 hidden: true,
                  id: 'ig_edit',
                  itemId: 'ig_edit'
                },
                { 
                  xtype: 'button',
                  text: 'Delete',
+                 hidden: true,
                  id: 'ig_delete',
                  itemId: 'ig_delete'
+               },
+               { 
+                 xtype: 'button',
+                 text: 'View',
+                 hidden: true,
+                 id: 'ig_view',
+                 itemId: 'ig_view'
                }]
             }
             ],          

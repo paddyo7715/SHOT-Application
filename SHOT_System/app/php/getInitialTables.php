@@ -20,6 +20,10 @@
   require("common.php");
   set_error_handler("customError");
 
+  $func = "Get initial tables";
+  $needed_access_functions = array("Access_NewIncident","Access_QueryUpdate","Access_QueryUpdate","Access_Reports");
+  Verify_Security($func, $needed_access_functions);
+
   $sql = "SELECT State_ID, State, Region FROM state";
 
   if ($resultdb = $mysqli->query($sql)) {

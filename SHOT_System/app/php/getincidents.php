@@ -15,9 +15,13 @@
   require("common.php");
   set_error_handler("customError");
 
+  $func = "Access Departments";
+  $needed_access_functions = array("Access_NewIncident","Access_QueryUpdate", "Access_QueryView");
+  Verify_Security($func, $needed_access_functions);
+
   $num_rows = 0;
   $sql = "SELECT Incident_ID, Incident_Name, Date_Occured, City, State FROM incident I, state S where $likeclause  I.State_ID = S.State_ID order by Incident_Name";
-  error_log($sql);
+//  error_log($sql);
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {
 		array_push($result, $record);

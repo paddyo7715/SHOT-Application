@@ -9,41 +9,46 @@
   require("common.php");
   set_error_handler("customError");
 
+  $func = "Access Aggression Types";
+  $needed_access_functions = array("Access_NewIncident","Access_QueryUpdate");
+  Verify_Security($func, $needed_access_functions);
+
   if ($Action == "A")
   {
-    $sql = "INSERT INTO aggression_type (Aggression_Type) VALUES ('$Aggression_Type')"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Adding Aggression Type to Database!");
+    $emsg = "Error Adding Aggression Type to Database!";
+    $stmtx = $mysqli->prepare("INSERT INTO aggression_type (Aggression_Type) VALUES (?)");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
-  }  
-  elseif ($Action == "U")
-  {
-    $sql = "UPDATE aggression_type set Aggression_Type = '$Aggression_Type' WHERE Type_of_Agression_ID = $Aggression_Type_ID"; 
 
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Updating Aggression Type to Database!");
+    $rc = $stmtx->bind_param('s', $Aggression_Type);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
     }
-  }  
-  elseif ($Action == "D")
-  {
-    $sql = "DELETE FROM aggression_type WHERE Type_of_Agression_ID = $Aggression_Type_ID"; 
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
 
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Deleting Aggression Type to Database!  This Aggression Type may be used in an Incident");
-    }
   }  
 
-
-  $sql = "SELECT Type_of_Agression_ID , Aggression_Type FROM aggression_type order by Aggression_Type";
-//error_log($sql);
-  if ($resultdb = $mysqli->query($sql)) {
+  $emsg = "Error Retrieving Aggression Type from Database!";
+  $stmt = $mysqli->prepare("SELECT Type_of_Agression_ID , Aggression_Type FROM aggression_type order by Aggression_Type "); 
+  if ( false===$stmt ) {
+      trigger_error($emsg);
+  }
+  $rslt = $stmt->execute();
+  if ($rslt == TRUE) {
+    if ($resultdb = $stmt->get_result()) {
 	while($record = $resultdb->fetch_assoc()) {
 		array_push($result, $record);
 	}
-       $resultdb->close();
+       $stmt->close();
+    }
+    else { trigger_error($emsg); } 
   }
-  else { trigger_error("Error Retrieving Aggression Type from Database!"); } 
+  else { trigger_error($emsg); } 
 
 
 //send back information to extjs

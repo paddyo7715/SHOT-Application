@@ -9,6 +9,10 @@
   require("common.php");
   set_error_handler("customError");
 
+  $func = "Access Weapons";
+  $needed_access_functions = array("Access_NewIncident","Access_QueryUpdate");
+  Verify_Security($func, $needed_access_functions);
+
   if ($Action == "A")
   {
     $sql = "INSERT INTO weapons (Weapons_Type) VALUES ('$Weapons_Type')"; 
@@ -17,22 +21,7 @@
       trigger_error("Error Adding Weapon to Database!");
     }
   }  
-  elseif ($Action == "U")
-  {
-    $sql = "UPDATE weapons set Weapons_Type = '$Weapons_Type' WHERE Weapons_ID = $Weapons_ID"; 
 
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Updating Weapon in Database!");
-    }
-  }  
-  elseif ($Action == "D")
-  {
-    $sql = "DELETE FROM weapons WHERE Weapons_ID = $Weapons_ID"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Deleting Weapon from Database!  This Weapon may be used in an Incident");
-    }
-  }  
 
   $sql = "SELECT Weapons_ID, Weapons_Type FROM weapons order by Weapons_Type";
 

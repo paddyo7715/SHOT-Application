@@ -83,12 +83,6 @@ Ext.application({
             ]
         },
         { 
-            xtype: 'DBMaintTabPanel',
-            padding: '10 0 0 0',
-            requires: [ 'DBMaintTabPanel' ],
-	    layout:'fit'
-        },
-        { 
           xtype: 'panel', 
           id: 'rptpanel',        
           layout: 'card',
@@ -110,5 +104,6 @@ Ext.application({
      
   }
 });
+
 
 

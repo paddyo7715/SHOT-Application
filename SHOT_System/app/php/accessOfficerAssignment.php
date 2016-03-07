@@ -9,28 +9,16 @@
   require("common.php");
   set_error_handler("customError");
 
+  $func = "Access Officer Assignments";
+  $needed_access_functions = array("Access_NewIncident","Access_QueryUpdate");
+  Verify_Security($func, $needed_access_functions);
+
   if ($Action == "A")
   {
     $sql = "INSERT INTO officer_assignment (Assignment) VALUES ('$Assignment')"; 
 
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Adding Officer Assignment to Database!");
-    }
-  }  
-  elseif ($Action == "U")
-  {
-    $sql = "UPDATE officer_assignment set Assignment = '$Assignment' WHERE Assignment_ID = $Assignment_ID"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Updating Officer Assignment in Database!");
-    }
-  }  
-  elseif ($Action == "D")
-  {
-    $sql = "DELETE FROM officer_assignment WHERE Assignment_ID = $Assignment_ID"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Deleting Officer Assignment in Database!  This officer assignment may be used in an Incident");
     }
   }  
 

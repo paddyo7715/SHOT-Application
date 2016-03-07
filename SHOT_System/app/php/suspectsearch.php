@@ -10,9 +10,13 @@
   require("common.php");
   set_error_handler("customError");
 
+  $func = "Suspect Search";
+  $needed_access_functions = array("Access_NewIncident","Access_QueryUpdate");
+  Verify_Security($func, $needed_access_functions);
+
   $num_rows = 0;
   $sql = "SELECT Suspect_ID, Suspect_Name, Gender, Race FROM suspect s, race r where $likeclause  s.Race_ID = r.Race_ID order by Suspect_ID";
-  error_log($sql);
+//  error_log($sql);
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {
 		array_push($result, $record);

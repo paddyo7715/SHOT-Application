@@ -33,6 +33,7 @@ Ext.define('Packt.view.MainMenu', {
         padding: 10,
         xtype: 'button',
         border: '4 0 4 0',
+        hidden: true,
         style: {
           borderColor: 'white',
           borderStyle: 'solid'
@@ -45,30 +46,20 @@ Ext.define('Packt.view.MainMenu', {
         padding: 10,
         xtype: 'button',
         border: '4 0 4 0',
+        hidden: true,
         style: {
           borderColor: 'white',
           borderStyle: 'solid'
         },
         baseCls: 'menubutton',
-        text: 'Update/Delete Incidents',
+        text: 'Query Incidents',
         itemId: 'mmUpdateIncident',
         id :  'mmUpdateIncident' 
     },{
         padding: 10,
         xtype: 'button',
         border: '4 0 4 0',
-        style: {
-          borderColor: 'white',
-          borderStyle: 'solid'
-        },
-        baseCls: 'menubutton',
-        text: 'Database Maint',
-        itemId: 'mmDatabase',
-        id :  'mmDatabase' 
-    },{
-        padding: 10,
-        xtype: 'button',
-        border: '4 0 4 0',
+        hidden: true,
         style: {
           borderColor: 'white',
           borderStyle: 'solid'
@@ -77,5 +68,6 @@ Ext.define('Packt.view.MainMenu', {
         text: 'Reports',
         itemId: 'mmReports',
         id :  'mmReports' 
-    }]
+    }
+    ]
 });

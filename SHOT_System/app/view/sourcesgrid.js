@@ -17,25 +17,35 @@ Ext.define('Packt.view.sourcesgrid' ,{
                {
                  xtype: 'displayfield',
                  fieldLabel: 'Sources',
-                 width: 490
+                 width: 460
                },
                { 
                  xtype: 'button',
                  text: 'Add',
+                 hidden: true,
                  id: 'sgaddbtn',
                  itemId: 'sgaddbtn'
                },
                { 
                  xtype: 'button',
                  text: 'Edit',
+                 hidden: true,
                  id: 'sgeditbtn',
                  itemId: 'sgeditbtn'
                },
                { 
                  xtype: 'button',
-                 text: 'delete',
+                 text: 'Delete',
+                 hidden: true,
                  id: 'sgdelete',
                  itemId: 'sgdelete'
+               },
+               { 
+                 xtype: 'button',
+                 text: 'View',
+                 hidden: true,
+                 id: 'sgview',
+                 itemId: 'sgview'
                }
                ]
             }

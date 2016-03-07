@@ -4,6 +4,10 @@
   require("common.php");
   set_error_handler("customError");
 
+  $func = "Delete incident suspect";
+  $needed_access_functions = array("Access_NewIncident","Access_QueryUpdate");
+  Verify_Security($func, $needed_access_functions);
+
 function getShotStrings($mysqli,$f){
   
   $shot_s = "";

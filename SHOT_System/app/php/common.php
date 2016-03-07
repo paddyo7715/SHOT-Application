@@ -1,5 +1,6 @@
 <?php 
 
+
 function customError($errno, $errstr) {
 
   $result['success'] = false;
@@ -7,6 +8,23 @@ function customError($errno, $errstr) {
   echo json_encode($result);
   die();
 }
+
+function StringorNULLp($f){
+  
+  $new_field = trim($f);
+  if (strlen($new_field) == 0)
+  {
+    $new_field = NULL;
+  }
+  else
+  {
+    $new_field = "$new_field";
+  }
+
+  return $new_field;  
+  
+}
+
 
 function StringorNULL($f){
   
@@ -36,6 +54,18 @@ function NumberorNULL($f){
   
 }
 
+function NumberorNULLp($f){
+  
+  $new_field = trim($f);
+  if (strlen($new_field) == 0)
+  {
+    $new_field = NULL;
+  }
+
+  return $new_field;  
+  
+}
+
 function TimeorNULL($f){
   
   $new_field = trim($f);
@@ -48,6 +78,24 @@ function TimeorNULL($f){
     $pos1 = stripos($new_field, "T");
     $new_field = substr($new_field, $pos1 + 1); 
     $new_field = "'$new_field'";
+  }
+
+  return $new_field;  
+  
+}
+
+function TimeorNULLp($f){
+  
+  $new_field = trim($f);
+  if (strlen($new_field) == 0)
+  {
+    $new_field = NULL;
+  }
+  else
+  {
+    $pos1 = stripos($new_field, "T");
+    $new_field = substr($new_field, $pos1 + 1); 
+    $new_field = "$new_field";
   }
 
   return $new_field;  
@@ -72,6 +120,56 @@ function setDBBoolean($f){
 
   return $new_field;  
   
+}
+
+function setDBBooleanp($f){
+  
+  $new_field = trim($f);
+  if (strlen($new_field) == 0)
+  {
+    $new_field = NULL;
+  }
+  elseif ($new_field == "true" || $new_field == "yes" || $new_field == "Y")
+  {
+    $new_field = "Y";
+  }
+  else
+  {
+    $new_field = "N";
+  }
+
+  return $new_field;  
+  
+}
+
+function Verify_Security($func, $needed_access_functions)
+{
+   $arrlength = count($needed_access_functions);
+   $access_found = "N";
+
+   for($x = 0; $x < $arrlength; $x++) {
+     $access_val = $_SESSION[$needed_access_functions[$x]];
+     if (isset($access_val) && !empty($access_val) && $access_val == "Y") 
+     {
+        $access_found = "Y";
+        break;
+     }   
+      
+  }
+
+if ($access_found != "Y") 
+{
+    $usrid = $_SESSION['app_userid'];
+    error_log("User " . $usrid . " tried to access function " . $func . " without the proper acess.");
+    $result['success'] = false;
+    $result['msg'] = "no_session";
+    session_destroy();
+    echo json_encode($result);
+    die();
+}   
+
+
+
 }
 
 session_start();

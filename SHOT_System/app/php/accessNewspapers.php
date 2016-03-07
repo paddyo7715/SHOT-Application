@@ -9,6 +9,10 @@
   require("common.php");
   set_error_handler("customError");
 
+  $func = "Access Newspapers";
+  $needed_access_functions = array("Access_NewIncident","Access_QueryUpdate");
+  Verify_Security($func, $needed_access_functions);
+
   if ($Action == "A")
   {
     $sql = "INSERT INTO newspapers (Newspaper) VALUES ('$Newspaper')"; 
@@ -17,24 +21,6 @@
       trigger_error("Error Adding Newspaper to Database!");
     }
   }  
-  elseif ($Action == "U")
-  {
-    $sql = "UPDATE newspapers set Newspaper = '$Newspaper' WHERE Newspaper_ID = $Newspaper_ID"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Updating Newspaper in Database!");
-    }
-  }  
-  elseif ($Action == "D")
-  {
-    $sql = "DELETE FROM newspapers WHERE Newspaper_ID = $Newspaper_ID"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Deleting Newspaper from Database!  This Newspaper may be used in an Incident");
-    }
-  }  
-
-
 
   $sql = "SELECT Newspaper_ID, Newspaper FROM newspapers order by Newspaper";
 

@@ -7,6 +7,9 @@
   $sourceid = $_POST['Source_ID'];   
   $Incident_ID = $_POST['Incident_ID']; 
 
+  $func = "Delete Source";
+  $needed_access_functions = array("Access_NewIncident","Access_QueryUpdate");
+  Verify_Security($func, $needed_access_functions);
 
 //Delete the Incident Source
 
@@ -18,7 +21,7 @@
 
   $result = array();
   $sql = "SELECT Source_ID, I.Source_Type_ID, Source, Title, Author, Source_Date, Link, I.Newspaper_ID, Newspaper, Abstract  FROM incident_source I LEFT OUTER JOIN source_type s on i.Source_Type_ID = s.Source_Type_ID left outer join newspapers n on i.Newspaper_ID = n.Newspaper_ID where Incident_ID = $Incident_ID  order by Source_ID";
-  error_log($sql);
+//  error_log($sql);
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {
 		array_push($result, $record);

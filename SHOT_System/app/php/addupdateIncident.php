@@ -4,6 +4,7 @@
   require("common.php");
   set_error_handler("customError");
 
+  $func = "";
   $Incidentnum = $_POST['id_Incidentnum']; 
   $Incidentname = $_POST['id_Incidentname']; 
   $user = $_POST['id_user']; 
@@ -49,6 +50,22 @@
 
   $last_id = 0;
 
+  if ($Incidentnum == "")
+  {
+    $func = "Create Incident";
+    $needed_access_functions = array("Access_NewIncident");
+    Verify_Security($func, $needed_access_functions);
+  }
+  else
+  {
+    $func = "Edit Incident";
+    $needed_access_functions = array("Access_QueryUpdate");
+    Verify_Security($func, $needed_access_functions);
+  }
+
+  $user = $_SESSION['app_userid'];
+  $user = StringorNULL($user);
+
 //Add or update depending on if an incident number is supplied or not
   if ($Incidentnum == "")
   {
@@ -63,7 +80,7 @@
   }
   else
   {
-    $sql = "UPDATE incident set Incident_Name = $Incidentname, User_id = $user, Number_Officers_on_Scene = $officersscene, Date_Occured = $dateoccurred, Address_1 = $Address1, Address_2 = $Address2, City = $City, State_ID = $State, ZIP_CODE = $zipcode, Location_Detail_ID = $locationdet, Lawsuit = $lawsuit,Time = $time, Approx_Time = $approx_time, Off_Fired_Guns = $officersfiredguns, latitude = $latitude, longitude = $longitude, Total_Officer_Shots_Fired = $officersshotsfired, Indoors = $indoors WHERE Incident_ID = $Incidentnum";
+    $sql = "UPDATE incident set Incident_Name = $Incidentname, Number_Officers_on_Scene = $officersscene, Date_Occured = $dateoccurred, Address_1 = $Address1, Address_2 = $Address2, City = $City, State_ID = $State, ZIP_CODE = $zipcode, Location_Detail_ID = $locationdet, Lawsuit = $lawsuit,Time = $time, Approx_Time = $approx_time, Off_Fired_Guns = $officersfiredguns, latitude = $latitude, longitude = $longitude, Total_Officer_Shots_Fired = $officersshotsfired, Indoors = $indoors WHERE Incident_ID = $Incidentnum";
 //    error_log($sql);
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Updating Incident Record in Database!");
@@ -74,7 +91,7 @@
 
   $result = array();
   $sql = "SELECT Incident_ID, Incident_Name, Date_Occured, City, State FROM incident I, state S where I.State_ID = S.State_ID order by Incident_Name";
-error_log($sql);
+//error_log($sql);
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {
 		array_push($result, $record);

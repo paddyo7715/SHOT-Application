@@ -6,6 +6,10 @@
   require("common.php");
   set_error_handler("customError");
 
+  $func = "Access Suspect Race Report";
+  $needed_access_functions = array("Access_Reports");
+  Verify_Security($func, $needed_access_functions);
+
   $sql = "SELECT race , Count(*) as incidents FROM suspect_mapping sm, suspect s, race r where sm.Suspect_ID = s.Suspect_ID and s.Race_ID = r.Race_ID group by Race  order by Race";
 //error_log($sql);
   if ($resultdb = $mysqli->query($sql)) {

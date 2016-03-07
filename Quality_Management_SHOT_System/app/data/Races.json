@@ -1,0 +1,11 @@
+{
+    "success": true,
+    "Races": [
+         {'Race_ID': '1', 'Race': 'Asian'},
+         {'Race_ID': '2', 'Race': 'Black'},
+         {'Race_ID': '3', 'Race': 'Hispanic'},
+         {'Race_ID': '4', 'Race': 'White'},
+         {'Race_ID': '5', 'Race': 'Other'}
+
+    ]
+}

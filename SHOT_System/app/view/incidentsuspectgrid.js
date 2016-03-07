@@ -17,25 +17,35 @@ Ext.define('Packt.view.incidentsuspectgrid' ,{
                {
                  xtype: 'displayfield',
                  fieldLabel: 'Incident Subjects',
-                 width: 340
+                 width: 310
                },
                { 
                  xtype: 'button',
                  text: 'Add',
-                 id: 'susgaddbtn',
+                 hidden: true,
+                 id: 'ssugaddbtn',
                  itemId: 'susgaddbtn'
                },
                { 
                  xtype: 'button',
                  text: 'Edit',
+                 hidden: true,
                  id: 'susgeditbtn',
                  itemId: 'susgeditbtn'
                },
                { 
                  xtype: 'button',
                  text: 'delete',
+                 hidden: true,
                  id: 'susgdelete',
                  itemId: 'susgdelete'
+               },
+               { 
+                 xtype: 'button',
+                 text: 'View',
+                 hidden: true,
+                 id: 'susgview',
+                 itemId: 'susgview'
                }
                ]
             }

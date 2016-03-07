@@ -9,28 +9,16 @@
   require("common.php");
   set_error_handler("customError");
 
+  $func = "Access Department Type";
+  $needed_access_functions = array("Access_NewIncident","Access_QueryUpdate");
+  Verify_Security($func, $needed_access_functions);
+
   if ($Action == "A")
   {
     $sql = "INSERT INTO officer_dept_type (Dept_Type) VALUES ('$Dept_Type')"; 
 
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Adding Department Type to Database!");
-    }
-  }  
-  elseif ($Action == "U")
-  {
-    $sql = "UPDATE officer_dept_type set Dept_Type = '$Dept_Type' WHERE Dept_Type_ID = $Dept_Type_ID"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Updating Department in Database!");
-    }
-  }  
-  elseif ($Action == "D")
-  {
-    $sql = "DELETE FROM officer_dept_type WHERE Dept_Type_ID = $Dept_Type_ID"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Deleting Department from Database!  This Department may be used in an Incident");
     }
   }  
 

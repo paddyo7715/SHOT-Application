@@ -13,34 +13,24 @@
 
 /* This will automatically open a database connection and check if the session has expired */
   require("common.php");
+  require("common2.php");
   set_error_handler("customError");
+
+  $func = "Access Subjects";
+  $needed_access_functions = array("Access_NewIncident","Access_QueryUpdate");
+  Verify_Security($func, $needed_access_functions);
 
   if ($Action == "A")
   {
     $sql = "INSERT INTO suspect (Suspect_Name,Gender,Race_ID) VALUES ('$Suspect_Name', '$Gender', $Race_ID)"; 
-error_log($sql);
+//error_log($sql);
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Adding Subject to Database!");
     }
 
     $last_id = $mysqli->insert_id;
   }  
-  elseif ($Action == "U")
-  {
-    $sql = "UPDATE suspect set Suspect_Name = '$Suspect_Name', Gender = '$Gender', Race_ID = $Race_ID WHERE Suspect_ID = $Suspect_ID"; 
-//error_log($sql);
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Updating Subject in Database!");
-    }
-  }  
-  elseif ($Action == "D")
-  {
-    $sql = "DELETE FROM suspect WHERE Suspect_ID = $Suspect_ID"; 
 
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Deleting Subject from Database!  This Newspaper may be used in an Incident");
-    }
-  }  
 
 //Only send back all officers if this is call is from the DB Main page
   if ($Function == "D")

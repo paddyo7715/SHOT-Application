@@ -4,6 +4,10 @@
   require("common.php");
   set_error_handler("customError");
 
+  $func = "Delete incident officer";
+  $needed_access_functions = array("Access_NewIncident","Access_QueryUpdate");
+  Verify_Security($func, $needed_access_functions);
+
   $Incident_ID = $_POST['Incident_ID'];   
   $Incident_Officer_ID = $_POST['Incident_Officer_ID'];   
 

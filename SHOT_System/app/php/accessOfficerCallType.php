@@ -9,28 +9,16 @@
   require("common.php");
   set_error_handler("customError");
 
+  $func = "Access Officer Call Type";
+  $needed_access_functions = array("Access_NewIncident","Access_QueryUpdate");
+  Verify_Security($func, $needed_access_functions);
+
   if ($Action == "A")
   {
     $sql = "INSERT INTO officer_call_type (Call_Type) VALUES ('$Call_Type')"; 
 
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Adding Call Type to Database!");
-    }
-  }  
-  elseif ($Action == "U")
-  {
-    $sql = "UPDATE officer_call_type set Call_Type = '$Call_Type' WHERE Call_Type_ID = $Call_Type_ID"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Updating Officer Call Type Database!");
-    }
-  }  
-  elseif ($Action == "D")
-  {
-    $sql = "DELETE FROM officer_call_type WHERE Call_Type_ID = $Call_Type_ID"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Deleting Officer Call Type to Database!  This Officer Call Type may be used in an Incident");
     }
   }  
 

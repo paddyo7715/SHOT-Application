@@ -31,6 +31,19 @@
   $Exp_in_Cluster = StringorNULL($Exp_in_Cluster);
   $Officer_Casualty = StringorNULL($Officer_Casualty);
 
+  if ($Incident_Officer_ID == "")
+  {
+    $func = "Create Incident";
+    $needed_access_functions = array("Access_NewIncident");
+    Verify_Security($func, $needed_access_functions);
+  }
+  else
+  {
+    $func = "Edit Incident";
+    $needed_access_functions = array("Access_QueryUpdate");
+    Verify_Security($func, $needed_access_functions);
+  }
+
 //  error_log($indoors);
 
   $last_id = 0;

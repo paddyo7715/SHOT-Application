@@ -4,6 +4,7 @@
   require("common.php");
   set_error_handler("customError");
 
+
 function getShotStrings($mysqli,$f){
   
   $shot_s = "";
@@ -59,6 +60,19 @@ function getShotStrings($mysqli,$f){
   $alt_motive = StringorNULL($alt_motive);
   $Age = NumberorNULL($Age);
 
+  if ($Incident_Suspect_ID == "")
+  {
+    $func = "Create Incident Suspect";
+    $needed_access_functions = array("Access_NewIncident");
+    Verify_Security($func, $needed_access_functions);
+  }
+  else
+  {
+    $func = "Edit Incident Suspect";
+    $needed_access_functions = array("Access_QueryUpdate");
+    Verify_Security($func, $needed_access_functions);
+  }
+
 //  error_log($indoors);
 
   $last_id = 0;
@@ -94,7 +108,7 @@ function getShotStrings($mysqli,$f){
    
     foreach($myArray as $element) {
       $sql = "INSERT INTO incident_shot (Suspect_Incident_ID, Target_Area_ID) VALUES ($last_id, $element)"; 
-      error_log($sql);
+//      error_log($sql);
       if ($resultdb = $mysqli->query($sql) != TRUE) {
         $mysqli->rollback();
         trigger_error("Error Adding incident shot to Database!");
@@ -117,12 +131,12 @@ function getShotStrings($mysqli,$f){
 
 
     $sql = "UPDATE incident_suspect set Mental_Status_ID = $Mental_Status_ID, Weapons_ID = $Weapons_ID, Vehicle_Use_hit_and_run = $Vehicle_Use_hit_and_run, Vehicle_Chase = $Vehicle_Chase, Foot_Chase = $Foot_Chase, Alt_Motive = $alt_motive, Type_of_Agression_ID = $Type_of_Agression_ID, Age = $Age, US_Citizen = $US_Citizen, Gang_Affiliation = $Gang_Affiliation, Fatality = $Fatality, Injury = $Injury WHERE Incident_ID = $Incident_ID and Incident_Suspect_ID = $Incident_Suspect_ID";
-    error_log($sql);
+//    error_log($sql);
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Updating Incident Suspect Record in Database!");
     }
 
-    $sql = "DELETE FROM incident_shot WHERE Incident_ID = $Incident_ID AND Suspect_Incident_ID = $Incident_Suspect_ID"; 
+    $sql = "DELETE FROM incident_shot WHERE Suspect_Incident_ID = $Incident_Suspect_ID"; 
 //    error_log($sql);
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       $mysqli->rollback();
@@ -131,8 +145,8 @@ function getShotStrings($mysqli,$f){
 
 
     foreach($myArray as $element) {
-      $sql = "INSERT INTO incident_shot (Suspect_Incident_ID, Incident_ID, Target_Area_ID) VALUES ($Incident_Suspect_ID, $Incident_ID, $element)"; 
-      error_log($sql);
+      $sql = "INSERT INTO incident_shot (Suspect_Incident_ID, Target_Area_ID) VALUES ($Incident_Suspect_ID, $element)"; 
+//      error_log($sql);
       if ($resultdb = $mysqli->query($sql) != TRUE) {
         $mysqli->rollback();
         trigger_error("Error Adding incident shot to Database!");

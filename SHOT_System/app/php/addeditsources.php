@@ -4,6 +4,7 @@
   require("common.php");
   set_error_handler("customError");
 
+
   $sourceid = $_POST['sd_sourceid'];   
   $Incident_ID = $_POST['Incident_ID']; 
   $sd_Title = $_POST['sd_Title']; 
@@ -25,6 +26,19 @@
   $sd_SourceType = NumberorNULL($sd_SourceType);
   $sd_abstract = StringorNULL($sd_abstract);
 
+  if ($sourceid == "")
+  {
+    $func = "Create Incident source";
+    $needed_access_functions = array("Access_NewIncident");
+    Verify_Security($func, $needed_access_functions);
+  }
+  else
+  {
+    $func = "Edit Incident source";
+    $needed_access_functions = array("Access_QueryUpdate");
+    Verify_Security($func, $needed_access_functions);
+  }
+
 //  error_log($indoors);
 
   $last_id = 0;
@@ -34,7 +48,7 @@
   {
     $sql = "INSERT INTO incident_source (Incident_ID, Source_Type_ID, Title, Author, Source_Date, Link, Newspaper_ID, Abstract) VALUES ($Incident_ID, $sd_SourceType, $sd_Title, $sd_Author, $sd_datewritten, $sd_Link, $sd_newspaper, $sd_abstract)"; 
 
-    error_log($sql);
+//    error_log($sql);
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Adding Incident Source to Database!");
     }

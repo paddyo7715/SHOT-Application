@@ -22,8 +22,8 @@ Ext.define('Packt.controller.cont', {
         'incidentsuspects',
         'targetareas',
         'Incidentslist',
-        'suspect_races',
-        'LocationsDet2'
+        'suspect_races'
+
     ],
     models: ['State',
              'LocationDet',
@@ -47,7 +47,6 @@ Ext.define('Packt.controller.cont', {
              'targetarea', 
              'Incidentlist',
              'suspect_race',
-             'LocationDet2'
     ],
     views: [
         'appheader',
@@ -68,24 +67,7 @@ Ext.define('Packt.controller.cont', {
         'Incidentgrid',
         'SuspectbyRacePieChart',
         'reportpanel',
-        'reportsgrid',
-        'DBMaintTabPanel',
-        'AggressionTypeGrid',
-        'LocationGrid',
-        'LocationDetGrid',
-        'MentalStateGrid',
-        'NewspapersGrid',
-        'officersGrid',
-        'OfficerAssignmentGrid',
-        'OfficerCallTypeGrid',
-        'OfficerDepartmentGrid',
-        'OfficerDeptTypeGrid',
-        'OfficerStatusGrid',
-        'RaceGrid',
-        'SourceTypeGrid',
-        'SubjectGrid',
-        'WeaponsGrid',
-        'addLocDetail'
+        'reportsgrid'
 
     ],
     refs: [
@@ -124,78 +106,15 @@ Ext.define('Packt.controller.cont', {
         {
             ref : 'Incidentgrid',
             selector: 'Incidentgrid'
-        },
-        {
-            ref : 'DBMaintTabPanel',
-            selector: 'DBMaintTabPanel'
-        },
-        {
-            ref : 'AggressionTypeGrid',
-            selector: 'AggressionTypeGrid'
-        },
-        {
-            ref : 'LocationGrid',
-            selector: 'LocationGrid'
-        },
-        {
-            ref : 'LocationDetGrid',
-            selector: 'LocationDetGrid'
-        },
-        {
-            ref : 'MentalStateGrid',
-            selector: 'MentalStateGrid'
-        },
-        {
-            ref : 'NewspapersGrid',
-            selector: 'NewspapersGrid'
-        },
-        {
-            ref : 'officersGrid',
-            selector: 'officersGrid'
-        },
-        {
-            ref : 'OfficerAssignmentGrid',
-            selector: 'OfficerAssignmentGrid'
-        },
-        {
-            ref : 'OfficerCallTypeGrid',
-            selector: 'OfficerCallTypeGrid'
-        },
-        {
-            ref : 'OfficerDepartmentGrid',
-            selector: 'OfficerDepartmentGrid'
-        },
-        {
-            ref : 'OfficerDeptTypeGrid',
-            selector: 'OfficerDeptTypeGrid'
-        },
-        {
-            ref : 'OfficerStatusGrid',
-            selector: 'OfficerStatusGrid'
-        },
-        {
-            ref : 'RaceGrid',
-            selector: 'RaceGrid'
-        },
-        {
-            ref : 'SourceTypeGrid',
-            selector: 'SourceTypeGrid'
-        },
-        {
-            ref : 'SubjectGrid',
-            selector: 'SubjectGrid'
-        },
-        {
-            ref : 'WeaponsGrid',
-            selector: 'WeaponsGrid'
         }
     ],
     init: function() {
+        this.getsecurity(); 
+
 	this.control({'appheader button#applogout' : { click: this.onButtonClickLogout }});
 	this.control({'MainMenu button#mmHome' : { click: this.onButtonClickhome } });
 	this.control({'MainMenu button#mmAddIncident' : { click: this.onButtonClickAddIncident } });
 	this.control({'MainMenu button#mmUpdateIncident' : { click: this.onButtonClickUpdateIncident } });
-	this.control({'MainMenu button#mmDatabase' : { click: this.onButtonClickDatabase } });
 	this.control({'MainMenu button#mmReports' : { click: this.onButtonClickReports } });
 	this.control({'incidentdetailform button[action=idsubmit]' : { click : this.clickincidentdetailsubmit } });
 	this.control({'incidentdetailform button#idcancelbtn' : { click: this.clickincidentdetailcancel } }); 
@@ -207,6 +126,7 @@ Ext.define('Packt.controller.cont', {
 	this.control({'sourcesgrid button#sgaddbtn' : { click: this.onButtonClicksourceadd } }); 
 	this.control({'sourcesgrid button#sgeditbtn' : { click: this.onButtonClicksourceedit } }); 
 	this.control({'sourcesgrid button#sgdelete' : { click: this.onButtonClicksourcedelete } }); 
+	this.control({'sourcesgrid button#sgview' : { click: this.onButtonClicksourceedit } }); 
 	this.control({'sourcedetail button[action=sdsubmitbtn]' : { click : this.clicksourcedetailsubmit } });
 	this.control({'sourcedetail button#sdcancel' : { click: this.clicksourcedetailscancel } }); 
 	this.control({'sourcedetail button#sd_newspaperadd' : { click: this.clicksourcedetailaddnewspaper } }); 
@@ -226,6 +146,7 @@ Ext.define('Packt.controller.cont', {
 	this.control({'incidentofficergrid button#ogaddbtn' : { click: this.onButtonClickoffincadd } }); 
 	this.control({'incidentofficergrid button#ogeditbtn' : { click: this.onButtonClickoffincedit } }); 
 	this.control({'incidentofficergrid button#ogdelete' : { click: this.onButtonClickoffincdelete } }); 
+	this.control({'incidentofficergrid button#ogview' : { click: this.onButtonClickoffincedit } }); 
 	this.control({'IncidentSuspectDetail button[action=susdet_submit]' : { click : this.clickincidentsusdetailsubmit } });
 	this.control({'IncidentSuspectDetail button#susdet_cancel' : { click: this.clickincidentsusdetailcancel } }); 
 	this.control({'IncidentSuspectDetail button#susdet_search' : { click: this.clicksearchsuspectbtn } }); 
@@ -240,58 +161,12 @@ Ext.define('Packt.controller.cont', {
 	this.control({'incidentsuspectgrid button#susgaddbtn' : { click: this.onButtonClicksuspectincadd } }); 
 	this.control({'incidentsuspectgrid button#susgeditbtn' : { click: this.onButtonClicksuspectincedit } }); 
 	this.control({'incidentsuspectgrid button#susgdelete' : { click: this.onButtonClicksuspectincdelete } }); 
+	this.control({'incidentsuspectgrid button#susgview' : { click: this.onButtonClicksuspectincedit } }); 
 	this.control({'Incidentgrid button#ig_searchbtn' : { click: this.onButtonClickincidentsearch } }); 
 	this.control({'Incidentgrid button#ig_edit' : { click: this.onButtonClickincidentedit } }); 
 	this.control({'Incidentgrid button#ig_delete' : { click: this.onButtonClickincidentdelete } }); 
+	this.control({'Incidentgrid button#ig_view' : { click: this.onButtonClickincidentedit } }); 
 	this.control({'reportsgrid button#rgrunbtn' : { click: this.onButtonClickrunreport } }); 
-        this.control({'DBMaintTabPanel': { tabchange: this.onDBMaintTabchange } });
-	this.control({'AggressionTypeGrid button#aggtypeaddbtn' : { click: this.clickDBMaintaddaggression } }); 
-	this.control({'AggressionTypeGrid button#aggtypeeditbtn' : { click: this.onButtonClickeditaggression } }); 
-	this.control({'AggressionTypeGrid button#aggtypedelete' : { click: this.onButtonClickaggressiondelete } }); 
-	this.control({'LocationGrid button#locgridaddbtn' : { click: this.clickDBMaintaddlocation } }); 
-	this.control({'LocationGrid button#locgrideditbtn' : { click: this.onButtonClickeditlocation } }); 
-	this.control({'LocationGrid button#locgriddelete' : { click: this.onButtonClickdeletelocation } }); 
-	this.control({'LocationDetGrid button#locdgridaddbtn' : { click: this.DBMainAddLocationDet } }); 
-	this.control({'LocationDetGrid button#locdgrideditbtn' : { click: this.DBMainEditLocationDet } }); 
-	this.control({'LocationDetGrid button#locdgriddelete' : { click: this.onButtonClickdeletelocationdet } }); 
-	this.control({'addLocDetail button[action=addlocdet_submitbtn]' : { click : this.submitaddlocdet } });
-	this.control({'MentalStateGrid button#menstgridaddbtn' : { click: this.clickDBMaintaddMentalStatus } }); 
-	this.control({'MentalStateGrid button#menstgrideditbtn' : { click: this.onButtonClickeditMentalStatus } }); 
-	this.control({'MentalStateGrid button#menstgriddelete' : { click: this.onButtonClickdeleteMentalStatus } }); 
-	this.control({'NewspapersGrid button#newspgridaddbtn' : { click: this.clickDBMaintaddNewspapers } }); 
-	this.control({'NewspapersGrid button#newspgrideditbtn' : { click: this.onButtonClickeditNewspapers } }); 
-	this.control({'NewspapersGrid button#newspgriddelete' : { click: this.onButtonClickdeleteNewspapers } }); 
-	this.control({'officersGrid button#officergridaddbtn' : { click: this.clickofficeraddDB } }); 
-	this.control({'officersGrid button#officergrideditbtn' : { click: this.DBMainEditOfficer } }); 
-	this.control({'officersGrid button#officergriddelete' : { click: this.onButtonClickdeleteOfficer } }); 
-	this.control({'OfficerAssignmentGrid button#offassgridaddbtn' : { click: this.clickDBMaintaddOfficerAssignments } }); 
-	this.control({'OfficerAssignmentGrid button#offassgrideditbtn' : { click: this.onButtonClickeditOfficerAssignment } }); 
-	this.control({'OfficerAssignmentGrid button#offassgriddelete' : { click: this.onButtonClickdeleteOffAssignment } }); 
-	this.control({'OfficerCallTypeGrid button#offcalltgridaddbtn' : { click: this.clickDBMaintaddOffCallType } }); 
-	this.control({'OfficerCallTypeGrid button#offcalltgrideditbtn' : { click: this.onButtonClickeditOffCallType } }); 
-	this.control({'OfficerCallTypeGrid button#offcalltgriddelete' : { click: this.onButtonClickdeleteOffCallType } }); 
-	this.control({'OfficerDepartmentGrid button#offdeptgridaddbtn' : { click: this.clickDBMaintaddDepartments } }); 
-	this.control({'OfficerDepartmentGrid button#offdeptgrideditbtn' : { click: this.onButtonClickeditDepartments } }); 
-	this.control({'OfficerDepartmentGrid button#offdeptgriddelete' : { click: this.onButtonClickdeleteDepartments } }); 
-	this.control({'OfficerDeptTypeGrid button#offDeptTypegridaddbtn' : { click: this.clickDBMaintaddOffDeptType } }); 
-	this.control({'OfficerDeptTypeGrid button#offDeptTypegrideditbtn' : { click: this.onButtonClickeditOffDeptType } }); 
-	this.control({'OfficerDeptTypeGrid button#offDeptTypegriddelete' : { click: this.onButtonClickdeleteDeptType } }); 
-	this.control({'OfficerStatusGrid button#offstatusgridaddbtn' : { click: this.clickDBMaintaddOffStatus } }); 
-	this.control({'OfficerStatusGrid button#offstatusgrideditbtn' : { click: this.onButtonClickeditOffStatus } }); 
-	this.control({'OfficerStatusGrid button#offstatusgriddelete' : { click: this.onButtonClickdeleteOffStatus } }); 
-	this.control({'RaceGrid button#racegridaddbtn' : { click: this.clickDBMaintaddRace } }); 
-	this.control({'RaceGrid button#racegrideditbtn' : { click: this.onButtonClickeditRaces } }); 
-	this.control({'RaceGrid button#racegriddelete' : { click: this.onButtonClickdeleteRaces } }); 
-	this.control({'SourceTypeGrid button#sourcetypegridaddbtn' : { click: this.clickDBMaintaddSourceType } }); 
-	this.control({'SourceTypeGrid button#sourcetypegrideditbtn' : { click: this.onButtonClickeditSourceType } }); 
-	this.control({'SourceTypeGrid button#sourcetypegriddelete' : { click: this.onButtonClickdeleteSourceTye } }); 
-	this.control({'SubjectGrid button#subjectgridaddbtn' : { click: this.clickDBaddsuspectbtn } }); 
-	this.control({'SubjectGrid button#subjectgrideditbtn' : { click: this.clickDBeditsuspectbtn } }); 
-	this.control({'SubjectGrid button#subjectgriddelete' : { click: this.onButtonClickdeleteSubjects } }); 
-	this.control({'WeaponsGrid button#weaponsgridaddbtn' : { click: this.clickDBMaintaddWeapons } }); 
-	this.control({'WeaponsGrid button#weaponsgrideditbtn' : { click: this.onButtonClickeditWeapons } }); 
-	this.control({'WeaponsGrid button#weaponsgriddelete' : { click: this.onButtonClickdeleteWeapon } }); 
-
 
        this.loadinitstores(); 
 
@@ -368,8 +243,10 @@ Ext.define('Packt.controller.cont', {
 //       console.log(myvar); 
 
           this.clearincidentforms();
+          this.setIncidentUpdatability("A");
           var frm = Ext.getCmp('incidentdetailform');
           frm.setTitle('Add New Incident');
+          Ext.getCmp('idsubmitbtn').setVisible(true);
           Ext.getCmp('IncidentTabPanel').setVisible(false);
           Ext.getCmp('id_action').setValue('Add');
            var cpanel = Ext.getCmp('centerpanel'); 
@@ -381,24 +258,11 @@ Ext.define('Packt.controller.cont', {
     onButtonClickUpdateIncident: function(button, e, options) {
 //         console.log('Existing Customers Clicked '); 
          
-         var frm = Ext.getCmp('incidentdetailform');
-         frm.setTitle('Update Incident');
-
          Ext.getCmp('ig_search').setValue("");
          this.clearincidentforms();
          this.getIncidents("","false");
          Ext.getCmp('IncidentTabPanel').setVisible(true);
          Ext.getCmp('IncidentTabPanel').setActiveTab(0);
-    },
-//Database Maint
-    onButtonClickDatabase: function(button, e, options) {
-
-           this.getAggressionTypes();
-           this.getDBMaintTabPanel().setActiveTab(0);
-           var cpanel = Ext.getCmp('centerpanel'); 
-           cpanel.getLayout().setActiveItem(3);
-
-          
     },
 //Reports
     onButtonClickReports: function(button, e, options) {
@@ -408,8 +272,7 @@ Ext.define('Packt.controller.cont', {
            rptpanel.getLayout().setActiveItem(0);
 
            var cpanel = Ext.getCmp('centerpanel'); 
-           cpanel.getLayout().setActiveItem(4);
-
+           cpanel.getLayout().setActiveItem(3);
        
     },
 //================================
@@ -461,7 +324,6 @@ Ext.define('Packt.controller.cont', {
             if( choice == 'yes')
             {
               var id_Incidentname = Ext.getCmp('id_Incidentname').getValue().trim();
-              var id_user = Ext.getCmp('id_user').getValue().trim();
               var id_lawsuit = Ext.getCmp('id_lawsuit').getValue();
 
               var id_indoorsI = Ext.getCmp('id_indoor').getValue();
@@ -501,7 +363,7 @@ Ext.define('Packt.controller.cont', {
                 {
 			id_Incidentnum: incnumber,
 			id_Incidentname: id_Incidentname,
-			id_user: id_user,
+			id_user: '',
 			id_lawsuit: id_lawsuit,
 			id_indoors: id_indoors,
 			id_Address1: id_Address1,
@@ -688,6 +550,7 @@ Ext.define('Packt.controller.cont', {
          frm.getForm().reset();
          frm.setTitle('Setup New Source');
          Ext.getCmp('sdsubmit').setText("Add");
+         Ext.getCmp('sdsubmit').setVisible(true);
          this.NewspaperDisabled("");
          var cpanel = Ext.getCmp('incsourcepanel'); 
          cpanel.getLayout().setActiveItem(1);
@@ -713,8 +576,22 @@ Ext.define('Packt.controller.cont', {
          var frm = Ext.getCmp('sourcedetail');
        
          frm.getForm().reset();
-         frm.setTitle('Edit Source');
-         Ext.getCmp('sdsubmit').setText("Edit");
+//         console.log(button.getText()); 
+         if (button.getText() == "Edit")
+         {
+           frm.setTitle('Edit Source');
+           Ext.getCmp('sdsubmit').setVisible(true);
+           Ext.getCmp('sdsubmit').setText("Edit");
+         }
+         else  //Must be View
+         {
+           frm.setTitle('View Source');
+           Ext.getCmp('sdsubmit').setVisible(false);
+
+         }
+
+
+
 
          Ext.getCmp('sd_Title').setValue(rec.get("Title"));
          Ext.getCmp('sd_Author').setValue(rec.get("Author"));
@@ -1144,7 +1021,7 @@ Ext.define('Packt.controller.cont', {
     else
     {
       var tempText = "";
-      if (Ext.getCmp('sdsubmit').getText() == "Add")
+      if (Ext.getCmp('iosubmit').getText() == "Add")
       {
         tempText = "edit";
       }
@@ -1995,6 +1872,7 @@ Ext.define('Packt.controller.cont', {
          frm.getForm().reset();
          frm.setTitle('Setup New Incident Officer');
          Ext.getCmp('iosubmit').setText("Add");
+         Ext.getCmp('iosubmit').setVisible(true);
 
          var cpanel = Ext.getCmp('incofficerspanel'); 
          cpanel.getLayout().setActiveItem(1);
@@ -2021,6 +1899,18 @@ Ext.define('Packt.controller.cont', {
          frm.getForm().reset();
          frm.setTitle('Edit Incident Officer');
          Ext.getCmp('iosubmit').setText("Edit");
+
+         if (button.getText() == "Edit")
+         {
+           frm.setTitle('Edit Incident Officer');
+           Ext.getCmp('iosubmit').setText("Edit");
+           Ext.getCmp('iosubmit').setVisible(true);
+         }
+         else  //Must be View
+         {
+           frm.setTitle('View Incident Officer');
+           Ext.getCmp('iosubmit').setVisible(false);
+         }
 
          Ext.getCmp('io_outsideagency').setValue(rec.get("Outside_Agency_Assist"));
          Ext.getCmp('io_incidentofficer_id').setValue(rec.get("Incident_Officer_ID"));
@@ -2156,6 +2046,7 @@ Ext.define('Packt.controller.cont', {
          frm.getForm().reset();
          frm.setTitle('Setup New Incident Subject');
          Ext.getCmp('susdet_submit').setText("Add");
+          Ext.getCmp('susdet_submit').setVisible(true);
          var cpanel = Ext.getCmp('incsuspectspanel'); 
          cpanel.getLayout().setActiveItem(1);
            
@@ -2179,8 +2070,19 @@ Ext.define('Packt.controller.cont', {
          var frm = Ext.getCmp('IncidentSuspectDetail');
        
          frm.getForm().reset();
-         frm.setTitle('Edit Incident Subject');
-         Ext.getCmp('susdet_submit').setText("Edit");
+
+
+         if (button.getText() == "Edit")
+         {
+           frm.setTitle('Edit Incident Subject');
+           Ext.getCmp('susdet_submit').setText("Edit");
+           Ext.getCmp('susdet_submit').setVisible(true);
+         }
+         else  //Must be View
+         {
+           frm.setTitle('View Incident Subject');
+           Ext.getCmp('susdet_submit').setVisible(false);
+         }
 
          var values = rec.get('shot_string').split(',');
 
@@ -2207,6 +2109,7 @@ Ext.define('Packt.controller.cont', {
          Ext.getCmp('susdet_MentalState').setValue(rec.get("Mental_Status_ID"));
          Ext.getCmp('susdet_Weapons').setValue(rec.get("Weapons_ID"));
          Ext.getCmp('susdet_aggression').setValue(rec.get("Type_of_Agression_ID"));
+
          Ext.getCmp('susdet_vHitRun').setValue(rec.get("Vehicle_Use_hit_and_run"));
          Ext.getCmp('susdet_vchase').setValue(rec.get("Vehicle_Chase"));
          Ext.getCmp('susdet_fchase').setValue(rec.get("Foot_Chase"));
@@ -3055,6 +2958,8 @@ clickincidentsusdetailcancel: function(button, e, options) {
 
        var me = this;
        var g = Ext.getCmp('Incidentgrid'); 
+       var frm = Ext.getCmp('incidentdetailform');
+         
        if (!g.getSelectionModel().hasSelection())
        {
           Ext.Msg.show({
@@ -3066,6 +2971,20 @@ clickincidentsusdetailcancel: function(button, e, options) {
        }
        else
        {
+         var act = "";
+         if (button.getText() == "Edit")
+         {
+           Ext.getCmp('idsubmitbtn').setVisible(true);
+           frm.setTitle('Update Incident');
+           act = "U";
+         }
+         else  //Must be View
+         {
+           Ext.getCmp('idsubmitbtn').setVisible(false);
+           frm.setTitle('View Incident');
+           act = "V";
+         }
+         me.setIncidentUpdatability(act);
          var rec = g.getSelectionModel().getSelection()[0]; 
          var Incident_ID = rec.get("Incident_ID");
 //         Ext.MessageBox.confirm('Please Confirm',
@@ -3115,7 +3034,6 @@ clickincidentsusdetailcancel: function(button, e, options) {
                         Ext.getCmp('id_action').setValue("Edit"); 
                         Ext.getCmp('id_Incidentnum').setValue(s[0].Incident_ID); 
                         Ext.getCmp('id_Incidentname').setValue(s[0].Incident_Name); 
-                        Ext.getCmp('id_user').setValue(s[0].User_id); 
                         Ext.getCmp('id_officersscene').setValue(s[0].Number_Officers_on_Scene); 
                         Ext.getCmp('id_dateoccurred').setValue(s[0].Date_Occured); 
                         Ext.getCmp('id_Address1').setValue(s[0].Address_1); 
@@ -3267,3822 +3185,6 @@ clickincidentsusdetailcancel: function(button, e, options) {
            
     }, 
 
-//Database Maintanence Tab view
-//==========================================
-    onDBMaintTabchange: function (AdminTabPanel, tab) {
-
-
-    switch(AdminTabPanel.items.indexOf(tab)) {
-    case 0:
-        this.getAggressionTypes();
-        break;
-    case 1:
-        this.getLocations();
-        break;
-    case 2:
-        this.getDBMainLocDets();
-        break;
-    case 3:
-        this.getMentalStatus();
-        break;
-    case 4:
-        this.getNewspapers();
-        break;
-    case 5:
-        this.getallofficers();
-        break;
-    case 6:
-        this.getOffAssignments();
-        break;
-    case 7:
-        this.getOfficerCallTypes();
-        break;
-    case 8:
-        this.getDepartments();
-        break;
-    case 9:
-        this.getOffDeptTypes();
-        break;
-    case 10:
-        this.getOffStatus();
-        break;
-    case 11:
-        this.getRaces();
-        break;
-    case 12:
-        this.getSourceTypes();
-        break;
-    case 13:
-        this.getallsubjects();
-        break;
-    case 14:
-        this.getWeapons();
-        break;
-    }  
-
-    }, 
-//DB Maintenance Views
-//=========================================================================
-//Click on that Add btn next to Aggression Types to add a new aggression type
-    clickDBMaintaddaggression: function(button, e, options) {
-
-       var me = this;
-
-       Ext.Msg.prompt('Add New Aggression Type', 'Aggression Type:', function(btn, text){
-         if (btn == 'ok'){
-
-             if (!me.validatenotblank(text.trim()))
-             {
-                Ext.Msg.show({
-                title: 'Error!',
-                msg: 'Invalid Aggression Type.  The aggression type can not be blank!',
-                icon: Ext.Msg.ERROR,
-                buttons: Ext.Msg.OK
-                }); 
-                return;
-             }
-
-              var  Aggression_Type = text.trim();
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessAgressionTypes.php',
-                params:  
-                {  Action: 'A',
-                   Aggression_Type_ID: '', 
-                   Aggression_Type: Aggression_Type },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    loadMask.hide();
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('AggressionTypes').loadData(result['Aggression_Type']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                    }
-                  }             
-                }  
-              });
-
-         }
-         },null, false, '', null);
-
-
-           
-    },  
-//Click of the Edit button to edit an aggresion type
-    onButtonClickeditaggression: function(button, e, options) {
-
-       var me = this;
-       var Aggression_Type = "";
-       var g = Ext.getCmp('AggressionTypeGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select an aggression type from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-         var rec = g.getSelectionModel().getSelection()[0]; 
-         var Aggression_Type_ID = rec.get("Type_of_Agression_ID");
-         Aggression_Type = rec.get("Aggression_Type");
-//         console.log(Aggression_Type); 
-         Ext.Msg.prompt('Edit Aggression Type', 'Aggression Type:', function(btn, text){
-         if (btn == 'ok'){
-
-             if (!me.validatenotblank(text.trim()))
-             {
-                Ext.Msg.show({
-                title: 'Error!',
-                msg: 'Invalid Aggression Type.  The aggression type can not be blank!',
-                icon: Ext.Msg.ERROR,
-                buttons: Ext.Msg.OK
-                }); 
-                return;
-             }
-
-              var  Aggression_Type = text.trim();
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessAgressionTypes.php',
-                params:  
-                {  Action: 'U',
-                   Aggression_Type_ID: Aggression_Type_ID, 
-                   Aggression_Type: Aggression_Type },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    loadMask.hide();
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('AggressionTypes').loadData(result['Aggression_Type']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                    }
-                  }             
-                }  
-              });
-
-           }
-           },null, false, Aggression_Type, null);
-         
-       }
-
-           
-    },  //onButtonClickoffincedit
-
-//Click of the delete button
-    onButtonClickaggressiondelete: function(button, e, options) {
-
-       var Aggression_Type = "";
-       var g = Ext.getCmp('AggressionTypeGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select an aggression type from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-         var rec = g.getSelectionModel().getSelection()[0]; 
-         var Aggression_Type_ID = rec.get("Type_of_Agression_ID");
-         Aggression_Type = rec.get("Aggression_Type");
-
-         Ext.MessageBox.confirm('Please Confirm',
-          'Are you sure you would like to delete this aggression type?',
-          function(choice)
-          { 
-           if( choice == 'yes')
-           {
-
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessAgressionTypes.php',
-                params:  
-                {  Action: 'D',
-                   Aggression_Type_ID: Aggression_Type_ID, 
-                   Aggression_Type: Aggression_Type },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('AggressionTypes').loadData(result['Aggression_Type']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                      });
-                    }
-                  }             
-                }  
-              });
-            } 
-         });          
-        }
-           
-    },  
-//Click on Add btn on the DB Main Locaiton grid
-    clickDBMaintaddlocation: function(button, e, options) {
-
-       var me = this;
-
-       Ext.Msg.prompt('Add New Location', 'Location:', function(btn, text){
-         if (btn == 'ok'){
-
-             if (!me.validatenotblank(text.trim()))
-             {
-                Ext.Msg.show({
-                title: 'Error!',
-                msg: 'Invalid Location.  The Location can not be blank!',
-                icon: Ext.Msg.ERROR,
-                buttons: Ext.Msg.OK
-                }); 
-                return;
-             }
-
-              var  Location = text.trim();
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessLocations.php',
-                params:  
-                {  Action: 'A',
-                   Location_ID: '', 
-                   Location: Location },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    loadMask.hide();
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('Locations').loadData(result['Location']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                    }
-                  }             
-                }  
-              });
-
-         }
-         },null, false, '', null);
-
-
-           
-    },  
-//Click of the Edit button to edit a location
-    onButtonClickeditlocation: function(button, e, options) {
-
-       var me = this;
-       var Location = "";
-       var g = Ext.getCmp('LocationGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select a location from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-         var rec = g.getSelectionModel().getSelection()[0]; 
-         var Location_ID = rec.get("Location_ID");
-         Location = rec.get("Location");
-         Ext.Msg.prompt('Edit Location', 'Location:', function(btn, text){
-         if (btn == 'ok'){
-
-             if (!me.validatenotblank(text.trim()))
-             {
-                Ext.Msg.show({
-                title: 'Error!',
-                msg: 'Invalid Location.  The location can not be blank!',
-                icon: Ext.Msg.ERROR,
-                buttons: Ext.Msg.OK
-                }); 
-                return;
-             }
-
-              var  Location = text.trim();
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessLocations.php',
-                params:  
-                {  Action: 'U',
-                   Location_ID: Location_ID, 
-                   Location: Location },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    loadMask.hide();
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('Locations').loadData(result['Location']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                    }
-                  }             
-                }  
-              });
-
-           }
-           },null, false, Location, null);
-         
-       }
-
-           
-    },  //onButtonClickoffincedit
-
-//Click of the delete button for a location
-    onButtonClickdeletelocation: function(button, e, options) {
-
-       var Location = "";
-       var g = Ext.getCmp('LocationGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select a location from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-         var rec = g.getSelectionModel().getSelection()[0]; 
-         var Location_ID = rec.get("Location_ID");
-         Location = rec.get("Location");
-
-         Ext.MessageBox.confirm('Please Confirm',
-          'Are you sure you would like to delete this location?',
-          function(choice)
-          { 
-           if( choice == 'yes')
-           {
-
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessLocations.php',
-                params:  
-                {  Action: 'D',
-                   Location_ID: Location_ID, 
-                   Location: Location },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('Locations').loadData(result['Location']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                      });
-                    }
-                  }             
-                }  
-              });
-            } 
-         });          
-        }
-           
-    },  
-//Click on Add btn on the DB Main Mental Status grid
-    clickDBMaintaddMentalStatus: function(button, e, options) {
-
-       var me = this;
-
-       Ext.Msg.prompt('Add New Mental Status', 'Mental Status:', function(btn, text){
-         if (btn == 'ok'){
-
-             if (!me.validatenotblank(text.trim()))
-             {
-                Ext.Msg.show({
-                title: 'Error!',
-                msg: 'Invalid Mental Status.  The Mental Status can not be blank!',
-                icon: Ext.Msg.ERROR,
-                buttons: Ext.Msg.OK
-                }); 
-                return;
-             }
-
-              var  Mental_Status = text.trim();
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessMentalStates.php',
-                params:  
-                {  Action: 'A',
-                   Mental_Status_ID: '', 
-                   Mental_Status: Mental_Status },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    loadMask.hide();
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('MentalStates').loadData(result['Mental_States']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                    }
-                  }             
-                }  
-              });
-
-         }
-         },null, false, '', null);
-
-
-           
-    },  
-//Click of the Edit button to edit a Mental Status
-    onButtonClickeditMentalStatus: function(button, e, options) {
-
-       var me = this;
-       var Mental_Status = "";
-       var g = Ext.getCmp('MentalStateGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select a mental status from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-         var rec = g.getSelectionModel().getSelection()[0]; 
-         var Mental_Status_ID = rec.get("Mental_Status_ID");
-         Mental_Status = rec.get("Mental_Status");
-         Ext.Msg.prompt('Edit Mental Status', 'Mental Status:', function(btn, text){
-         if (btn == 'ok'){
-
-             if (!me.validatenotblank(text.trim()))
-             {
-                Ext.Msg.show({
-                title: 'Error!',
-                msg: 'Invalid Mental Status.  The Mental Status can not be blank!',
-                icon: Ext.Msg.ERROR,
-                buttons: Ext.Msg.OK
-                }); 
-                return;
-             }
-
-              var  Mental_Status = text.trim();
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessMentalStates.php',
-                params:  
-                {  Action: 'U',
-                   Mental_Status_ID: Mental_Status_ID, 
-                   Mental_Status: Mental_Status },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    loadMask.hide();
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('MentalStates').loadData(result['Mental_States']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                    }
-                  }             
-                }  
-              });
-
-           }
-           },null, false, Mental_Status, null);
-         
-       }
-
-           
-    },  //onButtonClickeditMentalStatus
-
-//Click of the delete button for a Mental Status
-    onButtonClickdeleteMentalStatus: function(button, e, options) {
-
-       var Mental_Status = "";
-       var g = Ext.getCmp('MentalStateGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select a Mental Status from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-         var rec = g.getSelectionModel().getSelection()[0]; 
-         var Mental_Status_ID = rec.get("Mental_Status_ID");
-         Mental_Status = rec.get("Mental_Status");
-
-         Ext.MessageBox.confirm('Please Confirm',
-          'Are you sure you would like to delete this Mental Status?',
-          function(choice)
-          { 
-           if( choice == 'yes')
-           {
-
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessMentalStates.php',
-                params:  
-                {  Action: 'D',
-                   Mental_Status_ID: Mental_Status_ID, 
-                   Mental_Status: Mental_Status },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('MentalStates').loadData(result['Mental_States']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                      });
-                    }
-                  }             
-                }  
-              });
-            } 
-         });          
-        }
-           
-    },  
-//Click on Add btn on the DB Main Newspapers grid
-    clickDBMaintaddNewspapers: function(button, e, options) {
-
-       var me = this;
-
-       Ext.Msg.prompt('Add New Newspapers', 'Newspaper:', function(btn, text){
-         if (btn == 'ok'){
-
-             if (!me.validatenotblank(text.trim()))
-             {
-                Ext.Msg.show({
-                title: 'Error!',
-                msg: 'Invalid Newspaper.  The Newspaper can not be blank!',
-                icon: Ext.Msg.ERROR,
-                buttons: Ext.Msg.OK
-                }); 
-                return;
-             }
-
-              var  Newspapers = text.trim();
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessNewspapers.php',
-                params:  
-                {  Action: 'A',
-                   Newspaper_ID: '', 
-                   Newspaper: Newspapers },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    loadMask.hide();
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('Newspapers').loadData(result['Newspapers']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                    }
-                  }             
-                }  
-              });
-
-         }
-         },null, false, '', null);
-
-
-           
-    },  
-//Click of the Edit button to edit a Newspaper
-    onButtonClickeditNewspapers: function(button, e, options) {
-
-       var me = this;
-       var Newspaper = "";
-       var g = Ext.getCmp('NewspapersGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select a newspaper from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-         var rec = g.getSelectionModel().getSelection()[0]; 
-         var Newspaper_ID = rec.get("Newspaper_ID");
-         Newspaper = rec.get("Newspaper");
-         Ext.Msg.prompt('Edit Newspaper', 'Newspaper:', function(btn, text){
-         if (btn == 'ok'){
-
-             if (!me.validatenotblank(text.trim()))
-             {
-                Ext.Msg.show({
-                title: 'Error!',
-                msg: 'Invalid Newspaper.  The Newspaper can not be blank!',
-                icon: Ext.Msg.ERROR,
-                buttons: Ext.Msg.OK
-                }); 
-                return;
-             }
-
-              var  Newspaper = text.trim();
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessNewspapers.php',
-                params:  
-                {  Action: 'U',
-                   Newspaper_ID: Newspaper_ID, 
-                   Newspaper: Newspaper },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    loadMask.hide();
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('Newspapers').loadData(result['Newspapers']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                    }
-                  }             
-                }  
-              });
-
-           }
-           },null, false, Newspaper, null);
-         
-       }
-
-           
-    },  //onButtonClickeditNewspaper
-
-//Click of the delete button for a Newspaper
-    onButtonClickdeleteNewspapers: function(button, e, options) {
-
-       var Newspaper = "";
-       var g = Ext.getCmp('NewspapersGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select a Newspaper from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-         var rec = g.getSelectionModel().getSelection()[0]; 
-         var Newspaper_ID = rec.get("Newspaper_ID");
-         Newspaper = rec.get("Newspaper");
-
-         Ext.MessageBox.confirm('Please Confirm',
-          'Are you sure you would like to delete this Newspaper?',
-          function(choice)
-          { 
-           if( choice == 'yes')
-           {
-
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessNewspapers.php',
-                params:  
-                {  Action: 'D',
-                   Newspaper_ID: Newspaper_ID, 
-                   Newspaper: Newspaper },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('Newspapers').loadData(result['Newspapers']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                      });
-                    }
-                  }             
-                }  
-              });
-            } 
-         });          
-        }
-           
-    },  
-//Click on the officer add button from the DB Maint Grid
-    clickofficeraddDB: function(button, e, options) {
-
-           var offaddwin = new Ext.Window({
-           id:'winoffadd',
-           layout: 'fit',
-           width: 410,
-           height: 370,
-           modal: true,
-           title: 'Add Officer',
-              items: [
-              {
-                  xtype: 'addofficer'
-              }]
-             });
-            Ext.getCmp('off_add_Action').setValue("A");
-//Adding new officer from officer incident grid
-            Ext.getCmp('off_add_Function').setValue("D");  
-            Ext.getCmp('off_add_officerID').setValue("");  
-
-            offaddwin.show(); 
-
-                           
-    },
-//Click on the edit Officer details button from DB maintenance
-    DBMainEditOfficer: function(button, e, options) {
-
-
-       var me = this;
-       var g = Ext.getCmp('officersGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select an Officer from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-           var offaddwin = new Ext.Window({
-           id:'winoffadd',
-           layout: 'fit',
-           width: 410,
-           height: 370,
-           modal: true,
-           title: 'Edit Officer',
-              items: [
-              {
-                  xtype: 'addofficer'
-              }]
-             });
-
-            var rec = g.getSelectionModel().getSelection()[0]; 
-            Ext.getCmp('off_add_Action').setValue("U");
-//Adding new officer from officer incident grid
-            Ext.getCmp('off_add_Function').setValue("D");  
-            Ext.getCmp('off_add_officerID').setValue(rec.get("Officer_ID"));  
-            Ext.getCmp('off_name').setValue(rec.get("Name"));  
-  
-            var offgenderM = Ext.getCmp('offgenderM');            
-            var offgenderF = Ext.getCmp('offgenderF');
-            var gender = rec.get("Gender");
-            if (gender == "M")
-               offgenderM.setValue(true);
-            else            
-               offgenderF.setValue(true);
-
-  
-            var racename = rec.get("Race")
-            var racemodel = Ext.getStore('Races').findRecord('Race', racename);    
-            var race_id = racemodel.get('Race_ID')
-            Ext.getCmp('off_race').setValue(race_id);  
-            
-            Ext.getCmp('off_additional_info').setValue(rec.get("Additional_Info"));  
-
-
-            offaddwin.show();
-       }
-
-                           
-    },
-
-//Click of the delete button for an officer
-    onButtonClickdeleteOfficer: function(button, e, options) {
-
-
-       var g = Ext.getCmp('officersGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select an Officer from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-         var rec = g.getSelectionModel().getSelection()[0]; 
-         var Officer_ID = rec.get("Officer_ID")
-
-
-         Ext.MessageBox.confirm('Please Confirm',
-          'Are you sure you would like to delete this Officer?',
-          function(choice)
-          { 
-           if( choice == 'yes')
-           {
-
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessOfficers.php',
-                params: 
-                {
-                        Action: 'D',
-                        Function: 'D',
-			Name: '',
-			Gender: '',
-			Race_ID: '',
-			AdditionalInfo: '',
-                        Officer_ID: Officer_ID
-
-                },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                       Ext.getStore('officer_search').loadData(result['officersearch']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                      });
-                    }
-                  }             
-                }  
-              });
-            } 
-         });          
-        }
-           
-    },  
-
-
-
-//Click on Add btn on the DB Main Officer Assignment grid
-    clickDBMaintaddOfficerAssignments: function(button, e, options) {
-
-       var me = this;
-
-       Ext.Msg.prompt('Add New Officer Assignment', 'Officer Assignment:', function(btn, text){
-         if (btn == 'ok'){
-
-             if (!me.validatenotblank(text.trim()))
-             {
-                Ext.Msg.show({
-                title: 'Error!',
-                msg: 'Invalid Officer Assignment.  The Officer Assignment can not be blank!',
-                icon: Ext.Msg.ERROR,
-                buttons: Ext.Msg.OK
-                }); 
-                return;
-             }
-
-              var  Assignment = text.trim();
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessOfficerAssignment.php',
-                params:  
-                {  Action: 'A',
-                   Assignment_ID: '', 
-                   Assignment: Assignment },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    loadMask.hide();
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('officerassignments').loadData(result['Officer_Assignment']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                    }
-                  }             
-                }  
-              });
-
-         }
-         },null, false, '', null);
-
-
-           
-    },  
-//Click of the Edit button to edit an Officer Assignment
-    onButtonClickeditOfficerAssignment: function(button, e, options) {
-
-       var me = this;
-       var Assignment = "";
-       var g = Ext.getCmp('OfficerAssignmentGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select an officer assignment from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-         var rec = g.getSelectionModel().getSelection()[0]; 
-         var Assignment_ID = rec.get("Assignment_ID");
-         Assignment = rec.get("Assignment");
-         Ext.Msg.prompt('Edit Assignment', 'Assignment:', function(btn, text){
-         if (btn == 'ok'){
-
-             if (!me.validatenotblank(text.trim()))
-             {
-                Ext.Msg.show({
-                title: 'Error!',
-                msg: 'Invalid Assignment.  The Assignment can not be blank!',
-                icon: Ext.Msg.ERROR,
-                buttons: Ext.Msg.OK
-                }); 
-                return;
-             }
-
-              var  Assignment = text.trim();
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessOfficerAssignment.php',
-                params:  
-                {  Action: 'U',
-                   Assignment_ID: Assignment_ID, 
-                   Assignment: Assignment },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    loadMask.hide();
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('officerassignments').loadData(result['Officer_Assignment']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                    }
-                  }             
-                }  
-              });
-
-           }
-           },null, false, Assignment, null);
-         
-       }
-
-           
-    },  //onButtonClickeditOfficerAssignment
-
-//Click of the delete button for an officer assignment
-    onButtonClickdeleteOffAssignment: function(button, e, options) {
-
-       var Assignment = "";
-       var g = Ext.getCmp('OfficerAssignmentGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select an officer assignment from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-         var rec = g.getSelectionModel().getSelection()[0]; 
-         var Assignment_ID = rec.get("Assignment_ID");
-         Assignment = rec.get("Assignment");
-
-         Ext.MessageBox.confirm('Please Confirm',
-          'Are you sure you would like to delete this officer assignment?',
-          function(choice)
-          { 
-           if( choice == 'yes')
-           {
-
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessOfficerAssignment.php',
-                params:  
-                {  Action: 'D',
-                   Assignment_ID: Assignment_ID, 
-                   Assignment: Assignment },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('officerassignments').loadData(result['Officer_Assignment']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                      });
-                    }
-                  }             
-                }  
-              });
-            } 
-         });          
-        }
-           
-    },  
-//Click on Add btn on the DB Main Officer Call Type grid
-    clickDBMaintaddOffCallType: function(button, e, options) {
-
-       var me = this;
-
-       Ext.Msg.prompt('Add New Officer Call Type', 'Officer Call Type:', function(btn, text){
-         if (btn == 'ok'){
-
-             if (!me.validatenotblank(text.trim()))
-             {
-                Ext.Msg.show({
-                title: 'Error!',
-                msg: 'Invalid Officer Call Type.  The Officer Call Type can not be blank!',
-                icon: Ext.Msg.ERROR,
-                buttons: Ext.Msg.OK
-                }); 
-                return;
-             }
-
-              var  Call_Type = text.trim();
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessOfficerCallType.php',
-                params:  
-                {  Action: 'A',
-                   Call_Type_ID: '', 
-                   Call_Type: Call_Type },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    loadMask.hide();
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('officercalltypes').loadData(result['Officer_Call_Type']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                    }
-                  }             
-                }  
-              });
-
-         }
-         },null, false, '', null);
-
-
-           
-    },  
-//Click of the Edit button to edit an Officer Call Type
-    onButtonClickeditOffCallType: function(button, e, options) {
-
-       var me = this;
-       var Call_Type = "";
-       var g = Ext.getCmp('OfficerCallTypeGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select an officer call type from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-         var rec = g.getSelectionModel().getSelection()[0]; 
-         var Call_Type_ID = rec.get("Call_Type_ID");
-         Call_Type = rec.get("Call_Type");
-         Ext.Msg.prompt('Edit Officer Call Type', 'Officer Call Type:', function(btn, text){
-         if (btn == 'ok'){
-
-             if (!me.validatenotblank(text.trim()))
-             {
-                Ext.Msg.show({
-                title: 'Error!',
-                msg: 'Invalid Officer Call Type.  The Officer Call Type can not be blank!',
-                icon: Ext.Msg.ERROR,
-                buttons: Ext.Msg.OK
-                }); 
-                return;
-             }
-
-              var  Call_Type = text.trim();
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessOfficerCallType.php',
-                params:  
-                {  Action: 'U',
-                   Call_Type_ID: Call_Type_ID, 
-                   Call_Type: Call_Type },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    loadMask.hide();
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('officercalltypes').loadData(result['Officer_Call_Type']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                    }
-                  }             
-                }  
-              });
-
-           }
-           },null, false, Call_Type, null);
-         
-       }
-
-           
-    },  //onButtonClickeditOffCallType
-
-//Click of the delete button for an Officer Call Type
-    onButtonClickdeleteOffCallType: function(button, e, options) {
-
-       var Call_Type = "";
-       var g = Ext.getCmp('OfficerCallTypeGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select an Officer Call Type from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-         var rec = g.getSelectionModel().getSelection()[0]; 
-         var Call_Type_ID = rec.get("Call_Type_ID");
-         Call_Type = rec.get("Call_Type");
-
-         Ext.MessageBox.confirm('Please Confirm',
-          'Are you sure you would like to delete this Officer Call Type?',
-          function(choice)
-          { 
-           if( choice == 'yes')
-           {
-
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessOfficerCallType.php',
-                params:  
-                {  Action: 'D',
-                   Call_Type_ID: Call_Type_ID, 
-                   Call_Type: Call_Type },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('officercalltypes').loadData(result['Officer_Call_Type']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                      });
-                    }
-                  }             
-                }  
-              });
-            } 
-         });          
-        }
-           
-    },  
-
-//Click on Add btn on the DB Main Department grid
-    clickDBMaintaddDepartments: function(button, e, options) {
-
-       var me = this;
-
-       Ext.Msg.prompt('Add New Departments', 'Department:', function(btn, text){
-         if (btn == 'ok'){
-
-             if (!me.validatenotblank(text.trim()))
-             {
-                Ext.Msg.show({
-                title: 'Error!',
-                msg: 'Invalid Department.  The Department can not be blank!',
-                icon: Ext.Msg.ERROR,
-                buttons: Ext.Msg.OK
-                }); 
-                return;
-             }
-
-              var Department = text.trim();
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessDepartment.php',
-                params:  
-                {  Action: 'A',
-                   Department_ID: '', 
-                   Department: Department },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    loadMask.hide();
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('departments').loadData(result['Officer_Department']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                    }
-                  }             
-                }  
-              });
-
-         }
-         },null, false, '', null);
-
-
-           
-    },  
-//Click of the Edit button to edit a Department
-    onButtonClickeditDepartments: function(button, e, options) {
-
-       var me = this;
-       var Department = "";
-       var g = Ext.getCmp('OfficerDepartmentGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select a department from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-         var rec = g.getSelectionModel().getSelection()[0]; 
-         var Department_ID = rec.get("Department_ID");
-         Department = rec.get("Department");
-         Ext.Msg.prompt('Edit Department', 'Department:', function(btn, text){
-         if (btn == 'ok'){
-
-             if (!me.validatenotblank(text.trim()))
-             {
-                Ext.Msg.show({
-                title: 'Error!',
-                msg: 'Invalid Department.  The Department can not be blank!',
-                icon: Ext.Msg.ERROR,
-                buttons: Ext.Msg.OK
-                }); 
-                return;
-             }
-
-              var  Department = text.trim();
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessDepartment.php',
-                params:  
-                {  Action: 'U',
-                   Department_ID: Department_ID, 
-                   Department: Department },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    loadMask.hide();
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('departments').loadData(result['Officer_Department']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                    }
-                  }             
-                }  
-              });
-
-           }
-           },null, false, Department, null);
-         
-       }
-
-           
-    },  
-
-//Click of the delete button for a Department
-    onButtonClickdeleteDepartments: function(button, e, options) {
-
-       var Department = "";
-       var g = Ext.getCmp('OfficerDepartmentGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select a Department from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-         var rec = g.getSelectionModel().getSelection()[0]; 
-         var Department_ID = rec.get("Department_ID");
-         Department = rec.get("Department");
-
-         Ext.MessageBox.confirm('Please Confirm',
-          'Are you sure you would like to delete this Department?',
-          function(choice)
-          { 
-           if( choice == 'yes')
-           {
-
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessDepartment.php',
-                params:  
-                {  Action: 'D',
-                   Department_ID: Department_ID, 
-                   Department: Department },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                      Ext.getStore('departments').loadData(result['Officer_Department']);
-                    loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                      });
-                    }
-                  }             
-                }  
-              });
-            } 
-         });          
-        }
-           
-    },  
-//Click on Add btn on the DB Main Department Type grid
-    clickDBMaintaddOffDeptType: function(button, e, options) {
-
-       var me = this;
-
-       Ext.Msg.prompt('Add New Department Type', 'Department Type:', function(btn, text){
-         if (btn == 'ok'){
-
-             if (!me.validatenotblank(text.trim()))
-             {
-                Ext.Msg.show({
-                title: 'Error!',
-                msg: 'Invalid Department Type.  The Department Type can not be blank!',
-                icon: Ext.Msg.ERROR,
-                buttons: Ext.Msg.OK
-                }); 
-                return;
-             }
-
-              var Dept_Type = text.trim();
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessOffDeptType.php',
-                params:  
-                {  Action: 'A',
-                   Dept_Type_ID: '', 
-                   Dept_Type: Dept_Type },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    loadMask.hide();
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('depttypes').loadData(result['Officer_Dept_Type']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                    }
-                  }             
-                }  
-              });
-
-         }
-         },null, false, '', null);
-
-
-           
-    },  
-//Click of the Edit button to edit a Department Type
-    onButtonClickeditOffDeptType: function(button, e, options) {
-
-       var me = this;
-       var Dept_Type = "";
-       var g = Ext.getCmp('OfficerDeptTypeGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select a department type from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-         var rec = g.getSelectionModel().getSelection()[0]; 
-         var Dept_Type_ID = rec.get("Dept_Type_ID");
-         Dept_Type = rec.get("Dept_Type");
-         Ext.Msg.prompt('Edit Department Type', 'Department Type:', function(btn, text){
-         if (btn == 'ok'){
-
-             if (!me.validatenotblank(text.trim()))
-             {
-                Ext.Msg.show({
-                title: 'Error!',
-                msg: 'Invalid Department Type.  The Department Type can not be blank!',
-                icon: Ext.Msg.ERROR,
-                buttons: Ext.Msg.OK
-                }); 
-                return;
-             }
-
-              var Dept_Type = text.trim();
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessOffDeptType.php',
-                params:  
-                {  Action: 'U',
-                   Dept_Type_ID: Dept_Type_ID, 
-                   Dept_Type: Dept_Type },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    loadMask.hide();
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('depttypes').loadData(result['Officer_Dept_Type']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                    }
-                  }             
-                }  
-              });
-
-           }
-           },null, false, Dept_Type, null);
-         
-       }
-
-           
-    },  
-
-//Click of the delete button for a department type
-    onButtonClickdeleteDeptType: function(button, e, options) {
-
-       var Dept_Type = "";
-       var g = Ext.getCmp('OfficerDeptTypeGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select a Department Type from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-         var rec = g.getSelectionModel().getSelection()[0]; 
-         var Dept_Type_ID = rec.get("Dept_Type_ID");
-         Dept_Type = rec.get("Dept_Type");
-
-         Ext.MessageBox.confirm('Please Confirm',
-          'Are you sure you would like to delete this Department Type?',
-          function(choice)
-          { 
-           if( choice == 'yes')
-           {
-
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessOffDeptType.php',
-                params:  
-                {  Action: 'D',
-                   Dept_Type_ID: Dept_Type_ID, 
-                   Dept_Type: Dept_Type_ID },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('depttypes').loadData(result['Officer_Dept_Type']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                      });
-                    }
-                  }             
-                }  
-              });
-            } 
-         });          
-        }
-           
-    },  
-
-//Click on Add btn on the DB Main Officer Status grid
-    clickDBMaintaddOffStatus: function(button, e, options) {
-
-       var me = this;
-
-       Ext.Msg.prompt('Add New Officer Status', 'Officer Status:', function(btn, text){
-         if (btn == 'ok'){
-
-             if (!me.validatenotblank(text.trim()))
-             {
-                Ext.Msg.show({
-                title: 'Error!',
-                msg: 'Invalid Officer Status.  The Officer Status can not be blank!',
-                icon: Ext.Msg.ERROR,
-                buttons: Ext.Msg.OK
-                }); 
-                return;
-             }
-
-              var Status = text.trim();
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessOffStatus.php',
-                params:  
-                {  Action: 'A',
-                   Status_ID: '', 
-                   Status: Status },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    loadMask.hide();
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('officerstatuss').loadData(result['Officer_Status']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                    }
-                  }             
-                }  
-              });
-
-         }
-         },null, false, '', null);
-
-
-           
-    },  
-//Click of the Edit button to edit an officer status
-    onButtonClickeditOffStatus: function(button, e, options) {
-
-       var me = this;
-       var Status = "";
-       var g = Ext.getCmp('OfficerStatusGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select an Officer Status from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-         var rec = g.getSelectionModel().getSelection()[0]; 
-         var Status_ID = rec.get("Status_ID");
-         Status = rec.get("Status");
-         Ext.Msg.prompt('Edit Officer Status', 'Officer Status:', function(btn, text){
-         if (btn == 'ok'){
-
-             if (!me.validatenotblank(text.trim()))
-             {
-                Ext.Msg.show({
-                title: 'Error!',
-                msg: 'Invalid Officer Status.  The Officer Status can not be blank!',
-                icon: Ext.Msg.ERROR,
-                buttons: Ext.Msg.OK
-                }); 
-                return;
-             }
-
-              var Status = text.trim();
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessOffStatus.php',
-                params:  
-                {  Action: 'U',
-                   Status_ID: Status_ID, 
-                   Status: Status },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    loadMask.hide();
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('officerstatuss').loadData(result['Officer_Status']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                    }
-                  }             
-                }  
-              });
-
-           }
-           },null, false, Status, null);
-         
-       }
-
-           
-    },  
-
-//Click of the delete button for an Officer Status 
-    onButtonClickdeleteOffStatus: function(button, e, options) {
-
-       var Status = "";
-       var g = Ext.getCmp('OfficerStatusGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select an Officer Status from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-         var rec = g.getSelectionModel().getSelection()[0]; 
-         var Status_ID = rec.get("Status_ID");
-         Status = rec.get("Status");
-
-         Ext.MessageBox.confirm('Please Confirm',
-          'Are you sure you would like to delete this Officer Status?',
-          function(choice)
-          { 
-           if( choice == 'yes')
-           {
-
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessOffStatus.php',
-                params:  
-                {  Action: 'D',
-                   Status_ID: Status_ID, 
-                   Status: Status },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('officerstatuss').loadData(result['Officer_Status']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                      });
-                    }
-                  }             
-                }  
-              });
-            } 
-         });          
-        }
-           
-    },  
-
-//Click on Add btn on the DB Main Race grid
-    clickDBMaintaddRace: function(button, e, options) {
-
-       var me = this;
-
-       Ext.Msg.prompt('Add New Race', 'Race:', function(btn, text){
-         if (btn == 'ok'){
-
-             if (!me.validatenotblank(text.trim()))
-             {
-                Ext.Msg.show({
-                title: 'Error!',
-                msg: 'Invalid Race.  The Race can not be blank!',
-                icon: Ext.Msg.ERROR,
-                buttons: Ext.Msg.OK
-                }); 
-                return;
-             }
-
-              var  Race = text.trim();
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessRace.php',
-                params:  
-                {  Action: 'A',
-                   Race_ID: '', 
-                   Race: Race },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    loadMask.hide();
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('Races').loadData(result['Race']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                    }
-                  }             
-                }  
-              });
-
-         }
-         },null, false, '', null);
-
-
-           
-    },  
-//Click of the Edit button to edit a Race
-    onButtonClickeditRaces: function(button, e, options) {
-
-       var me = this;
-       var Race = "";
-       var g = Ext.getCmp('RaceGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select a Race from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-         var rec = g.getSelectionModel().getSelection()[0]; 
-         var Race_ID = rec.get("Race_ID");
-         Race = rec.get("Race");
-         Ext.Msg.prompt('Edit Race', 'Race:', function(btn, text){
-         if (btn == 'ok'){
-
-             if (!me.validatenotblank(text.trim()))
-             {
-                Ext.Msg.show({
-                title: 'Error!',
-                msg: 'Invalid Race.  The Race can not be blank!',
-                icon: Ext.Msg.ERROR,
-                buttons: Ext.Msg.OK
-                }); 
-                return;
-             }
-
-              var Race = text.trim();
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessRace.php',
-                params:  
-                {  Action: 'U',
-                   Race_ID: Race_ID, 
-                   Race: Race },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    loadMask.hide();
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('Races').loadData(result['Race']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                    }
-                  }             
-                }  
-              });
-
-           }
-           },null, false, Race, null);
-         
-       }
-
-           
-    },  
-
-//Click of the delete button for a Race
-    onButtonClickdeleteRaces: function(button, e, options) {
-
-       var Race = "";
-       var g = Ext.getCmp('RaceGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select a Race from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-         var rec = g.getSelectionModel().getSelection()[0]; 
-         var Race_ID = rec.get("Race_ID");
-         Race = rec.get("Race");
-
-         Ext.MessageBox.confirm('Please Confirm',
-          'Are you sure you would like to delete this Race?',
-          function(choice)
-          { 
-           if( choice == 'yes')
-           {
-
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessRace.php',
-                params:  
-                {  Action: 'D',
-                   Race_ID: Race_ID, 
-                   Race: Race },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('Races').loadData(result['Race']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                      });
-                    }
-                  }             
-                }  
-              });
-            } 
-         });          
-        }
-           
-    },  
-//Click on Add btn on the DB Main Source Type grid
-    clickDBMaintaddSourceType: function(button, e, options) {
-
-       var me = this;
-
-       Ext.Msg.prompt('Add New Source Type', 'Source Type:', function(btn, text){
-         if (btn == 'ok'){
-
-             if (!me.validatenotblank(text.trim()))
-             {
-                Ext.Msg.show({
-                title: 'Error!',
-                msg: 'Invalid Source Type.  The Source Type can not be blank!',
-                icon: Ext.Msg.ERROR,
-                buttons: Ext.Msg.OK
-                }); 
-                return;
-             }
-
-              var Source = text.trim();
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessSourceType.php',
-                params:  
-                {  Action: 'A',
-                   Source_Type_ID: '', 
-                   Source: Source },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    loadMask.hide();
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('sourcetypes').loadData(result['Source_Type']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                    }
-                  }             
-                }  
-              });
-
-         }
-         },null, false, '', null);
-
-
-           
-    },  
-//Click of the Edit button to edit a Source Type
-    onButtonClickeditSourceType: function(button, e, options) {
-
-       var me = this;
-       var Source = "";
-       var g = Ext.getCmp('SourceTypeGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select a Souce Type from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-         var rec = g.getSelectionModel().getSelection()[0]; 
-         var Source_Type_ID = rec.get("Source_Type_ID");
-         Source = rec.get("Source");
-         Ext.Msg.prompt('Edit Source Type', 'Source Type:', function(btn, text){
-         if (btn == 'ok'){
-
-             if (!me.validatenotblank(text.trim()))
-             {
-                Ext.Msg.show({
-                title: 'Error!',
-                msg: 'Invalid Source Type.  The Source Type can not be blank!',
-                icon: Ext.Msg.ERROR,
-                buttons: Ext.Msg.OK
-                }); 
-                return;
-             }
-
-              var  Source = text.trim();
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessSourceType.php',
-                params:  
-                {  Action: 'U',
-                   Source_Type_ID: Source_Type_ID, 
-                   Source: Source },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    loadMask.hide();
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('sourcetypes').loadData(result['Source_Type']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                    }
-                  }             
-                }  
-              });
-
-           }
-           },null, false, Source, null);
-         
-       }
-
-           
-    },  
-
-//Click of the delete button for a Source Type
-    onButtonClickdeleteSourceTye: function(button, e, options) {
-
-       var Source = "";
-       var g = Ext.getCmp('SourceTypeGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select a Source Type from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-         var rec = g.getSelectionModel().getSelection()[0]; 
-         var Source_Type_ID = rec.get("Source_Type_ID");
-         Source = rec.get("Source");
-
-         Ext.MessageBox.confirm('Please Confirm',
-          'Are you sure you would like to delete this Source Type?',
-          function(choice)
-          { 
-           if( choice == 'yes')
-           {
-
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessSourceType.php',
-                params:  
-                {  Action: 'D',
-                   Source_Type_ID: Source_Type_ID, 
-                   Source: Source },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('sourcetypes').loadData(result['Source_Type']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                      });
-                    }
-                  }             
-                }  
-              });
-            } 
-         });          
-        }
-           
-    },  
-//Click on the suspect add button from DBMaint page
-    clickDBaddsuspectbtn: function(button, e, options) {
-
-           var offaddwin = new Ext.Window({
-           id:'winsusadd',
-           layout: 'fit',
-           width: 410,
-           height: 300,
-           modal: true,
-           title: 'Add Subject',
-              items: [
-              {
-                  xtype: 'addsuspect'
-              }]
-             });
-           Ext.getCmp('sus_add_Action').setValue("A");
-//Adding new officer from officer incident grid
-           Ext.getCmp('sus_add_Function').setValue("D");  
-           Ext.getCmp('sus_add_suspectID').setValue(""); 
-           offaddwin.show(); 
-
-                           
-    },
-
-//Click on the edit suspect details button from DB maintenance
-    clickDBeditsuspectbtn: function(button, e, options) {
-
-
-       var me = this;
-       var g = Ext.getCmp('SubjectGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select a subject from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-           var offaddwin = new Ext.Window({
-           id:'winsusadd',
-           layout: 'fit',
-           width: 410,
-           height: 370,
-           modal: true,
-           title: 'Edit Subject',
-              items: [
-              {
-                  xtype: 'addsuspect'
-              }]
-             });
-
-            var rec = g.getSelectionModel().getSelection()[0]; 
-            Ext.getCmp('sus_add_Action').setValue("U");
-//Adding new subject from subject grid
-            Ext.getCmp('sus_add_Function').setValue("D");  
-            Ext.getCmp('sus_add_suspectID').setValue(rec.get("Suspect_ID"));  
-            Ext.getCmp('sus_name').setValue(rec.get("Suspect_Name"));  
-  
-            var offgenderM = Ext.getCmp('susgenderM');            
-            var offgenderF = Ext.getCmp('susgenderF');
-            var gender = rec.get("Gender");
-            if (gender == "M")
-               offgenderM.setValue(true);
-            else            
-               offgenderF.setValue(true);
-
-  
-            var racename = rec.get("Race")
-            var racemodel = Ext.getStore('Races').findRecord('Race', racename);    
-            var race_id = racemodel.get('Race_ID')
-            Ext.getCmp('sus_race').setValue(race_id);  
-            
-
-            offaddwin.show();
-       }
-
-                           
-    },
-
-//Click of the delete button for a Subject from the Db Main grid
-    onButtonClickdeleteSubjects: function(button, e, options) {
-
-       var g = Ext.getCmp('SubjectGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select a subject from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-         var rec = g.getSelectionModel().getSelection()[0]; 
-         var Suspect_ID = rec.get("Suspect_ID");
-
-         Ext.MessageBox.confirm('Please Confirm',
-          'Are you sure you would like to delete this Subject?',
-          function(choice)
-          { 
-           if( choice == 'yes')
-           {
-
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessSubjects.php',
-                params:  
-                {
-                        Action: 'D',
-                        Function: 'D',
-			Suspect_Name: '',
-			Gender: '',
-			Race_ID: '',
-                        Suspect_ID: Suspect_ID
-                },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('suspect_search').loadData(result['suspectsearch']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                      });
-                    }
-                  }             
-                }  
-              });
-            } 
-         });          
-        }
-           
-    },  
-
-
-//Click on Add btn on the DB Main Weapons grid
-    clickDBMaintaddWeapons: function(button, e, options) {
-
-       var me = this;
-
-       Ext.Msg.prompt('Add New Weaponss', 'Weapon:', function(btn, text){
-         if (btn == 'ok'){
-
-             if (!me.validatenotblank(text.trim()))
-             {
-                Ext.Msg.show({
-                title: 'Error!',
-                msg: 'Invalid Weapon.  The Weapon can not be blank!',
-                icon: Ext.Msg.ERROR,
-                buttons: Ext.Msg.OK
-                }); 
-                return;
-             }
-
-              var Weapons_Type = text.trim();
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessWeapons.php',
-                params:  
-                {  Action: 'A',
-                   Weapons_ID: '', 
-                   Weapons_Type: Weapons_Type },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    loadMask.hide();
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('Weapons').loadData(result['Weapons']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                    }
-                  }             
-                }  
-              });
-
-         }
-         },null, false, '', null);
-
-
-           
-    },  
-//Click of the Edit button to edit a Weapon
-    onButtonClickeditWeapons: function(button, e, options) {
-
-       var me = this;
-       var Weapons_Type = "";
-       var g = Ext.getCmp('WeaponsGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select a Weapon from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-         var rec = g.getSelectionModel().getSelection()[0]; 
-         var Weapons_ID = rec.get("Weapons_ID");
-         Weapons_Type = rec.get("Weapons_Type");
-         Ext.Msg.prompt('Edit Weapons', 'Weapon:', function(btn, text){
-         if (btn == 'ok'){
-
-             if (!me.validatenotblank(text.trim()))
-             {
-                Ext.Msg.show({
-                title: 'Error!',
-                msg: 'Invalid Weapon.  The Weapon can not be blank!',
-                icon: Ext.Msg.ERROR,
-                buttons: Ext.Msg.OK
-                }); 
-                return;
-             }
-
-              var  Weapons_Type = text.trim();
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessWeapons.php',
-                params:  
-                {  Action: 'U',
-                   Weapons_ID: Weapons_ID, 
-                   Weapons_Type: Weapons_Type },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    loadMask.hide();
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('Weapons').loadData(result['Weapons']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                    });
-                    }
-                  }             
-                }  
-              });
-
-           }
-           },null, false, Weapons_Type, null);
-         
-       }
-
-           
-    },  
-
-//Click of the delete button for a Weapon
-    onButtonClickdeleteWeapon: function(button, e, options) {
-
-       var Weapons_Type = "";
-       var g = Ext.getCmp('WeaponsGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select a Weapon from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-         var rec = g.getSelectionModel().getSelection()[0]; 
-         var Weapons_ID = rec.get("Weapons_ID");
-         Weapons_Type = rec.get("Weapons_Type");
-
-         Ext.MessageBox.confirm('Please Confirm',
-          'Are you sure you would like to delete this Weapon?',
-          function(choice)
-          { 
-           if( choice == 'yes')
-           {
-
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessWeapons.php',
-                params:  
-                {  Action: 'D',
-                   Weapons_ID: Weapons_ID, 
-                   Weapons_Type: Weapons_Type },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('Weapons').loadData(result['Weapons']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                      });
-                    }
-                  }             
-                }  
-              });
-            } 
-         });          
-        }
-           
-    },  
-
-//Click on the add location details button from DB maintenance
-    DBMainAddLocationDet: function(button, e, options) {
-
-           var winlocdetadd = new Ext.Window({
-           id:'winlocdetadd',
-           layout: 'fit',
-           width: 410,
-           height: 180,
-           modal: true,
-           title: 'Add Location Detail',
-              items: [
-              {
-                  xtype: 'addLocDetail'
-              }]
-             });
-            Ext.getCmp('adddetloc_Action').setValue("A");
-            Ext.getCmp('adddetloc_LocDet_id').setValue("");
-            winlocdetadd.show(); 
-
-                           
-    },
-//Click on the edit location details button from DB maintenance
-    DBMainEditLocationDet: function(button, e, options) {
-
-
-       var me = this;
-       var g = Ext.getCmp('LocationDetGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select a Location Detail from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-           var winlocdetadd = new Ext.Window({
-           id:'winlocdetadd',
-           layout: 'fit',
-           width: 410,
-           height: 180,
-           modal: true,
-           title: 'Edit Location Detail',
-              items: [
-              {
-                  xtype: 'addLocDetail'
-              }]
-             });
-            var rec = g.getSelectionModel().getSelection()[0];
-            Ext.getCmp('adddetloc_Action').setValue("U");
-            Ext.getCmp('adddetloc_LocDet_id').setValue(rec.get("Location_Detail_ID"));
-            Ext.getCmp('adddetloc_name').setValue(rec.get("Location_Details"));
-            Ext.getCmp('adddetloc_loc').setValue(rec.get("Location_ID"));
-            
-            winlocdetadd.show(); 
-       }
-
-                           
-    },
-
-
-
-
-//Add or Update Location Detail Popup Form
-//==========================================
-//click of the submit button on the add/update location detail form
-    submitaddlocdet: function(button, e, options) {
-
-    var me = this;
-    var frm = Ext.getCmp('addLocDetail');
-    
-    if (!frm.isValid())
-    {
-       Ext.Msg.show({
-          title: 'Error Forn not Submitted!',
-          msg: 'All invalid fields are highlighted in red.  To see specific field error, place mouse cursor over the "!" next to field.  Please resubmit form once all fields have been corrected.  ',
-          icon: Ext.Msg.ERROR,
-          buttons: Ext.Msg.OK}); 
-    }
-    else
-    {
-      var Action = Ext.getCmp('adddetloc_Action').getValue().trim();
-      var Location_Det = Ext.getCmp('adddetloc_name').getValue().trim();
-      var Location_Det_ID = Ext.getCmp('adddetloc_LocDet_id').getValue().trim();
-      var Location_ID = Ext.getCmp('adddetloc_loc').getValue();
-
-      var loadMask = new Ext.LoadMask(Ext.getBody(), {
-          msg: 'Please Wait...'});
-          loadMask.show();
-
-      Ext.Ajax.request({
-         url: 'app/php/accessLocDetails.php',
-         params: 
-         {
-		Action: Action,
-		Location_ID: Location_ID,
-		Location_Det_ID: Location_Det_ID,
-		Location_Det: Location_Det
-         },
-         failure: function(conn, response, options, eOpts)
-         {
-               loadMask.hide();
-               Ext.Msg.show({
-                 title: 'Error!',
-                 msg: conn.responseText,
-                 icon: Ext.Msg.ERROR,
-                 buttons: Ext.Msg.OK
-               });
-         },  
-         success: function(conn, response, options, eOpts)
-         {
-            var result = Ext.JSON.decode(conn.responseText, true);
-            if (!result)
-            {
-               loadMask.hide();
-               result = {};
-               result.success = false;
-               result.msg = conn.responseText;
-            } 
-            if (result.success)
-            {
-               Ext.getStore('LocationsDet2').loadData(result['Location_Detail']);
-               Ext.getStore('Locations').loadData(result['Location']);
-               loadMask.hide();
-               var win2 = Ext.getCmp('winlocdetadd')
-               win2.destroy(); 
-            }     
-            else
-            {
-               if (result.msg == "no_session")
-                          window.location="index.html";
-               else
-               {
-                  loadMask.hide();
-                    Ext.Msg.show({
-                    title: 'Fail!',
-                    msg: result.msg,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                   });
-                }
-        }   // result is success          
-     } // success function
-    });  //Ajax Request
-
-     
-    } 
-
-      
-  },
-//Click of the delete button for a location detail grid
-    onButtonClickdeletelocationdet: function(button, e, options) {
-
-       var g = Ext.getCmp('LocationDetGrid'); 
-       if (!g.getSelectionModel().hasSelection())
-       {
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: 'You must first select a Location Detail from the grid.',
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });             
-       }
-       else
-       {
-         var rec = g.getSelectionModel().getSelection()[0]; 
-         var Location_Detail_ID = rec.get("Location_Detail_ID");
-
-         Ext.MessageBox.confirm('Please Confirm',
-          'Are you sure you would like to delete this Location Detail?',
-          function(choice)
-          { 
-           if( choice == 'yes')
-           {
-
-              var loadMask = new Ext.LoadMask(Ext.getBody(), {
-
-              msg: 'Please Wait...'});
-              loadMask.show();
-
-              Ext.Ajax.request({
-                url: 'app/php/accessLocDetails.php',
-                params:  
-                {  Action: 'D',
-                   Location_ID: '', 
-                   Location_Det_ID: Location_Detail_ID,
-                   Location_Det: '' },
-                failure: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  Ext.Msg.show({
-                    title: 'Error!',
-                    msg: conn.responseText,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                  });
-                }, 
-                success: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('LocationsDet2').loadData(result['Location_Detail']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      loadMask.hide();
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.msg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                      });
-                    }
-                  }             
-                }  
-              });
-            } 
-         });          
-        }
-           
-    },  
 
 //Reports Grid
 //=============================
@@ -7111,9 +3213,313 @@ clickincidentsusdetailcancel: function(button, e, options) {
            
     }, 
 
+  
+
 
 //General Functions
 //*******************************
+//This method sets the updatability of controls on the incident detail view
+    setIncidentUpdatability: function(d)
+    {
+      
+      if (d == "U" || d == "A")
+      {
+         Ext.getCmp('id_action').setReadOnly(false); 
+         Ext.getCmp('id_Incidentnum').setReadOnly(false); 
+         Ext.getCmp('id_Incidentname').setReadOnly(false); 
+         Ext.getCmp('id_officersscene').setReadOnly(false); 
+         Ext.getCmp('id_dateoccurred').setReadOnly(false); 
+         Ext.getCmp('id_Address1').setReadOnly(false); 
+         Ext.getCmp('id_address2').setReadOnly(false); 
+         Ext.getCmp('id_City').setReadOnly(false); 
+         Ext.getCmp('id_State').setReadOnly(false); 
+         Ext.getCmp('id_zipcode').setReadOnly(false); 
+         Ext.getCmp('id_location').setReadOnly(false); 
+         Ext.getCmp('id_locationdet').setReadOnly(false); 
+         Ext.getCmp('id_lawsuit').setReadOnly(false); 
+         Ext.getCmp('id_indoor').setReadOnly(false); 
+         Ext.getCmp('id_officersfiredguns').setReadOnly(false); 
+         Ext.getCmp('id_officersshotsfired').setReadOnly(false); 
+         Ext.getCmp('id_latitude').setReadOnly(false); 
+         Ext.getCmp('id_longitude').setReadOnly(false); 
+         Ext.getCmp('id_time').setReadOnly(false); 
+         Ext.getCmp('id_approx_time').setReadOnly(false);  
+
+         Ext.getCmp('sd_Title').setReadOnly(false);
+         Ext.getCmp('sd_Author').setReadOnly(false);
+         Ext.getCmp('sd_datewritten').setReadOnly(false);
+         Ext.getCmp('sd_sourceid').setReadOnly(false);
+         Ext.getCmp('sd_Link').setReadOnly(false);
+         Ext.getCmp('sd_SourceType').setReadOnly(false);
+         Ext.getCmp('sd_abstract').setReadOnly(false);
+         Ext.getCmp('sd_newspaper').setReadOnly(false);
+
+         Ext.getCmp('io_outsideagency').setReadOnly(false);
+         Ext.getCmp('io_officer_search').setReadOnly(false);
+         Ext.getCmp('io_incidentofficer_id').setReadOnly(false);
+         Ext.getCmp('io_officer_id').setReadOnly(false);
+         Ext.getCmp('io_race_id').setReadOnly(false);
+         Ext.getCmp('io_officername').setReadOnly(false);
+         Ext.getCmp('io_gender').setReadOnly(false);
+         Ext.getCmp('io_race').setReadOnly(false);
+         Ext.getCmp('io_offassignment').setReadOnly(false);
+         Ext.getCmp('io_calltype').setReadOnly(false);
+         Ext.getCmp('io_depttype').setReadOnly(false);
+         Ext.getCmp('io_department').setReadOnly(false);
+         Ext.getCmp('io_officerstatus').setReadOnly(false);
+         Ext.getCmp('io_yrsexperience').setReadOnly(false);
+         Ext.getCmp('io_shotsfired').setReadOnly(false);
+         Ext.getCmp('io_Age').setReadOnly(false);
+         Ext.getCmp('io_exp_in_cluster').setReadOnly(false);
+         Ext.getCmp('io_Casualty').setReadOnly(false);
+
+         Ext.getCmp('susdet_shotarea').setReadOnly(false); 
+         Ext.getCmp('susdet_suspect_search').setReadOnly(false); 
+         Ext.getCmp('susdet_age').setReadOnly(false);
+         Ext.getCmp('susdet_incidentsuspect_id').setReadOnly(false);
+         Ext.getCmp('susdet_suspect_id').setReadOnly(false);
+         Ext.getCmp('susdet_race_id').setReadOnly(false);
+         Ext.getCmp('susdet_suspectname').setReadOnly(false);
+         Ext.getCmp('susdet_shot_text').setReadOnly(false);
+         Ext.getCmp('susdet_shot_value').setReadOnly(false);
+         Ext.getCmp('susdet_gender').setReadOnly(false);
+         Ext.getCmp('susdet_race').setReadOnly(false);
+         Ext.getCmp('susdet_MentalState').setReadOnly(false);
+         Ext.getCmp('susdet_Weapons').setReadOnly(false);
+         Ext.getCmp('susdet_aggression').setReadOnly(false);
+         Ext.getCmp('susdet_vHitRun').setReadOnly(false);
+         Ext.getCmp('susdet_vchase').setReadOnly(false);
+         Ext.getCmp('susdet_fchase').setReadOnly(false);
+         Ext.getCmp('susdet_uscitizen').setReadOnly(false);
+         Ext.getCmp('susdet_gang').setReadOnly(false);
+         Ext.getCmp('susdet_fatality').setReadOnly(false);
+         Ext.getCmp('susdet_injury').setReadOnly(false);
+
+         Ext.getCmp('ogaddbtn').setVisible(true);
+         Ext.getCmp('ogeditbtn').setVisible(true);
+         Ext.getCmp('ogdelete').setVisible(true);
+         Ext.getCmp('ogview').setVisible(false);
+
+         Ext.getCmp('ssugaddbtn').setVisible(true);
+         Ext.getCmp('susgeditbtn').setVisible(true);
+         Ext.getCmp('susgdelete').setVisible(true);
+         Ext.getCmp('susgview').setVisible(false);
+
+         Ext.getCmp('sgaddbtn').setVisible(true);
+         Ext.getCmp('sgeditbtn').setVisible(true);
+         Ext.getCmp('sgdelete').setVisible(true);
+         Ext.getCmp('sgview').setVisible(false);  
+
+         Ext.getCmp('sd_newspaperadd').setDisabled(false);
+         Ext.getCmp('sd_sourcetypeadd').setDisabled(false);
+
+         Ext.getCmp('io_search').setDisabled(false);
+         Ext.getCmp('io_off_add').setDisabled(false);
+         Ext.getCmp('io_addassignment').setDisabled(false);
+         Ext.getCmp('io_addcalltype').setDisabled(false);
+         Ext.getCmp('io_adddepttype').setDisabled(false);
+         Ext.getCmp('io_adddepartment').setDisabled(false);
+         Ext.getCmp('io_addstatus').setDisabled(false);
+
+         Ext.getCmp('susdet_search').setDisabled(false);
+         Ext.getCmp('susdet_suspect_add').setDisabled(false);
+         Ext.getCmp('susdet_addMentalState').setDisabled(false);
+         Ext.getCmp('susdet_addWeapons').setDisabled(false);
+         Ext.getCmp('susdet_addaggression').setDisabled(false);
+         Ext.getCmp('susdet_clear_shot').setDisabled(false);
+      }
+      else if (d == "V")
+      {
+         Ext.getCmp('id_action').setReadOnly(true); 
+         Ext.getCmp('id_Incidentnum').setReadOnly(true); 
+         Ext.getCmp('id_Incidentname').setReadOnly(true); 
+         Ext.getCmp('id_officersscene').setReadOnly(true); 
+         Ext.getCmp('id_dateoccurred').setReadOnly(true); 
+         Ext.getCmp('id_Address1').setReadOnly(true); 
+         Ext.getCmp('id_address2').setReadOnly(true); 
+         Ext.getCmp('id_City').setReadOnly(true); 
+         Ext.getCmp('id_State').setReadOnly(true); 
+         Ext.getCmp('id_zipcode').setReadOnly(true); 
+         Ext.getCmp('id_location').setReadOnly(true); 
+         Ext.getCmp('id_locationdet').setReadOnly(true); 
+         Ext.getCmp('id_lawsuit').setReadOnly(true); 
+         Ext.getCmp('id_indoor').setReadOnly(true); 
+         Ext.getCmp('id_officersfiredguns').setReadOnly(true); 
+         Ext.getCmp('id_officersshotsfired').setReadOnly(true); 
+         Ext.getCmp('id_latitude').setReadOnly(true); 
+         Ext.getCmp('id_longitude').setReadOnly(true); 
+         Ext.getCmp('id_time').setReadOnly(true); 
+         Ext.getCmp('id_approx_time').setReadOnly(true); 
+
+         Ext.getCmp('sd_Title').setReadOnly(true);
+         Ext.getCmp('sd_Author').setReadOnly(true);
+         Ext.getCmp('sd_datewritten').setReadOnly(true);
+         Ext.getCmp('sd_sourceid').setReadOnly(true);
+         Ext.getCmp('sd_Link').setReadOnly(true);
+         Ext.getCmp('sd_SourceType').setReadOnly(true);
+         Ext.getCmp('sd_abstract').setReadOnly(true);
+         Ext.getCmp('sd_newspaper').setReadOnly(true);
+
+         Ext.getCmp('io_outsideagency').setReadOnly(true);
+         Ext.getCmp('io_officer_search').setReadOnly(true);
+         Ext.getCmp('io_incidentofficer_id').setReadOnly(true);
+         Ext.getCmp('io_officer_id').setReadOnly(true);
+         Ext.getCmp('io_race_id').setReadOnly(true);
+         Ext.getCmp('io_officername').setReadOnly(true);
+         Ext.getCmp('io_gender').setReadOnly(true);
+         Ext.getCmp('io_race').setReadOnly(true);
+         Ext.getCmp('io_offassignment').setReadOnly(true);
+         Ext.getCmp('io_calltype').setReadOnly(true);
+         Ext.getCmp('io_depttype').setReadOnly(true);
+         Ext.getCmp('io_department').setReadOnly(true);
+         Ext.getCmp('io_officerstatus').setReadOnly(true);
+         Ext.getCmp('io_yrsexperience').setReadOnly(true);
+         Ext.getCmp('io_shotsfired').setReadOnly(true);
+         Ext.getCmp('io_Age').setReadOnly(true);
+         Ext.getCmp('io_exp_in_cluster').setReadOnly(true);
+         Ext.getCmp('io_Casualty').setReadOnly(true);
+
+         Ext.getCmp('susdet_shotarea').setReadOnly(true); 
+         Ext.getCmp('susdet_suspect_search').setReadOnly(true); 
+         Ext.getCmp('susdet_age').setReadOnly(true);
+         Ext.getCmp('susdet_incidentsuspect_id').setReadOnly(true);
+         Ext.getCmp('susdet_suspect_id').setReadOnly(true);
+         Ext.getCmp('susdet_race_id').setReadOnly(true);
+         Ext.getCmp('susdet_suspectname').setReadOnly(true);
+         Ext.getCmp('susdet_shot_text').setReadOnly(true);
+         Ext.getCmp('susdet_shot_value').setReadOnly(true);
+         Ext.getCmp('susdet_gender').setReadOnly(true);
+         Ext.getCmp('susdet_race').setReadOnly(true);
+         Ext.getCmp('susdet_MentalState').setReadOnly(true);
+         Ext.getCmp('susdet_Weapons').setReadOnly(true);
+         Ext.getCmp('susdet_aggression').setReadOnly(true);
+         Ext.getCmp('susdet_vHitRun').setReadOnly(true);
+         Ext.getCmp('susdet_vchase').setReadOnly(true);
+         Ext.getCmp('susdet_fchase').setReadOnly(true);
+         Ext.getCmp('susdet_uscitizen').setReadOnly(true);
+         Ext.getCmp('susdet_gang').setReadOnly(true);
+         Ext.getCmp('susdet_fatality').setReadOnly(true);
+         Ext.getCmp('susdet_injury').setReadOnly(true);
+
+         Ext.getCmp('ogaddbtn').setVisible(false);
+         Ext.getCmp('ogeditbtn').setVisible(false);
+         Ext.getCmp('ogdelete').setVisible(false);
+         Ext.getCmp('ogview').setVisible(true);
+
+         Ext.getCmp('ssugaddbtn').setVisible(false);
+         Ext.getCmp('susgeditbtn').setVisible(false);
+         Ext.getCmp('susgdelete').setVisible(false);
+         Ext.getCmp('susgview').setVisible(true);
+
+         Ext.getCmp('sgaddbtn').setVisible(false);
+         Ext.getCmp('sgeditbtn').setVisible(false);
+         Ext.getCmp('sgdelete').setVisible(false);
+         Ext.getCmp('sgview').setVisible(true); 
+
+         Ext.getCmp('sd_newspaperadd').setDisabled(true);
+         Ext.getCmp('sd_sourcetypeadd').setDisabled(true);
+
+         Ext.getCmp('io_search').setDisabled(true);
+         Ext.getCmp('io_off_add').setDisabled(true);
+         Ext.getCmp('io_addassignment').setDisabled(true);
+         Ext.getCmp('io_addcalltype').setDisabled(true);
+         Ext.getCmp('io_adddepttype').setDisabled(true);
+         Ext.getCmp('io_adddepartment').setDisabled(true);
+         Ext.getCmp('io_addstatus').setDisabled(true);
+
+         Ext.getCmp('susdet_search').setDisabled(true);
+         Ext.getCmp('susdet_suspect_add').setDisabled(true);
+         Ext.getCmp('susdet_addMentalState').setDisabled(true);
+         Ext.getCmp('susdet_addWeapons').setDisabled(true);
+         Ext.getCmp('susdet_addaggression').setDisabled(true);
+         Ext.getCmp('susdet_clear_shot').setDisabled(true);  
+      }
+
+
+    }, 
+//This function gets the security access for the user.
+    getsecurity: function()
+    {
+
+
+        Ext.Ajax.timeout = 30000; // this changes the 30 second  
+        Ext.Ajax.request({
+        url: 'app/php/getsecurity.php',
+        params: {},
+        scope :this,
+        failure: function(conn, response, options, eOpts)
+        {
+            var errmsg = conn.responseText;
+            if (errmsg == null || errmsg == '') errmsg = "No response from server.";
+              Ext.Msg.show({
+              title: 'Error!',
+              msg: errmsg,
+              icon: Ext.Msg.ERROR,
+              buttons: Ext.Msg.OK
+            });
+        }, 
+        success: function(conn, response, options, eOpts)
+                {
+                  var result = Ext.JSON.decode(conn.responseText, true);
+                  if (!result)
+                  {
+                    result = {};
+                    result.success = false;
+                    result.msg = conn.responseText;
+                  } 
+                  if (result.success)
+                  {
+
+                   var Access_NewIncident = result.Access_NewIncident;
+                   var Access_QueryView = result.Access_QueryView;
+                   var Access_QueryUpdate = result.Access_QueryUpdate;
+                   var Access_Reports = result.Access_Reports;
+
+
+                   if (Access_NewIncident == "Y")
+                   {   
+                     Ext.getCmp('mmAddIncident').setVisible(true);
+                   }   
+                   if (Access_QueryView == "Y")
+                   {   
+                     Ext.getCmp('mmUpdateIncident').setVisible(true);
+                     Ext.getCmp('ig_view').setVisible(true);
+                   }  
+                   if (Access_QueryUpdate == "Y") 
+                   {   
+                     Ext.getCmp('mmUpdateIncident').setVisible(true);
+                     Ext.getCmp('ig_edit').setVisible(true);
+                     Ext.getCmp('ig_delete').setVisible(true);
+                   }  
+                   if (Access_Reports == "Y")
+                   {   
+                     Ext.getCmp('mmReports').setVisible(true);
+                   }    
+
+                  }     
+                  else
+                  {
+                    if (result.msg == "no_session")
+                                window.location="index.html";
+                    else
+                    {
+//                      loadMask.hide();
+                      Ext.Msg.show({
+                        title: 'Fail!',
+                        msg: result.errorMsg,
+                        icon: Ext.Msg.ERROR,
+                        buttons: Ext.Msg.OK
+                      });
+                    }
+                  }             
+                  
+                }  
+              });         
+        
+//        console.log('Exiting function getsettings ');
+
+    }, //Function getsecurity
+
 //This function will validate that a message box string has been added 
     validatenotblank: function(fld) 
     { 
@@ -7305,189 +3711,6 @@ clickincidentsusdetailcancel: function(button, e, options) {
               });         
 
     }, 
-//This function get all aggression types 
-    getAggressionTypes: function()
-    {
-
-        var loadMask = new Ext.LoadMask(Ext.getBody(), {
-        msg: 'Please Wait...'});
-        loadMask.show();
-
-        Ext.Ajax.timeout = 30000; // this changes the 30 second  
-        Ext.Ajax.request({
-        url: 'app/php/accessAgressionTypes.php',
-        params: {Action: 'Q',
-                 Aggression_Type_ID: '',
-                 Aggression_Type: ''},
-        failure: function(conn, response, options, eOpts)
-        {
-            loadMask.hide();
-            var errmsg = conn.responseText;
-            if (errmsg == null || errmsg == '') errmsg = "No response from server.";
-              loadMask.hide();
-              Ext.Msg.show({
-              title: 'Error!',
-              msg: errmsg,
-              icon: Ext.Msg.ERROR,
-              buttons: Ext.Msg.OK
-            });
-        }, 
-        success: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('AggressionTypes').loadData(result['Aggression_Type']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.errorMsg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                      });
-                    }
-                  }             
-                  
-                }  
-              });         
-
-    }, 
-//This function get all Location 
-    getLocations: function()
-    {
-
-        var loadMask = new Ext.LoadMask(Ext.getBody(), {
-        msg: 'Please Wait...'});
-        loadMask.show();
-
-        Ext.Ajax.timeout = 30000; // this changes the 30 second  
-        Ext.Ajax.request({
-        url: 'app/php/accessLocations.php',
-        params: {Action: 'Q',
-                 Location_ID: '',
-                 Location: ''},
-        failure: function(conn, response, options, eOpts)
-        {
-            loadMask.hide();
-            var errmsg = conn.responseText;
-            if (errmsg == null || errmsg == '') errmsg = "No response from server.";
-              loadMask.hide();
-              Ext.Msg.show({
-              title: 'Error!',
-              msg: errmsg,
-              icon: Ext.Msg.ERROR,
-              buttons: Ext.Msg.OK
-            });
-        }, 
-        success: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('Locations').loadData(result['Location']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.errorMsg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                      });
-                    }
-                  }             
-                  
-                }  
-              });         
-
-    }, 
-//This function get all Location 
-    getMentalStatus: function()
-    {
-
-        var loadMask = new Ext.LoadMask(Ext.getBody(), {
-        msg: 'Please Wait...'});
-        loadMask.show();
-
-        Ext.Ajax.timeout = 30000; // this changes the 30 second  
-        Ext.Ajax.request({
-        url: 'app/php/accessMentalStates.php',
-        params: {Action: 'Q',
-                 Mental_Status_ID: '',
-                 Mental_Status: ''},
-        failure: function(conn, response, options, eOpts)
-        {
-            loadMask.hide();
-            var errmsg = conn.responseText;
-            if (errmsg == null || errmsg == '') errmsg = "No response from server.";
-              loadMask.hide();
-              Ext.Msg.show({
-              title: 'Error!',
-              msg: errmsg,
-              icon: Ext.Msg.ERROR,
-              buttons: Ext.Msg.OK
-            });
-        }, 
-        success: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('MentalStates').loadData(result['Mental_States']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.errorMsg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                      });
-                    }
-                  }             
-                  
-                }  
-              });         
-
-    }, 
 
 //This function get the existing incidents or search on the incident name 
     getIncidents: function(n,t)
@@ -7542,745 +3765,6 @@ clickincidentsusdetailcancel: function(button, e, options) {
                        cpanel.getLayout().setActiveItem(2);
                     }
 
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.errorMsg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                      });
-                    }
-                  }             
-                  
-                }  
-              });         
-
-    }, 
-//Get all officers
-    getallofficers: function() 
-    {
-
-           var loadMask = new Ext.LoadMask(Ext.getBody(), {
-           msg: 'Please Wait...'});
-           loadMask.show();
-           Ext.Ajax.timeout = 30000; // this changes the 30 second  
-           Ext.Ajax.request({
-           url: 'app/php/officersearch.php',
-//           url: 'app/data/officersearch.json',
-           params: {Name_search: ''},
-           scope :this,
-           failure: function(conn, response, options, eOpts)
-           {
-            loadMask.hide();
-            var errmsg = conn.responseText;
-            if (errmsg == null || errmsg == '') errmsg = "No response from server.";
-              Ext.Msg.show({
-              title: 'Error!',
-              msg: errmsg,
-              icon: Ext.Msg.ERROR,
-              buttons: Ext.Msg.OK
-            });
-           }, 
-           success: function(conn, response, options, eOpts)
-           {
-               loadMask.hide();
-               var result = Ext.JSON.decode(conn.responseText, true);
-               if (!result)
-               {
-                 result = {};
-                 result.success = false;
-                 result.msg = conn.responseText;
-               } 
-               if (result.success)
-               {
-                 loadMask.hide();
-                 //Received response from server
-                   Ext.getStore('officer_search').loadData(result['officersearch']);
-               }     
-               else
-               {
-                 if (result.msg == "no_session")
-                              window.location="index.html";
-                 else
-                 {
-                   loadMask.hide();
-                    Ext.Msg.show({
-                      title: 'Fail!',
-                      msg: result.errorMsg,
-                      icon: Ext.Msg.ERROR,
-                      buttons: Ext.Msg.OK
-                   });
-                 }
-               } //not result is success            
-               
-           }  //success function
-              });         
-        
-                            
-    },
-//This function get all Newspapers 
-    getNewspapers: function()
-    {
-
-        var loadMask = new Ext.LoadMask(Ext.getBody(), {
-        msg: 'Please Wait...'});
-        loadMask.show();
-
-        Ext.Ajax.timeout = 30000; // this changes the 30 second  
-        Ext.Ajax.request({
-        url: 'app/php/accessNewspapers.php',
-        params: {Action: 'Q',
-                 Newspaper_ID: '',
-                 Newspaper: ''},
-        failure: function(conn, response, options, eOpts)
-        {
-            loadMask.hide();
-            var errmsg = conn.responseText;
-            if (errmsg == null || errmsg == '') errmsg = "No response from server.";
-              loadMask.hide();
-              Ext.Msg.show({
-              title: 'Error!',
-              msg: errmsg,
-              icon: Ext.Msg.ERROR,
-              buttons: Ext.Msg.OK
-            });
-        }, 
-        success: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                      Ext.getStore('Newspapers').loadData(result['Newspapers']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.errorMsg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                      });
-                    }
-                  }             
-                  
-                }  
-              });         
-
-    }, 
-//This function get all Officer Assignments 
-    getOffAssignments: function()
-    {
-
-        var loadMask = new Ext.LoadMask(Ext.getBody(), {
-        msg: 'Please Wait...'});
-        loadMask.show();
-
-        Ext.Ajax.timeout = 30000; // this changes the 30 second  
-        Ext.Ajax.request({
-        url: 'app/php/accessOfficerAssignment.php',
-        params: {Action: 'Q',
-                 Assignment_ID: '',
-                 Assignment: ''},
-        failure: function(conn, response, options, eOpts)
-        {
-            loadMask.hide();
-            var errmsg = conn.responseText;
-            if (errmsg == null || errmsg == '') errmsg = "No response from server.";
-              loadMask.hide();
-              Ext.Msg.show({
-              title: 'Error!',
-              msg: errmsg,
-              icon: Ext.Msg.ERROR,
-              buttons: Ext.Msg.OK
-            });
-        }, 
-        success: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('officerassignments').loadData(result['Officer_Assignment']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.errorMsg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                      });
-                    }
-                  }             
-                  
-                }  
-              });         
-
-    }, 
-//This function gets all Officer Call Types 
-    getOfficerCallTypes: function()
-    {
-
-        var loadMask = new Ext.LoadMask(Ext.getBody(), {
-        msg: 'Please Wait...'});
-        loadMask.show();
-
-        Ext.Ajax.timeout = 30000; // this changes the 30 second  
-        Ext.Ajax.request({
-        url: 'app/php/accessOfficerCallType.php',
-        params: {Action: 'Q',
-                 Call_Type_ID: '',
-                 Call_Type: ''},
-        failure: function(conn, response, options, eOpts)
-        {
-            loadMask.hide();
-            var errmsg = conn.responseText;
-            if (errmsg == null || errmsg == '') errmsg = "No response from server.";
-              loadMask.hide();
-              Ext.Msg.show({
-              title: 'Error!',
-              msg: errmsg,
-              icon: Ext.Msg.ERROR,
-              buttons: Ext.Msg.OK
-            });
-        }, 
-        success: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('officercalltypes').loadData(result['Officer_Call_Type']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.errorMsg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                      });
-                    }
-                  }             
-                  
-                }  
-              });         
-
-    }, 
-
-
-//Get all Subjects
-    getallsubjects: function() 
-    {
-
-           var loadMask = new Ext.LoadMask(Ext.getBody(), {
-           msg: 'Please Wait...'});
-           loadMask.show();
-           Ext.Ajax.timeout = 30000; // this changes the 30 second  
-           Ext.Ajax.request({
-           url: 'app/php/suspectsearch.php',
-//           url: 'app/data/suspectsearch.json',
-           params: {Name_search: ''},
-           scope :this,
-           failure: function(conn, response, options, eOpts)
-           {
-            loadMask.hide();
-            var errmsg = conn.responseText;
-            if (errmsg == null || errmsg == '') errmsg = "No response from server.";
-              Ext.Msg.show({
-              title: 'Error!',
-              msg: errmsg,
-              icon: Ext.Msg.ERROR,
-              buttons: Ext.Msg.OK
-            });
-           }, 
-           success: function(conn, response, options, eOpts)
-           {
-               loadMask.hide();
-               var result = Ext.JSON.decode(conn.responseText, true);
-               if (!result)
-               {
-                 result = {};
-                 result.success = false;
-                 result.msg = conn.responseText;
-               } 
-               if (result.success)
-               {
-                 loadMask.hide();
-                 //Received response from server
-                   Ext.getStore('suspect_search').loadData(result['suspectsearch']);
-               }     
-               else
-               {
-                 if (result.msg == "no_session")
-                              window.location="index.html";
-                 else
-                 {
-                   loadMask.hide();
-                    Ext.Msg.show({
-                      title: 'Fail!',
-                      msg: result.errorMsg,
-                      icon: Ext.Msg.ERROR,
-                      buttons: Ext.Msg.OK
-                   });
-                 }
-               } //not result is success            
-               
-           }  //success function
-              });         
-        
-                            
-    },
-//This function get all Source Types 
-    getSourceTypes: function()
-    {
-
-        var loadMask = new Ext.LoadMask(Ext.getBody(), {
-        msg: 'Please Wait...'});
-        loadMask.show();
-
-        Ext.Ajax.timeout = 30000; // this changes the 30 second  
-        Ext.Ajax.request({
-        url: 'app/php/accessSourceType.php',
-        params: {Action: 'Q',
-                 Source_Type_ID: '',
-                 Source: ''},
-        failure: function(conn, response, options, eOpts)
-        {
-            loadMask.hide();
-            var errmsg = conn.responseText;
-            if (errmsg == null || errmsg == '') errmsg = "No response from server.";
-              loadMask.hide();
-              Ext.Msg.show({
-              title: 'Error!',
-              msg: errmsg,
-              icon: Ext.Msg.ERROR,
-              buttons: Ext.Msg.OK
-            });
-        }, 
-        success: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('sourcetypes').loadData(result['Source_Type']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.errorMsg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                      });
-                    }
-                  }             
-                  
-                }  
-              });         
-
-    }, 
-//This function get all Weapons 
-    getWeapons: function()
-    {
-
-        var loadMask = new Ext.LoadMask(Ext.getBody(), {
-        msg: 'Please Wait...'});
-        loadMask.show();
-
-        Ext.Ajax.timeout = 30000; // this changes the 30 second  
-        Ext.Ajax.request({
-        url: 'app/php/accessWeapons.php',
-        params: {Action: 'Q',
-                 Weapons_ID: '',
-                 Weapons_Type: ''},
-        failure: function(conn, response, options, eOpts)
-        {
-            loadMask.hide();
-            var errmsg = conn.responseText;
-            if (errmsg == null || errmsg == '') errmsg = "No response from server.";
-              loadMask.hide();
-              Ext.Msg.show({
-              title: 'Error!',
-              msg: errmsg,
-              icon: Ext.Msg.ERROR,
-              buttons: Ext.Msg.OK
-            });
-        }, 
-        success: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('Weapons').loadData(result['Weapons']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.errorMsg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                      });
-                    }
-                  }             
-                  
-                }  
-              });         
-
-    }, 
-
-//This function get all Departments 
-    getDepartments: function()
-    {
-
-        var loadMask = new Ext.LoadMask(Ext.getBody(), {
-        msg: 'Please Wait...'});
-        loadMask.show();
-
-        Ext.Ajax.timeout = 30000; // this changes the 30 second  
-        Ext.Ajax.request({
-        url: 'app/php/accessDepartment.php',
-        params: {Action: 'Q',
-                 Department_ID: '',
-                 Department: ''},
-        failure: function(conn, response, options, eOpts)
-        {
-            loadMask.hide();
-            var errmsg = conn.responseText;
-            if (errmsg == null || errmsg == '') errmsg = "No response from server.";
-              loadMask.hide();
-              Ext.Msg.show({
-              title: 'Error!',
-              msg: errmsg,
-              icon: Ext.Msg.ERROR,
-              buttons: Ext.Msg.OK
-            });
-        }, 
-        success: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('departments').loadData(result['Officer_Department']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.errorMsg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                      });
-                    }
-                  }             
-                  
-                }  
-              });         
-
-    }, 
-//This function get all Officer Dept Types 
-    getOffDeptTypes: function()
-    {
-
-        var loadMask = new Ext.LoadMask(Ext.getBody(), {
-        msg: 'Please Wait...'});
-        loadMask.show();
-
-        Ext.Ajax.timeout = 30000; // this changes the 30 second  
-        Ext.Ajax.request({
-        url: 'app/php/accessOffDeptType.php',
-        params: {Action: 'Q',
-                 Dept_Type_ID: '',
-                 Dept_Type: ''},
-        failure: function(conn, response, options, eOpts)
-        {
-            loadMask.hide();
-            var errmsg = conn.responseText;
-            if (errmsg == null || errmsg == '') errmsg = "No response from server.";
-              loadMask.hide();
-              Ext.Msg.show({
-              title: 'Error!',
-              msg: errmsg,
-              icon: Ext.Msg.ERROR,
-              buttons: Ext.Msg.OK
-            });
-        }, 
-        success: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('depttypes').loadData(result['Officer_Dept_Type']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.errorMsg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                      });
-                    }
-                  }             
-                  
-                }  
-              });         
-
-    }, 
-//This function get all Officer Status 
-    getOffStatus: function()
-    {
-
-        var loadMask = new Ext.LoadMask(Ext.getBody(), {
-        msg: 'Please Wait...'});
-        loadMask.show();
-
-        Ext.Ajax.timeout = 30000; // this changes the 30 second  
-        Ext.Ajax.request({
-        url: 'app/php/accessOffStatus.php',
-        params: {Action: 'Q',
-                 Status_ID: '',
-                 Status: ''},
-        failure: function(conn, response, options, eOpts)
-        {
-            loadMask.hide();
-            var errmsg = conn.responseText;
-            if (errmsg == null || errmsg == '') errmsg = "No response from server.";
-              loadMask.hide();
-              Ext.Msg.show({
-              title: 'Error!',
-              msg: errmsg,
-              icon: Ext.Msg.ERROR,
-              buttons: Ext.Msg.OK
-            });
-        }, 
-        success: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('officerstatuss').loadData(result['Officer_Status']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.errorMsg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                      });
-                    }
-                  }             
-                  
-                }  
-              });         
-
-    }, 
-//This function get all Races 
-    getRaces: function()
-    {
-
-        var loadMask = new Ext.LoadMask(Ext.getBody(), {
-        msg: 'Please Wait...'});
-        loadMask.show();
-
-        Ext.Ajax.timeout = 30000; // this changes the 30 second  
-        Ext.Ajax.request({
-        url: 'app/php/accessRace.php',
-        params: {Action: 'Q',
-                 Race_ID: '',
-                 Race: ''},
-        failure: function(conn, response, options, eOpts)
-        {
-            loadMask.hide();
-            var errmsg = conn.responseText;
-            if (errmsg == null || errmsg == '') errmsg = "No response from server.";
-              loadMask.hide();
-              Ext.Msg.show({
-              title: 'Error!',
-              msg: errmsg,
-              icon: Ext.Msg.ERROR,
-              buttons: Ext.Msg.OK
-            });
-        }, 
-        success: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                     Ext.getStore('Races').loadData(result['Race']);
-                     loadMask.hide();
-                  }     
-                  else
-                  {
-                    if (result.msg == "no_session")
-                                window.location="index.html";
-                    else
-                    {
-                      Ext.Msg.show({
-                        title: 'Fail!',
-                        msg: result.errorMsg,
-                        icon: Ext.Msg.ERROR,
-                        buttons: Ext.Msg.OK
-                      });
-                    }
-                  }             
-                  
-                }  
-              });         
-
-    }, 
-//This function get all Location Details for the DB Maint Grid 
-    getDBMainLocDets: function()
-    {
-
-        var loadMask = new Ext.LoadMask(Ext.getBody(), {
-        msg: 'Please Wait...'});
-        loadMask.show();
-
-        Ext.Ajax.timeout = 30000; // this changes the 30 second  
-        Ext.Ajax.request({
-        url: 'app/php/accessLocDetails.php',
-        params: {Action: 'Q',
-                 Location_ID: '',
-                 Location_Det_ID: '',
-                 Location_Det: ''},
-        failure: function(conn, response, options, eOpts)
-        {
-            loadMask.hide();
-            var errmsg = conn.responseText;
-            if (errmsg == null || errmsg == '') errmsg = "No response from server.";
-              loadMask.hide();
-              Ext.Msg.show({
-              title: 'Error!',
-              msg: errmsg,
-              icon: Ext.Msg.ERROR,
-              buttons: Ext.Msg.OK
-            });
-        }, 
-        success: function(conn, response, options, eOpts)
-                {
-                  loadMask.hide();
-                  var result = Ext.JSON.decode(conn.responseText, true);
-                  if (!result)
-                  {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                  } 
-                  if (result.success)
-                  {
-                      Ext.getStore('LocationsDet2').loadData(result['Location_Detail']);
-                      Ext.getStore('Locations').loadData(result['Location']);
-                      loadMask.hide();
                   }     
                   else
                   {
@@ -8362,10 +3846,13 @@ clickincidentsusdetailcancel: function(button, e, options) {
 
          var newspap = Ext.getCmp('sd_newspaper');
          var newspapadd = Ext.getCmp('sd_newspaperadd');
+         var frm = Ext.getCmp('sourcedetail');
 
          newspap.clearValue();
 //         console.log("Change fired: " + sourcetype_display); 
-         if (sourcetype_display == "Newspaper")
+
+// Only enable the newspaper fields if we are not viewing a source
+         if (sourcetype_display == "Newspaper" && Ext.getCmp('sdsubmit').isVisible(true))
          {
            newspap.setDisabled(false);
            newspapadd.setDisabled(false);
@@ -8449,7 +3936,7 @@ clickincidentsusdetailcancel: function(button, e, options) {
       }
 
       return y;
-    }, 
+    }
 
 
     

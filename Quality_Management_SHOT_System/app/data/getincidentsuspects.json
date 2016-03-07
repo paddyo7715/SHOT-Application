@@ -1,0 +1,12 @@
+{
+    "success": true,
+    "Incident_Suspect": [
+         {'Incident_Suspect_ID': '1', 'Suspect_ID': '1', 'Suspect_Name': 'Bill Miller','Mental_Status_ID': '2', 'Weapons_ID': '2', 'Vehicle_Use_hit_and_run': 'true', 'Vehicle_Chase': 'true', 'Foot_Chase': 'false', 'Type_of_Agression_ID': '1', 'Age': '23', 'US_Citizen': 'true', 'Gang_Affiliation': 'false', 'Fatality': 'false', 'Injury': 'true', 'Gender': 'M', 'Race': 'White', 'Race_ID': '1', 'Weapons_Type': 'Gun', 'Aggression_Type': 'Verbal', 'shot_string': '2,9'},
+         {'Incident_Suspect_ID': '2', 'Suspect_ID': '11', 'Suspect_Name': 'Bill Smith','Mental_Status_ID': '1', 'Weapons_ID': '1', 'Vehicle_Use_hit_and_run': 'true', 'Vehicle_Chase': 'true', 'Foot_Chase': 'false', 'Type_of_Agression_ID': '2', 'Age': '20', 'US_Citizen': 'false', 'Gang_Affiliation': 'false', 'Fatality': 'false', 'Injury': 'true', 'Gender': 'M', 'Race': 'Black', 'Race_ID': '1', 'Weapons_Type': 'Gun', 'Aggression_Type': 'Verbal', 'shot_string': '1,2,9'},
+         {'Incident_Suspect_ID': '3', 'Suspect_ID': '3', 'Suspect_Name': 'Dave Miller','Mental_Status_ID': '3', 'Weapons_ID': '1', 'Vehicle_Use_hit_and_run': 'false', 'Vehicle_Chase': 'true', 'Foot_Chase': 'false', 'Type_of_Agression_ID': '1', 'Age': '18', 'US_Citizen': 'true', 'Gang_Affiliation': 'false', 'Fatality': 'false', 'Injury': 'true', 'Gender': 'M', 'Race': 'White', 'Race_ID': '1', 'Weapons_Type': 'Sword', 'Aggression_Type': 'Verbal', 'shot_string': '2,9'},
+         {'Incident_Suspect_ID': '4', 'Suspect_ID': '1', 'Suspect_Name': 'Bill Miller','Mental_Status_ID': '2', 'Weapons_ID': '2', 'Vehicle_Use_hit_and_run': 'true', 'Vehicle_Chase': 'true', 'Foot_Chase': 'false', 'Type_of_Agression_ID': '1', 'Age': '18', 'US_Citizen': 'true', 'Gang_Affiliation': 'false', 'Fatality': 'false', 'Injury': 'true', 'Gender': 'M', 'Race': 'White', 'Race_ID': '1', 'Weapons_Type': 'Gun', 'Aggression_Type': 'Verbal', 'shot_string': '2,9'}
+
+    ]
+
+
+}

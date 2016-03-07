@@ -1,5 +1,6 @@
 <?php
 
+  $func = "";
   $Action = $_POST['Action']; 
   $Function = $_POST['Function']; 
   $Name = $_POST['Name'];
@@ -16,31 +17,22 @@
   require("common.php");
   set_error_handler("customError");
 
+
+  $func = "Add Officer";
+  $needed_access_functions = array("Access_NewIncident","Access_QueryUpdate");
+  Verify_Security($func, $needed_access_functions);
+
+
+
   if ($Action == "A")
   {
     $sql = "INSERT INTO officer (Name,Gender,Race_ID,Additional_Info) VALUES ('$Name', '$Gender', $Race_ID, '$AdditionalInfo')"; 
-error_log($sql);
+//error_log($sql);
     if ($resultdb = $mysqli->query($sql) != TRUE) {
       trigger_error("Error Adding Officer to Database!");
     }
 
     $last_id = $mysqli->insert_id;
-  }  
-  elseif ($Action == "U")
-  {
-    $sql = "UPDATE officer set Name = '$Name', Gender = '$Gender', Race_ID = $Race_ID, Additional_Info = '$AdditionalInfo' WHERE Officer_ID = $Officer_ID"; 
-//error_log($sql);
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Updating Officer in Database!");
-    }
-  }  
-  elseif ($Action == "D")
-  {
-    $sql = "DELETE FROM officer WHERE Officer_ID = $Officer_ID"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Deleting Officer from Database!  This officer may be used in an Incident");
-    }
   }  
 
 //Only send back all officers if this is call is from the DB Main page

@@ -10,9 +10,13 @@
   require("common.php");
   set_error_handler("customError");
 
+  $func = "Officer Search";
+  $needed_access_functions = array("Access_NewIncident","Access_QueryUpdate");
+  Verify_Security($func, $needed_access_functions);
+
   $num_rows = 0;
   $sql = "SELECT Officer_ID, Name, Gender, Race, Additional_Info FROM officer o, race r where $likeclause  o.Race_ID = r.Race_ID order by Officer_ID";
-  error_log($sql);
+//  error_log($sql);
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {
 		array_push($result, $record);

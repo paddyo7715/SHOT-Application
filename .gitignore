@@ -217,6 +217,7 @@ pip-log.txt
 
 # SHOT app
 /SHOT_System/keys.php
+/keys.php
 /SHOT_System/laravel/vendor
 /SHOT_System/laravel/node_modules
 /SHOT_System/laravel/public/storage

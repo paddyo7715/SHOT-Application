@@ -208,7 +208,14 @@ Ext.define('Packt.view.incidentdetailform', {
           fieldLabel: 'LAT/LON:',
           labelWidth: 70,
           inputWidth: 120,
-          allowBlank: true  
+          allowBlank: true,
+          // value: 55, // @DEBUG value
+          itemId: 'latitude',
+          listeners: {
+           change: function(field) {
+             field.up('panel').checkGoogle();
+           }
+          }
         },
         {
           labelAlign: 'left',
@@ -216,7 +223,14 @@ Ext.define('Packt.view.incidentdetailform', {
           name: 'id_longitude',
           id: 'id_longitude',
           inputWidth: 120,
-          allowBlank: true  
+          allowBlank: true,
+          // value: 12, // @DEBUG value
+          itemId: 'longitude',
+          listeners: {
+            change: function(field) {
+              field.up('panel').checkGoogle();
+            }
+          }
         },
         {
           xtype: 'hiddenfield',
@@ -285,11 +299,16 @@ Ext.define('Packt.view.incidentdetailform', {
           keyNavEnabled: false,
           allowBlank: true,
           mouseWheelEnabled: true
-        },
-        {
-          xtype: 'displayfield',
-          fieldLabel: '',
-          width: 2
+        }, {
+          xtype: 'button',
+          text: 'Google Maps',
+          disabled: true, // comment this out for @DEBUG
+          itemId: 'google',
+          listeners: {
+            click: function(button) {
+              button.up('panel').google();
+            }
+          }
         }]
         },
         {
@@ -462,6 +481,75 @@ Ext.define('Packt.view.incidentdetailform', {
         action: 'idcancelbtn',
         formBind: false
     }
-    ]
+    ],
+
+    checkGoogle: function() {
+      // toggle google button based on lat and lon fields values
+      // console.log('lat or lon fields changed');
+      var lon = this.down('#longitude');
+      var lat = this.down('#latitude');
+      var goo = this.down('#google');
+      if (lon.getValue().length && lat.getValue().length) {
+        goo.enable();
+      } else {
+        goo.disable();
+      }
+    },
+    google: function() {
+      // console.log('google cliceked');
+      var lon = this.down('#longitude').getValue() * 1;
+      var lat = this.down('#latitude').getValue() * 1;
+      var goo = this.down('#google');
+      var win = Ext.ComponentQuery.query('window#google_map_window')[0];
+      var msg = 'Latitude: ' + lat + ', Longitude: ' + lon;
+      win.setTitle(msg);
+      win.show(goo, function() {
+
+        // position
+        var pos = {
+          lat: lat,
+          lng: lon
+        };
+
+        // map
+        if (! google_map) {
+          // Standard Usage Limits
+          // Users of the standard API:
+          // Free until exceeding 25,000 map loads per 24 hours for 90 consecutive days
+          google_map = new google.maps.Map(document.getElementById('google_map_window'), {
+            center: pos,
+            zoom: 8
+          });
+        } else {
+          google_map.setCenter(pos);
+        }
+
+        // info_window pop-up
+        if (! google_infowindow) {
+          google_infowindow = new google.maps.InfoWindow();
+        }
+        google_infowindow.setContent(msg);
+        google_infowindow.setPosition(pos);
+        google_infowindow.open(google_map);
+
+        /*
+        var marker = new google.maps.Marker({
+          position: pos,
+          map: map,
+          title: 'Hello World!'
+        });
+        */
+
+      });
+    }
 });
 
+Ext.create('Ext.window.Window', {
+    height: 450,
+    width: 650,
+    modal: true,
+    resizable: false,
+    closeAction: 'hide',
+    itemId: 'google_map_window',
+    html: '<div id="google_map_window" style="height: 100%; margin: 0; padding: 0;"></div>'
+});

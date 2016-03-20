@@ -3,7 +3,12 @@ Ext.define('Packt.view.incidentdetailform', {
     alias: 'widget.incidentdetailform',
     width: 730,
     stores: [
-        'States','Locations','LocationsDet'
+        'States',
+        'Locations',
+        'LocationsDet'
+    ],
+    requires: [
+      'Packt.view.GoogleMapWindow'
     ],
     layout: 'anchor',
     layout: {
@@ -485,25 +490,28 @@ Ext.define('Packt.view.incidentdetailform', {
 
     checkGoogle: function() {
       // toggle google button based on lat and lon fields values
-      // console.log('lat or lon fields changed');
       var lon = this.down('#longitude');
       var lat = this.down('#latitude');
-      var goo = this.down('#google');
+      var google_button = this.down('#google');
       if (lon.getValue().length && lat.getValue().length) {
-        goo.enable();
+        google_button.enable();
       } else {
-        goo.disable();
+        google_button.disable();
       }
     },
     google: function() {
-      // console.log('google cliceked');
       var lon = this.down('#longitude').getValue() * 1;
       var lat = this.down('#latitude').getValue() * 1;
-      var goo = this.down('#google');
-      var win = Ext.ComponentQuery.query('window#google_map_window')[0];
+      var google_button = this.down('#google');
+      var win = Ext.ComponentQuery.query('GoogleMapWindow');
+      if (win.length) {
+        win = win[0];
+      } else {
+        win = Ext.create('Packt.view.GoogleMapWindow');
+      }
       var msg = 'Latitude: ' + lat + ', Longitude: ' + lon;
       win.setTitle(msg);
-      win.show(goo, function() {
+      win.show(google_button, function() {
 
         // position
         var pos = {
@@ -533,23 +541,13 @@ Ext.define('Packt.view.incidentdetailform', {
         google_infowindow.open(google_map);
 
         /*
-        var marker = new google.maps.Marker({
+        google_marker = new google.maps.Marker({
           position: pos,
-          map: map,
+          map: google_map,
           title: 'Hello World!'
         });
         */
 
       });
     }
-});
-
-Ext.create('Ext.window.Window', {
-    height: 450,
-    width: 650,
-    modal: true,
-    resizable: false,
-    closeAction: 'hide',
-    itemId: 'google_map_window',
-    html: '<div id="google_map_window" style="height: 100%; margin: 0; padding: 0;"></div>'
 });

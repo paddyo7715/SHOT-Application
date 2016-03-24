@@ -1,7 +1,8 @@
 <?php
 
 // get keys
-require_once './../../../keys.php';
+require_once './../../keys.php';
+
 $db = new mysqli($DB_Host, $DB_User, $DB_Pass, $DB_Name);
 
 // test connection

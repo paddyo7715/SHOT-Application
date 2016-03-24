@@ -3,7 +3,12 @@ Ext.define('Packt.view.incidentdetailform', {
     alias: 'widget.incidentdetailform',
     width: 730,
     stores: [
-        'States','Locations','LocationsDet'
+        'States',
+        'Locations',
+        'LocationsDet'
+    ],
+    requires: [
+      'Packt.view.GoogleMapWindow'
     ],
     layout: 'anchor',
     layout: {
@@ -207,18 +212,42 @@ Ext.define('Packt.view.incidentdetailform', {
           id: 'id_latitude',
           fieldLabel: 'LAT/LON:',
           labelWidth: 70,
-          inputWidth: 120,
-          allowBlank: true  
+          inputWidth: 70,
+          allowBlank: true,
+          // value: 55, // @DEBUG value
+          itemId: 'latitude',
+          listeners: {
+           change: function(field) {
+             field.up('panel').checkGoogle();
+           }
+          }
         },
         {
           labelAlign: 'left',
           xtype: 'textfield',
           name: 'id_longitude',
           id: 'id_longitude',
-          inputWidth: 120,
-          allowBlank: true  
-        },
-        {
+          inputWidth: 70,
+          allowBlank: true,
+          // value: 12, // @DEBUG value
+          itemId: 'longitude',
+          listeners: {
+            change: function(field) {
+              field.up('panel').checkGoogle();
+            }
+          }
+        }, {
+          xtype: 'button',
+          text: 'Google Maps',
+          disabled: true, // comment this out for @DEBUG
+          itemId: 'google_button',
+          cls: 'google_button',
+          listeners: {
+            click: function(button) {
+              button.up('panel').googleButton();
+            }
+          }
+        }, {
           xtype: 'hiddenfield',
           name: 'id_action',
           id: 'id_action',
@@ -285,11 +314,6 @@ Ext.define('Packt.view.incidentdetailform', {
           keyNavEnabled: false,
           allowBlank: true,
           mouseWheelEnabled: true
-        },
-        {
-          xtype: 'displayfield',
-          fieldLabel: '',
-          width: 2
         }]
         },
         {
@@ -462,6 +486,72 @@ Ext.define('Packt.view.incidentdetailform', {
         action: 'idcancelbtn',
         formBind: false
     }
-    ]
-});
+    ],
 
+    checkGoogle: function() {
+      // toggle google button based on lat and lon fields values
+      var lon = this.down('#longitude').getValue().length;
+      var lat = this.down('#latitude').getValue().length;
+      var google_button = this.down('#google_button');
+      if (lon && lat) {
+        google_button.enable();
+      } else {
+        google_button.disable();
+      }
+    },
+    googleButton: function() {
+      // show Google Maps
+      var lon = this.down('#longitude').getValue() * 1; // " * 1" enforces number, as opposed to string
+      var lat = this.down('#latitude').getValue() * 1;
+      var google_button = this.down('#google_button');
+      var msg = 'Latitude: ' + lat + ', Longitude: ' + lon;
+
+      // create Google Maps window
+      var win = Ext.ComponentQuery.query('GoogleMapWindow');
+      if (win.length) { // already exists
+        win = win[0];
+      } else { // fresh
+        win = Ext.create('Packt.view.GoogleMapWindow');
+      }
+      win.setTitle(msg);
+      win.show(google_button, function() {
+
+        // position
+        var pos = {
+          lat: lat,
+          lng: lon
+        };
+
+        // map
+        if (! shot_map.map) {
+          // Standard Usage Limits
+          // Users of the standard API:
+          // Free until exceeding 25,000 map loads per 24 hours for 90 consecutive days
+          shot_map.map = new google.maps.Map(document.getElementById('google_map_window'), {
+            center: pos,
+            zoom: 8
+          });
+        } else {
+          shot_map.map.setCenter(pos);
+        }
+
+        // info_window pop-up
+        if (! shot_map.infowindow) {
+          shot_map.infowindow = new google.maps.InfoWindow();
+        }
+        shot_map.infowindow.setContent(msg);
+        shot_map.infowindow.setPosition(pos);
+        shot_map.infowindow.open(shot_map.map);
+
+        // marker
+        /*if (! shot_map.marker) {
+          shot_map.marker = new google.maps.Marker({
+            position: pos,
+            map: shot_map.map,
+            title: 'Hello World!'
+          });
+        }*/
+
+      });
+    }
+});

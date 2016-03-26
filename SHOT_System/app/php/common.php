@@ -1,5 +1,6 @@
-<?php 
+<?php
 
+// ini_set('error_log', dirname(dirname(dirname(dirname(__FILE__)))) . '/error.log');
 
 function customError($errno, $errstr) {
   $result['success'] = false;

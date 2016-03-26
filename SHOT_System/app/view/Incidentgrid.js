@@ -69,7 +69,6 @@ Ext.define('Packt.view.Incidentgrid', {
             // Subject Name (textbox) can be partial match
             xtype: 'textfield',
             emptyText: 'Subject',
-            disabled: true,
             width: 70,
             name: 'subject'
         }, {

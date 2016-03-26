@@ -30,7 +30,7 @@ if (isset($post['name'])) {
 if (isset($post['region'])) {
   $value = trim($post['region']);
   if (strlen($value)) {
-    $where[] = "s.Region = '$value'";
+    $where[] = "st.Region = '$value'";
   }
 }
 
@@ -76,7 +76,13 @@ if (isset($post['date_to'])) {
   }
 }
 
-// partial Subject Name
+// partial Subject (Suspect) Name
+if (isset($post['subject'])) {
+  $value = trim($post['subject']);
+  if (strlen($value)) {
+    $where[] = "su.Suspect_Name LIKE '%$value%'";
+  }
+}
 
 // mysql request
 if ($where) {
@@ -86,11 +92,13 @@ if ($where) {
       i.Incident_Name,
       i.Date_Occured,
       i.City,
-      s.State,
+      st.State,
       i.Incident_ID
     FROM
       incident AS i
-      LEFT JOIN state AS s ON i.State_ID = s.State_ID
+      LEFT JOIN state AS st ON i.State_ID = st.State_ID
+      LEFT JOIN suspect_mapping AS sm ON i.Incident_ID = sm.Incident_Suspect_ID
+      LEFT JOIN suspect AS su ON sm.Suspect_ID = su.Suspect_ID
     WHERE $where
     ORDER BY
       i.Incident_Name

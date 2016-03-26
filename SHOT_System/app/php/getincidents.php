@@ -15,7 +15,7 @@ $result = [];
 $where = [];
 
 // search params
-$post = $_REQUEST; // @TODO replace with _POST
+$post = $_POST;
 // error_log(print_r($post, 1));
 
 // partial incident name

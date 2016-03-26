@@ -199,4 +199,4 @@ if ($mysqli->connect_errno) {
     exit("Unable to connect to Database");
 }
 
-?>
+/* End of file */

@@ -3639,6 +3639,13 @@ Ext.define('Packt.controller.cont', {
             Ext.Array.each(arguments[0], function() {
                 name = this.getName();
                 value = this.getValue();
+                if (value) {
+                    if (value instanceof Date) {
+                        value = value.toJSON().split('T')[0];
+                    }
+                    html.push(name + '=' + value);
+                }
+                fields[name] = value;
             });
             footer.setHTML('Last search: ' + html.join('; '));
         } else {

@@ -55,7 +55,6 @@ Ext.define('Packt.view.Incidentgrid', {
             // Incident date (to and from dates)
             xtype: 'datefield',
             emptyText: 'From',
-            disabled: true, // @TEMP
             width: 70,
             format:  'n/j/y',
             name: 'date_from'
@@ -63,7 +62,6 @@ Ext.define('Packt.view.Incidentgrid', {
             // to
             xtype: 'datefield',
             emptyText: 'To',
-            disabled: true,
             width: 70,
             format:  'n/j/y',
             name: 'date_to'

@@ -16,6 +16,7 @@ $where = [];
 
 // search params
 $post = $_REQUEST; // @TODO replace with _POST
+error_log(print_r($post, 1));
 
 // partial incident name
 if (isset($post['name'])) {
@@ -41,7 +42,7 @@ if (isset($post['city'])) {
   }
 }
 
-// exact state
+// exact state ID
 if (isset($post['state'])) {
   $value = intval(trim($post['state']));
   if ($value) { // must be a positive number
@@ -57,9 +58,25 @@ if (isset($post['zip'])) {
   }
 }
 
-// @TODO
-// 'date_from',
-// 'date_to',
+// date_from
+if (isset($post['date_from'])) {
+  $value = trim($post['date_from']);
+  if (strlen($value)) {
+    list($date) = explode('T', $value);
+    $where[] = "i.Date_Occured >= '$date'";
+  }
+}
+
+// date_to
+if (isset($post['date_to'])) {
+  $value = trim($post['date_to']);
+  if (strlen($value)) {
+    list($date) = explode('T', $value);
+    $where[] = "i.Date_Occured <= '$date'";
+  }
+}
+
+// partial Subject Name
 
 // mysql request
 if ($where) {

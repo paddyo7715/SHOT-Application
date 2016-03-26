@@ -1,7 +1,0 @@
-{
-    "success": true,
-    "Users": [
-         { 'Status': 'Active', 'User_Number': '1', 'User_ID': 'Baaa1235','Name': 'Brenden OReilly','Organization': 'Pace University', 'Email': 'jim@yahoo.com','Phone': '921 4563432', 'Access_NewIncident': 'true', 'Access_QueryView': 'true', 'Access_QueryUpdate': 'true', 'Access_DatabaseMaint': 'true', 'Access_Reports': 'true', 'Access_UserManagement': 'true', 'Display_Access': 'New Incident, Query View'},
-         { 'Status': 'Active', 'User_Number': '2', 'User_ID': 'xxxx343','Name': 'Paula Davis','Organization': 'New York Police Department', 'Email': 'jim343@yahoo.com','Phone': '911 4563432' ,'Access_NewIncident': 'true', 'Access_QueryView': 'true', 'Access_QueryUpdate': 'true', 'Access_DatabaseMaint': 'true', 'Access_Reports': 'true', 'Access_UserManagement': 'true', 'Display_Access': 'New Incident, Query View'}
-    ]
-}

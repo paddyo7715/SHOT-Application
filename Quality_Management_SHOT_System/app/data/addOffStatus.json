@@ -1,9 +1,0 @@
-{
-    "success": true,
-    "Officer_Status": [
-         {'Status_ID': '1','Status': 'ON-duty'},
-         {'Status_ID': '3','Status': 'OFF-duty'},
-         {'Status_ID': '4','Status': 'ON-duty & OFF-duty'}
-    ]
-
-}

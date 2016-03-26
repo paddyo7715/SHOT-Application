@@ -1,8 +1,0 @@
-{
-    "success": true,
-    "suspectsearch": [
-         {'Suspect_ID': '1', 'Suspect_Name': 'Jim Miller','Gender': 'M',  'Race': 'White'},
-         {'Suspect_ID': '14', 'Suspect_Name': 'Mike Miller','Gender': 'M',  'Race': 'White'}
-
-    ]
-}

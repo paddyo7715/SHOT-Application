@@ -1,8 +1,0 @@
-{
-    "success": true,
-    "Incident_Source": [
-         {'Source_ID': '1', 'Source_Type_ID': '1', 'Source': 'Newspaper', 'Title': 'One Shot in Miami','Author': 'Mike Wilson', 'Source_Date': '4/12/2014','Link': 'www.nytimes.com/Miami1.html', 'Newspaper_ID': '1',  'Newspaper': 'New York Times', 'Abstract': 'None'},
-         {'Source_ID': '2', 'Source_Type_ID': '10', 'Source': 'Newspaper', 'Title': 'Miami Shooting','Author': 'Mary Smith', 'Source_Date': '4/15/2014','Link': 'www.nytimes.com/Miami2.html', 'Newspaper_ID': '2','Newspaper': 'New York Times' , 'Abstract': 'None'},
-         {'Source_ID': '3', 'Source_Type_ID': '1', 'Source': 'Magazine', 'Title': 'The Miami Shooting','Author': 'Frank Murry', 'Source_Date': '4/15/2014','Link': 'www.miamipost.com/shooting.html', 'Newspaper_ID': '1', 'Newspaper': 'Miami Post' , 'Abstract': 'None'}
-    ]
-}

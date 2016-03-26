@@ -18,7 +18,7 @@ Ext.define('Packt.view.Incidentgrid' ,{
                  labelAlign: 'left',
                  xtype: 'textfield',
                  name: 'ig_search',
-                 id: 'ig_search',
+                 itemId: 'ig_search',
                  fieldLabel: 'Search Name',
                  inputWidth: 180
                },
@@ -26,7 +26,6 @@ Ext.define('Packt.view.Incidentgrid' ,{
                  xtype: 'button',
                  text: 'Search',
                  width: 70,
-                 id: 'ig_searchbtn',
                  itemId: 'ig_searchbtn'
                },
                {

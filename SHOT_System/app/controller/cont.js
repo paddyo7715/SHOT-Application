@@ -23,9 +23,9 @@ Ext.define('Packt.controller.cont', {
         'targetareas',
         'Incidentslist',
         'suspect_races'
-
     ],
-    models: ['State',
+    models: [
+      'State',
              'LocationDet',
              'Location', 
              'source' , 
@@ -46,7 +46,7 @@ Ext.define('Packt.controller.cont', {
              'incidentsuspect', 
              'targetarea', 
              'Incidentlist',
-             'suspect_race',
+             'suspect_race'
     ],
     views: [
         'appheader',
@@ -68,7 +68,6 @@ Ext.define('Packt.controller.cont', {
         'SuspectbyRacePieChart',
         'reportpanel',
         'reportsgrid'
-
     ],
     refs: [
         {
@@ -104,6 +103,8 @@ Ext.define('Packt.controller.cont', {
             selector: 'reportsgrid'
         },
         {
+            // creates Packt.app.getContController().getIncidentgrid()
+            // or - within the scope of this file - this.getIncidentgrid()
             ref : 'Incidentgrid',
             selector: 'Incidentgrid'
         }
@@ -257,8 +258,7 @@ Ext.define('Packt.controller.cont', {
 //Update Incident
     onButtonClickUpdateIncident: function(button, e, options) {
 //         console.log('Existing Customers Clicked '); 
-         
-         Ext.getCmp('ig_search').setValue("");
+         this.getIncidentgrid().down('#ig_search').setValue("");
          this.clearincidentforms();
          this.getIncidents("","false");
          Ext.getCmp('IncidentTabPanel').setVisible(true);
@@ -266,14 +266,11 @@ Ext.define('Packt.controller.cont', {
     },
 //Reports
     onButtonClickReports: function(button, e, options) {
-//       console.log(myvar); 
-
            var rptpanel = Ext.getCmp('rptpanel'); 
            rptpanel.getLayout().setActiveItem(0);
 
            var cpanel = Ext.getCmp('centerpanel'); 
            cpanel.getLayout().setActiveItem(3);
-       
     },
 //================================
 
@@ -2946,12 +2943,8 @@ clickincidentsusdetailcancel: function(button, e, options) {
 //================================
 //Click on the Search button
     onButtonClickincidentsearch: function(button, e, options) {
-
-        var search_name = Ext.getCmp('ig_search').getValue();
-        this.getIncidents(search_name,"true");
-
-
-                            
+      var search = button.prev('#ig_search').getValue();
+      this.getIncidents(search, 'true');
     },
 //Click on the edit button
     onButtonClickincidentedit: function(button, e, options) {

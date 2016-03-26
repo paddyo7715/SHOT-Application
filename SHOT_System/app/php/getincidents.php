@@ -48,4 +48,4 @@ set_error_handler("customError");
 /* close connection */
   $mysqli->close();
 
-?>
+/* End of file */

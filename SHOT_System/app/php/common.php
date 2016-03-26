@@ -184,13 +184,6 @@ if (!isset($_SESSION['dbServer']) || empty($_SESSION['dbServer']))
 
 }
 
-$APP_ROOT = $_SESSION['APP_ROOT'];
-$APP_DEBUG = $_SESSION['APP_DEBUG'];
-
-if ($APP_DEBUG) {
-  ini_set('error_log', $APP_ROOT . '/error.log');
-}
-
 $server = $_SESSION["dbServer"];
 $user = $_SESSION["dbUser"];
 $pass = $_SESSION["dbPW"];

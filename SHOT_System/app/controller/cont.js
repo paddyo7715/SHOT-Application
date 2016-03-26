@@ -468,7 +468,6 @@ Ext.define('Packt.controller.cont', {
     onButtonClickUpdateIncident: function(button, e, options) {
         // console.log('Existing Customers Clicked '); 
 
-        // @GEO
         // reset search form fields in the toolbar
         var fields = this.getIncidentgrid().down('#ig_search_toolbar').query('textfield');
         Ext.each(fields, function() {
@@ -2922,7 +2921,6 @@ Ext.define('Packt.controller.cont', {
     //================================
     //Click on the Search button
     onButtonClickincidentsearch: function(button, e, options) {
-        // @GEO
         var fields = button.up().query('textfield');
         this.searchIncidents(fields);
     },
@@ -3627,7 +3625,6 @@ Ext.define('Packt.controller.cont', {
      * @return nothing because it fires and ajax
      */
     searchIncidents: function() {
-        // @GEO
         var fields;
         var footer = this.getIncidentgrid().down('#ig_footer').getEl();
         if (arguments.length) {

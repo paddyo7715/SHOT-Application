@@ -56,14 +56,14 @@ Ext.define('Packt.view.Incidentgrid', {
             xtype: 'datefield',
             emptyText: 'From',
             width: 70,
-            format:  'n/j/y',
+            format: 'n/j/y',
             name: 'date_from'
         }, {
             // to
             xtype: 'datefield',
             emptyText: 'To',
             width: 70,
-            format:  'n/j/y',
+            format: 'n/j/y',
             name: 'date_to'
         }, {
             // Subject Name (textbox) can be partial match

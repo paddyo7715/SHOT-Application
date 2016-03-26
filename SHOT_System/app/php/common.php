@@ -2,7 +2,6 @@
 
 
 function customError($errno, $errstr) {
-
   $result['success'] = false;
   $result['msg'] = $errstr;
   echo json_encode($result);
@@ -182,6 +181,13 @@ if (!isset($_SESSION['dbServer']) || empty($_SESSION['dbServer']))
     echo json_encode($result);
     die();
 
+}
+
+$APP_ROOT = $_SESSION['APP_ROOT'];
+$APP_DEBUG = $_SESSION['APP_DEBUG'];
+
+if ($APP_DEBUG) {
+  ini_set('error_log', $APP_ROOT . '/error.log');
 }
 
 $server = $_SESSION["dbServer"];

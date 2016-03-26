@@ -103,6 +103,9 @@ if ($error_happened == "T")
 else
 {
     session_start();
+    $_SESSION['APP_ROOT'] = $APP_ROOT;
+    $_SESSION['APP_DEBUG'] = $APP_DEBUG;
+
     $_SESSION['dbServer'] = $DB_Host;
     $_SESSION['dbUser'] = $DB_User;
     $_SESSION['dbPW'] = $DB_Pass;

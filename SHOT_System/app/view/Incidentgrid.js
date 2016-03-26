@@ -98,6 +98,15 @@ Ext.define('Packt.view.Incidentgrid', {
             id: 'ig_view',
             itemId: 'ig_view'
         }]
+    }, {
+        xtype: 'toolbar',
+        itemId: 'ig_foot_toolbar',
+        dock: 'bottom',
+        items: [{
+            xtype: 'component',
+            itemId: 'ig_footer',
+            html: ''
+        }]
     }],
 
 

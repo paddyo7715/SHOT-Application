@@ -62,7 +62,7 @@ if (isset($post['zip'])) {
 if (isset($post['date_from'])) {
   $value = trim($post['date_from']);
   if (strlen($value)) {
-    list($date) = explode('T', $value);
+    list($date) = explode('T', $value); // just in case
     $where[] = "i.Date_Occured >= '$date'";
   }
 }

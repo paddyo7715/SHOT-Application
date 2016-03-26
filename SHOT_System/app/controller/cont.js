@@ -3629,15 +3629,22 @@ Ext.define('Packt.controller.cont', {
     searchIncidents: function() {
         // @GEO
         var fields;
+        var footer = this.getIncidentgrid().down('#ig_footer').getEl();
         if (arguments.length) {
             // console.log('this is search');
             fields = {};
+            var html = [];
+            var name;
+            var value;
             Ext.Array.each(arguments[0], function() {
-                fields[this.getName()] = this.getValue();
+                name = this.getName();
+                value = this.getValue();
             });
+            footer.setHTML('Last search: ' + html.join('; '));
         } else {
             // console.log('this is reset');
             fields = false;
+            footer.setHTML('');
         }
 
         var loadMask = new Ext.LoadMask(Ext.getBody(), {

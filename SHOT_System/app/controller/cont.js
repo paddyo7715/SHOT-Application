@@ -442,7 +442,7 @@ Ext.define('Packt.controller.cont', {
     //========================================
     //Home
     onButtonClickhome: function(button, e, options) {
-        //       console.log(myvar); 
+        // console.log(myvar); 
 
         var cpanel = Ext.getCmp('centerpanel');
         cpanel.getLayout().setActiveItem(0);
@@ -450,7 +450,7 @@ Ext.define('Packt.controller.cont', {
     },
     //Setup new Incident
     onButtonClickAddIncident: function(button, e, options) {
-        //       console.log(myvar); 
+        // console.log(myvar); 
 
         this.clearincidentforms();
         this.setIncidentUpdatability("A");
@@ -466,7 +466,7 @@ Ext.define('Packt.controller.cont', {
     },
     //Update Incident
     onButtonClickUpdateIncident: function(button, e, options) {
-        //         console.log('Existing Customers Clicked '); 
+        // console.log('Existing Customers Clicked '); 
 
         // @GEO
         // reset search form fields in the toolbar
@@ -684,7 +684,7 @@ Ext.define('Packt.controller.cont', {
 
         var val = combo.getValue();
         var time_v = Ext.getCmp('id_time').getRawValue();
-        //        console.log("time_v: " + time_v);
+        // console.log("time_v: " + time_v);
         if (time_v != null && time_v.length > 0) {
             var shouldbeval = this.getapproxtime(time_v);
             if (shouldbeval != val) {
@@ -729,7 +729,7 @@ Ext.define('Packt.controller.cont', {
     //================================
     //Click of the Add button
     onButtonClicksourceadd: function(button, e, options) {
-        //         console.log('Existing Customers Clicked '); 
+        // console.log('Existing Customers Clicked '); 
 
         var frm = Ext.getCmp('sourcedetail');
 
@@ -759,7 +759,7 @@ Ext.define('Packt.controller.cont', {
             var frm = Ext.getCmp('sourcedetail');
 
             frm.getForm().reset();
-            //         console.log(button.getText()); 
+            // console.log(button.getText()); 
             if (button.getText() == "Edit") {
                 frm.setTitle('Edit Source');
                 Ext.getCmp('sdsubmit').setVisible(true);
@@ -1885,7 +1885,7 @@ Ext.define('Packt.controller.cont', {
                                     result.msg = conn.responseText;
                                 }
                                 if (result.success) {
-                                    //                     console.log(result['LAST_INSERT_ID']);
+                                    // console.log(result['LAST_INSERT_ID']);
 
                                     loadMask.hide();
                                     if (Function == 'O') {
@@ -2266,8 +2266,8 @@ Ext.define('Packt.controller.cont', {
         var shot_string = Ext.getCmp('susdet_shot_text').getValue();
         var shot_values = Ext.getCmp('susdet_shot_value').getValue();
 
-        //          console.log('suspect id ' + Suspect_ID); 
-        //          console.log('shot_string ' + shot_string); 
+        // console.log('suspect id ' + Suspect_ID); 
+        // console.log('shot_string ' + shot_string); 
 
         if (!frm.isValid() || Suspect_ID.length == 0 || shot_string.length == 0) {
             Ext.Msg.show({
@@ -2494,7 +2494,7 @@ Ext.define('Packt.controller.cont', {
     selectshotcombo: function(combo, e, options) {
 
 
-        //         console.log('shot selected ' + combo.getValue()); 
+        // console.log('shot selected ' + combo.getValue()); 
         var val = combo.getValue();
         var targareamodel = Ext.getStore('targetareas').findRecord('Target_Area_ID', val);
         var displayval = targareamodel.get('Specific_Target_Area');
@@ -2842,7 +2842,7 @@ Ext.define('Packt.controller.cont', {
                                     result.msg = conn.responseText;
                                 }
                                 if (result.success) {
-                                    //                     console.log(result['LAST_INSERT_ID']);
+                                    // console.log(result['LAST_INSERT_ID']);
                                     loadMask.hide();
 
                                     if (Function == 'S') {
@@ -3446,7 +3446,7 @@ Ext.define('Packt.controller.cont', {
             }
         });
 
-        //        console.log('Exiting function getsettings ');
+        // console.log('Exiting function getsettings ');
 
     }, //Function getsecurity
 
@@ -3676,12 +3676,12 @@ Ext.define('Packt.controller.cont', {
                 });
             },
             success: function(conn, response, options, eOpts) {
-                //                  console.log('entered success function ');
+                // console.log('entered success function ');
                 loadMask.hide();
                 var result = Ext.JSON.decode(conn.responseText, true);
                 if (!result) {
-                    //                    console.log('Result ');
-                    //                    console.log(result);
+                    // console.log('Result ');
+                    // console.log(result);
                     result = {};
                     result.success = false;
                     result.msg = conn.responseText;
@@ -3771,7 +3771,7 @@ Ext.define('Packt.controller.cont', {
         var frm = Ext.getCmp('sourcedetail');
 
         newspap.clearValue();
-        //         console.log("Change fired: " + sourcetype_display); 
+        // console.log("Change fired: " + sourcetype_display); 
 
         // Only enable the newspaper fields if we are not viewing a source
         if (sourcetype_display == "Newspaper" && Ext.getCmp('sdsubmit').isVisible(true)) {
@@ -3796,7 +3796,7 @@ Ext.define('Packt.controller.cont', {
     //This function setsw the value for the approximate incident time based on a timepicker value.
     getapproxtime: function(t) {
 
-        //       console.log(t);
+        // console.log(t);
         t = t.replace(":", "");
         var num_t = parseInt(t);
 

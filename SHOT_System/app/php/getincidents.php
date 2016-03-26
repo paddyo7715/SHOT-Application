@@ -16,7 +16,7 @@ $where = [];
 
 // search params
 $post = $_REQUEST; // @TODO replace with _POST
-error_log(print_r($post, 1));
+// error_log(print_r($post, 1));
 
 // partial incident name
 if (isset($post['name'])) {
@@ -103,15 +103,15 @@ if ($where) {
     ORDER BY
       i.Incident_Name
   ;";
-  error_log($sql);
+  // error_log($sql);
   $success = $mysqli->connect_errno === 0;
   $mysqli_result = $mysqli->query($sql);
   if ( ! $mysqli_result) {
-    error_log($mysqli->error);
+    // error_log($mysqli->error);
     trigger_error('Error Retrieving incidents from Database!');
   }
   if ($mysqli_result->num_rows > 300) {
-    error_log($num_rows);
+    // error_log($num_rows);
     trigger_error('Too many incidents to return.  Please narrow your search!');
   }
 	while ($record = $mysqli_result->fetch_assoc()) {

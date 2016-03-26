@@ -1,0 +1,5 @@
+{
+    "success": true,
+"Source_Type":[{"Source_Type_ID":"1","Source":"Book"},{"Source_Type_ID":"2","Source":"Broadcast Transcripts"},{"Source_Type_ID":"3","Source":"Commercial\/Non-Governmental Source"},{"Source_Type_ID":"4","Source":"Court Document"},{"Source_Type_ID":"5","Source":"Dataset"},{"Source_Type_ID":"6","Source":"Governmental Report"},{"Source_Type_ID":"7","Source":"Journal"},{"Source_Type_ID":"8","Source":"Magazine"},{"Source_Type_ID":"9","Source":"Mailing List"},{"Source_Type_ID":"10","Source":"Newspaper"},{"Source_Type_ID":"11","Source":"NGO Report"},{"Source_Type_ID":"12","Source":"Website"},{"Source_Type_ID":"13","Source":"Wire Report"},{"Source_Type_ID":"14","Source":"World News Connection"}]
+
+}

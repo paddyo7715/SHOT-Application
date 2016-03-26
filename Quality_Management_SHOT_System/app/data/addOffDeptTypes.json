@@ -1,0 +1,5 @@
+{
+    "success": true,
+"Officer_Dept_Type":[{"Dept_Type_ID":"1","Dept_Type":"local"},{"Dept_Type_ID":"2","Dept_Type":"Sheriff"},{"Dept_Type_ID":"3","Dept_Type":"State"},{"Dept_Type_ID":"4","Dept_Type":"Federal"}]
+
+}

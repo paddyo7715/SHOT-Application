@@ -1,0 +1,75 @@
+<script language="javascript">
+function loadpage() {
+  
+document.getElementById("myusername").focus();
+var regex = new RegExp("[\\?&]errm=([^&#]*)");
+var qs = regex.exec(window.decodeURIComponent(window.location.href));
+//var qs = regex.exec(window.location.href);
+
+ if(qs != null)
+ {
+//qs[1]
+
+   document.getElementById("error").innerHTML=qs[1];
+ } 
+
+ 
+
+
+}
+function validateForm()
+{
+  var username = document.getElementById("myusername").value;
+  var password = document.getElementById("mypassword").value;
+ if(username.trim().length == 0 || password.trim().length == 0)
+  {
+    document.getElementById("error").innerHTML="You must enter both a User ID and Password ";
+    return false;
+  }
+ else
+ {
+   form.submit();
+ }
+}
+</script>
+<html>
+<head><title>Login SHOT System</title></head>
+<body onload="loadpage()">
+<center>
+<div><img  height="400" width="370" src="app/resources/images/shotlogo.png"><br><br></div>
+
+<table width="300" border="0" align="center" cellpadding="0" cellspacing="1" bgcolor="#CCCCCC">
+<tr><td><span style="color:red;" id="error" > </span></td></tr>
+<tr>
+<form name="form1" method="post" onsubmit="return validateForm()" action="app/php/SessionStart.php">
+<td>
+<table width="100%" border="0" cellpadding="3" cellspacing="1" bgcolor="#FFFFFF">
+<tr>
+<td colspan="3"><strong>User Login </strong></td>
+</tr>
+<tr>
+<td width="78">Username</td>
+<td width="6">:</td>
+<td width="294"><input name="myusername" type="text" id="myusername"></td>
+</tr>
+<tr>
+<td>Password</td>
+<td>:</td>
+<td><input name="mypassword" type="PASSWORD" id="mypassword"></td>
+</tr>
+<tr>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+<td><input type="submit" name="Submit" value="Login"></td>
+</tr>
+</table>
+</td>
+</form>
+</tr>
+</table>
+
+
+</center>
+</body>
+
+</html>

@@ -1,20 +1,16 @@
 <?php
 
+/* This will automatically open a database connection and check if the session has expired */
+require_once(dirname(__FILE__) . '/common.php'); // from the same folder
+set_error_handler("customError");
+
   $Incident_Name = $_POST['Incident_Name']; 
-
-
   $likeclause = "";
-  if ($Incident_Name != "")
-  {
+  if ($Incident_Name != "") {
     $likeclause = " Incident_Name like '%$Incident_Name%' and ";
   }
 
   $result = array();
-
-/* This will automatically open a database connection and check if the session has expired */
-  require("common.php");
-  set_error_handler("customError");
-
   $func = "Access Departments";
   $needed_access_functions = array("Access_NewIncident","Access_QueryUpdate", "Access_QueryView");
   Verify_Security($func, $needed_access_functions);

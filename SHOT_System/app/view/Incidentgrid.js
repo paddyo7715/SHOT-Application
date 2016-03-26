@@ -9,26 +9,74 @@ Ext.define('Packt.view.Incidentgrid', {
     border: 0,
     dockedItems: [{
         xtype: 'toolbar',
+        itemId: 'ig_search_toolbar',
         //               flex: 1,
         width: 700,
         dock: 'top',
         items: [{
-            labelAlign: 'left',
+            // incident name
             xtype: 'textfield',
-            name: 'ig_search',
-            itemId: 'ig_search',
-            fieldLabel: 'Search Name',
-            inputWidth: 180
+            emptyText: 'Name',
+            width: 70,
+            name: 'name'
         }, {
+            // Region drop down list box (east, west etc…)
+            xtype: 'combo',
+            emptyText: 'Region',
+            width: 70,
+            store: ['East', 'West', 'etc'],
+            queryMode: 'local',
+            // displayField: 'name',
+            // valueField: 'abbr',
+            name: 'region'
+        }, {
+            // City (textbox) can be partial match
+            xtype: 'textfield',
+            emptyText: 'City',
+            width: 70,
+            name: 'city'
+        }, {
+            // State (drop down list box)
+            xtype: 'combo',
+            emptyText: 'State',
+            width: 50,
+            store: ['NY', 'CA', 'etc'],
+            queryMode: 'local',
+            // displayField: 'name',
+            // valueField: 'abbr',
+            name: 'state'
+        }, {
+            // Zip code (text box)
+            xtype: 'textfield',
+            emptyText: 'Zip',
+            width: 50,
+            name: 'zip'
+        }, {
+            // Incident date (to and from dates)
+            xtype: 'datefield',
+            emptyText: 'From',
+            width: 80,
+            format:  'n/j/y',
+            name: 'date_from'
+        }, {
+            // to
+            xtype: 'datefield',
+            emptyText: 'To',
+            width: 80,
+            format:  'n/j/y',
+            name: 'date_to'
+        },
+
+// Subject Name (textbox) can be partial match
+// ???
+
+        {
             xtype: 'button',
             text: 'Search',
-            width: 70,
             itemId: 'ig_searchbtn'
         }, {
-            xtype: 'displayfield',
-            fieldLabel: '',
-            id: 'displayf',
-            width: 200
+            xtype: 'tbspacer',
+            flex: 1
         }, {
             xtype: 'button',
             text: 'Edit',

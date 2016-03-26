@@ -4,48 +4,105 @@
 require_once(dirname(__FILE__) . '/common.php'); // from the same folder
 set_error_handler("customError");
 
-  $Incident_Name = $_POST['Incident_Name']; 
-  $likeclause = "";
-  if ($Incident_Name != "") {
-    $likeclause = " Incident_Name like '%$Incident_Name%' and ";
+// authorization
+$func = "Access Departments";
+$needed_access_functions = array("Access_NewIncident","Access_QueryUpdate", "Access_QueryView");
+Verify_Security($func, $needed_access_functions);
+
+// defaults
+$success = true;
+$result = [];
+$where = [];
+
+// search params
+$post = $_REQUEST; // @TODO replace with _POST
+
+// partial incident name
+if (isset($post['name'])) {
+  $value = trim($post['name']); // just in case
+  if (strlen($value)) { // string
+    $where[] = "i.Incident_Name LIKE '%$value%'"; // @TODO needs sanitation with mysqli->prepare
   }
+}
 
-  $result = array();
-  $func = "Access Departments";
-  $needed_access_functions = array("Access_NewIncident","Access_QueryUpdate", "Access_QueryView");
-  Verify_Security($func, $needed_access_functions);
+// exact state region
+if (isset($post['region'])) {
+  $value = trim($post['region']);
+  if (strlen($value)) {
+    $where[] = "s.Region = '$value'";
+  }
+}
 
-  $num_rows = 0;
+// partial city
+if (isset($post['city'])) {
+  $value = trim($post['city']);
+  if (strlen($value)) {
+    $where[] = "i.City LIKE '%$value%'";
+  }
+}
 
-  if ($Incident_Name != "")
-  {
-  $sql = "SELECT Incident_ID, Incident_Name, Date_Occured, City, State FROM incident I, state S where $likeclause  I.State_ID = S.State_ID order by Incident_Name";
-//  error_log($sql);
-  if ($resultdb = $mysqli->query($sql)) {
-	while($record = $resultdb->fetch_assoc()) {
-		array_push($result, $record);
-                $num_rows++;
+// exact state
+if (isset($post['state'])) {
+  $value = intval(trim($post['state']));
+  if ($value) { // must be a positive number
+    $where[] = "i.State_ID = $value";
+  }
+}
+
+// partial ZIP
+if (isset($post['zip'])) {
+  $value = trim($post['zip']);
+  if (strlen($value)) {
+    $where[] = "i.ZIP_CODE LIKE '%$value%'";
+  }
+}
+
+// @TODO
+// 'date_from',
+// 'date_to',
+
+// mysql request
+if ($where) {
+  $where = implode(' AND ', $where);
+
+  $sql = "SELECT
+      i.Incident_Name,
+      i.Date_Occured,
+      i.City,
+      s.State,
+      i.Incident_ID
+    FROM
+      incident AS i
+      LEFT JOIN state AS s ON i.State_ID = s.State_ID
+    WHERE $where
+    ORDER BY
+      i.Incident_Name
+  ;";
+  error_log($sql);
+  $success = $mysqli->connect_errno === 0;
+  $mysqli_result = $mysqli->query($sql);
+  if ( ! $mysqli_result) {
+    error_log($mysqli->error);
+    trigger_error('Error Retrieving incidents from Database!');
+  }
+  if ($mysqli_result->num_rows > 300) {
+    error_log($num_rows);
+    trigger_error('Too many incidents to return.  Please narrow your search!');
+  }
+	while ($record = $mysqli_result->fetch_assoc()) {
+		$result[] = $record;
 	}
-       $resultdb->close();
-  }
-  else { trigger_error("Error Retrieving incidents from Database!"); } 
-  }
-
-  if ($num_rows > 300)
-  {
-//    error_log($num_rows);
-    trigger_error("Too many incidents to return.  Please narrow your search!");
-  }
-
-
-//send back information to extjs
-  echo json_encode(array(
-	"success" => $mysqli->connect_errno == 0,
-        "num_rows" => $num_rows, 
-	"Incident" => $result
-
-  ));	
-/* close connection */
   $mysqli->close();
+} else {
+  // error_log('Empty search! Return nothing.');
+}
+
+// send information back to extjs
+$out = [
+  'success'  => $success,
+  'num_rows' => count($result), 
+  'Incident' => $result,
+];
+echo json_encode($out);
 
 /* End of file */

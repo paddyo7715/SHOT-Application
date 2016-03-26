@@ -466,9 +466,15 @@ Ext.define('Packt.controller.cont', {
     //Update Incident
     onButtonClickUpdateIncident: function(button, e, options) {
         //         console.log('Existing Customers Clicked '); 
-        this.getIncidentgrid().down('#ig_search').setValue("");
+
+        // @GEO
+        // reset search form fields in the toolbar
+        var fields = this.getIncidentgrid().down('#ig_search_toolbar').query('textfield');
+        Ext.each(fields, function() {
+            this.setValue('');
+        })
         this.clearincidentforms();
-        this.getIncidents("", "false");
+        this.searchIncidents(); // reset grid
         Ext.getCmp('IncidentTabPanel').setVisible(true);
         Ext.getCmp('IncidentTabPanel').setActiveTab(0);
     },
@@ -2915,8 +2921,9 @@ Ext.define('Packt.controller.cont', {
     //================================
     //Click on the Search button
     onButtonClickincidentsearch: function(button, e, options) {
-        var search = button.prev('#ig_search').getValue();
-        this.getIncidents(search, 'true');
+        // @GEO
+        var fields = button.up().query('textfield');
+        this.searchIncidents(fields);
     },
     //Click on the edit button
     onButtonClickincidentedit: function(button, e, options) {
@@ -3612,24 +3619,34 @@ Ext.define('Packt.controller.cont', {
 
     },
 
-    //This function get the existing incidents or search on the incident name 
-    getIncidents: function(n, t) {
+    /**
+     * Search incidents
+     * @param  {object} fields - search params (optional)
+     * @return nothing because it fires and ajax
+     */
+    searchIncidents: function() {
+        // @GEO
+        var fields;
+        if (arguments.length) {
+            // console.log('this is search');
+            fields = {};
+            Ext.Array.each(arguments[0], function() {
+                fields[this.getName()] = this.getValue();
+            });
+        } else {
+            // console.log('this is reset');
+            fields = false;
+        }
 
-        //        console.log('Entering function get existing customers ');
         var loadMask = new Ext.LoadMask(Ext.getBody(), {
             msg: 'Please Wait...'
         });
         loadMask.show();
 
-
-
         Ext.Ajax.timeout = 30000; // this changes the 30 second  
         Ext.Ajax.request({
             url: 'app/php/getincidents.php',
-            //        url: 'app/data/getIncidents.json',
-            params: {
-                Incident_Name: n
-            },
+            params: fields,
             failure: function(conn, response, options, eOpts) {
                 loadMask.hide();
                 var errmsg = conn.responseText;
@@ -3654,21 +3671,20 @@ Ext.define('Packt.controller.cont', {
                     result.msg = conn.responseText;
                 }
                 if (result.success) {
-                    if (result.num_rows == "0" && t == "true")
+                    if (fields && result.num_rows == '0') {
                         Ext.Msg.alert('Results', 'No Incidents to Show.');
-                    else {
+                    } else {
                         Ext.getStore('Incidentslist').loadData(result['Incident']);
                         var cpanel = Ext.getCmp('centerpanel');
                         cpanel.getLayout().setActiveItem(2);
                     }
-
                 } else {
                     if (result.msg == "no_session")
                         window.location = "index.html";
                     else {
                         Ext.Msg.show({
                             title: 'Fail!',
-                            msg: result.errorMsg,
+                            msg: result.msg,
                             icon: Ext.Msg.ERROR,
                             buttons: Ext.Msg.OK
                         });

@@ -1,6 +1,13 @@
 # SHOT-Application
 This is the repository for team 6 the SHOT Application
 
+## Remote URLs
+
+Here are the URLs for the Pace server:
+
+ * [~f15-cs691-shot/html/SHOT_System](https://vulcan.seidenberg.pace.edu/~f15-cs691-shot/html/SHOT_System)
+ * [~f15-cs691-shot/html/Quality_Management_SHOT_System](https://vulcan.seidenberg.pace.edu/~f15-cs691-shot/html/Quality_Management_SHOT_System)
+
 ## Local Installation
 
 1. Download this repo. The easiest way is using [GitHub for Desktop app](https://desktop.github.com/).

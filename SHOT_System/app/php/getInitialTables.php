@@ -1,6 +1,7 @@
 <?php
 
   $result = array();
+  $resultRegion = [];
   $result2 = array();
   $result3 = array();
   $result4 = array();
@@ -24,18 +25,30 @@
   $needed_access_functions = array("Access_NewIncident","Access_QueryUpdate","Access_QueryUpdate","Access_Reports");
   Verify_Security($func, $needed_access_functions);
 
-  $sql = "SELECT State_ID, State, Region FROM state";
-
-  if ($resultdb = $mysqli->query($sql)) {
-	while($record = $resultdb->fetch_assoc()) {
-		array_push($result, $record);
-	}
-       $resultdb->close();
+// states
+$sql = "SELECT State_ID, State, Region FROM state";
+if ($resultdb = $mysqli->query($sql)) {
+  while($record = $resultdb->fetch_assoc()) {
+    array_push($result, $record);
   }
-  else { trigger_error("Error Retrieving States from Database!"); } 	
+  $resultdb->close();
+} else {
+  trigger_error("Error Retrieving States from Database!");
+}
 
+// regions
+$sql = "SELECT Region FROM state GROUP BY 1";
+if ($resultdb = $mysqli->query($sql)) {
+	while($record = $resultdb->fetch_assoc()) {
+		$resultRegion[] = $record;
+	}
+  $resultdb->close();
+} else {
+  trigger_error('Error retrieving Regions from DB!');
+}
+
+// locations
   $sql = "SELECT Location_ID, Location FROM location";
-
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {
 		array_push($result2, $record);
@@ -178,7 +191,8 @@
 //send back information to extjs
   echo json_encode(array(
 	"success" => $mysqli->connect_errno == 0,
-	"State" => $result,
+  "State" => $result,
+	"Region" => $resultRegion,
 	"Location" => $result2,
 	"Location_Detail" => $result3,
 	"Newspapers" => $result4,

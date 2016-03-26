@@ -17,60 +17,64 @@ Ext.define('Packt.view.Incidentgrid', {
             // incident name
             xtype: 'textfield',
             emptyText: 'Name',
-            width: 70,
+            width: 60,
             name: 'name'
         }, {
             // Region drop down list box (east, west etc…)
             xtype: 'combo',
             emptyText: 'Region',
-            width: 70,
-            store: ['East', 'West', 'etc'],
+            width: 60,
+            store: 'Regions',
             queryMode: 'local',
-            // displayField: 'name',
-            // valueField: 'abbr',
+            displayField: 'Region',
+            valueField: 'Region',
             name: 'region'
         }, {
             // City (textbox) can be partial match
             xtype: 'textfield',
             emptyText: 'City',
-            width: 70,
+            width: 60,
             name: 'city'
         }, {
             // State (drop down list box)
             xtype: 'combo',
             emptyText: 'State',
-            width: 50,
-            store: ['NY', 'CA', 'etc'],
+            width: 55,
+            store: 'States',
             queryMode: 'local',
-            // displayField: 'name',
-            // valueField: 'abbr',
+            displayField: 'State',
+            valueField: 'State_ID',
             name: 'state'
         }, {
             // Zip code (text box)
             xtype: 'textfield',
-            emptyText: 'Zip',
-            width: 50,
+            emptyText: 'ZIP',
+            width: 45,
             name: 'zip'
         }, {
             // Incident date (to and from dates)
             xtype: 'datefield',
             emptyText: 'From',
-            width: 80,
+            disabled: true, // @TEMP
+            width: 70,
             format:  'n/j/y',
             name: 'date_from'
         }, {
             // to
             xtype: 'datefield',
             emptyText: 'To',
-            width: 80,
+            disabled: true,
+            width: 70,
             format:  'n/j/y',
             name: 'date_to'
-        },
-
-// Subject Name (textbox) can be partial match
-// ???
-
-        {
+        }, {
+            // Subject Name (textbox) can be partial match
+            xtype: 'textfield',
+            emptyText: 'Subject',
+            disabled: true,
+            width: 70,
+            name: 'subject'
+        }, {
             xtype: 'button',
             text: 'Search',
             itemId: 'ig_searchbtn'

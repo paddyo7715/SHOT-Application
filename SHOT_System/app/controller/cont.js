@@ -2,6 +2,7 @@ Ext.define('Packt.controller.cont', {
     extend: 'Ext.app.Controller',
     stores: [
         'States',
+        'Regions',
         'Locations',
         'LocationsDet',
         'sources',
@@ -3532,6 +3533,7 @@ Ext.define('Packt.controller.cont', {
                 }
                 if (result.success) {
                     Ext.getStore('States').loadData(result['State']);
+                    Ext.getStore('Regions').loadData(result['Region']);
                     Ext.getStore('Locations').loadData(result['Location']);
                     Ext.getStore('LocationsDet').loadData(result['Location_Detail']);
                     Ext.getStore('Newspapers').loadData(result['Newspapers']);

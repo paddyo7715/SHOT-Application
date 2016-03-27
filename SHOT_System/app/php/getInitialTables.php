@@ -195,14 +195,14 @@ $sql = "SELECT CONCAT(ROUND(AVG(Fatality='Y')*100, 1), '%') AS DeathPercentage F
 	}	
   $resultdb->close();
   }
-  else { trigger_error("Error Retrieving Target Areas from Database!"); } 
+  else { trigger_error("Error Retrieving death ratio from Database!"); } 
 
 
 //t5 city state
 
 //$sql = "SELECT City, State FROM Incident, state WHERE Incident.state_ID = state.state_ID GROUP BY City, state ORDER BY COUNT(*) DESC LIMIT 5";
 
-$sql = "SELECT City, State, COUNT(City) AS Amount FROM Incident, state WHERE Incident.state_ID = state.state_ID GROUP BY City, state ORDER BY COUNT(*) DESC LIMIT 5";
+$sql = "SELECT City, State, COUNT(City) AS Amount FROM incident, state WHERE incident.state_ID = state.state_ID GROUP BY City, state ORDER BY COUNT(*) DESC LIMIT 5";
 
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {
@@ -210,7 +210,7 @@ $sql = "SELECT City, State, COUNT(City) AS Amount FROM Incident, state WHERE Inc
 	}	
   $resultdb->close();
   }
-  else { trigger_error("Error Retrieving Target Areas from Database!"); } 
+  else { trigger_error("Error Retrieving city state incidents from Database!"); } 
 
 
 
@@ -227,7 +227,7 @@ $sql = "SELECT incident_officer.Department_ID, Department, COUNT(incident_office
 	}	
   $resultdb->close();
   }
-  else { trigger_error("Error Retrieving Target Areas from Database!"); } 
+  else { trigger_error("Error incidents with most departments from Database!"); } 
 
 
 
@@ -235,7 +235,7 @@ $sql = "SELECT incident_officer.Department_ID, Department, COUNT(incident_office
 
 $currentDate = date('Y'); //get the current year.
 
-$sql = "SELECT COUNT(Incident_Id) AS Incidents_in_Current_Year FROM Incident WHERE YEAR(Date_Occured)=$currentDate";
+$sql = "SELECT COUNT(Incident_Id) AS Incidents_in_Current_Year FROM incident WHERE YEAR(Date_Occured)=$currentDate";
 
   if ($resultdb = $mysqli->query($sql)) {
 	while($record = $resultdb->fetch_assoc()) {
@@ -243,7 +243,7 @@ $sql = "SELECT COUNT(Incident_Id) AS Incidents_in_Current_Year FROM Incident WHE
 	}	
   $resultdb->close();
   }
-  else { trigger_error("Error Retrieving Target Areas from Database!"); }
+  else { trigger_error("Error Retrieving incidents by year from Database!"); }
 
 
 //total shootings
@@ -256,7 +256,7 @@ $sql = "SELECT COUNT(Incident_Id) AS amtIncident FROM incident WHERE Total_Offic
 	}	
   $resultdb->close();
   }
-  else { trigger_error("Error Retrieving Target Areas from Database!"); }
+  else { trigger_error("Error Retrieving incidents where officer fired from Database!"); }
 
 
 //officer race ratio
@@ -269,7 +269,7 @@ $sql = "SELECT r.Race, CONCAT(ROUND(COUNT(*) / (SELECT COUNT(*) FROM officer) * 
 	}	
   $resultdb->close();
   }
-  else { trigger_error("Error Retrieving Target Areas from Database!"); }
+  else { trigger_error("Error retrieving officer race percent from Database!"); }
 
 
 //suspect race ratio
@@ -282,7 +282,7 @@ $sql = "SELECT r.Race AS Race2, CONCAT(ROUND(COUNT(*) / (SELECT COUNT(*) FROM su
 	}	
   $resultdb->close();
   }
-  else { trigger_error("Error Retrieving Target Areas from Database!"); }
+  else { trigger_error("Error Retrieving suspect race percent Database!"); }
 
 
 
@@ -297,7 +297,7 @@ $sql= "SELECT r.Gender AS Gender, CONCAT(ROUND(COUNT(*) / (SELECT COUNT(*) FROM 
 	}	
   $resultdb->close();
   }
-  else { trigger_error("Error Retrieving Target Areas from Database!"); }
+  else { trigger_error("Error Retrieving gender percent from Database!"); }
 
 
 

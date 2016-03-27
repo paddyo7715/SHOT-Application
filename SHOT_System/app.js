@@ -35,22 +35,26 @@ Ext.application({
       },	 
       {
         xtype: 'panel', 
-        style: 'border-bottum: 1px solid #4c72a4;',
+        style: 'border-bottom: 1px solid #4c72a4;',
         region: 'center',
-        id: 'centerpanel',        
+        id: 'centerpanel',  
         layout: 'card',
         items: [
-        { 
+         { 
             xtype: 'panel',
             padding: '10 0 0 0',
+            requires: [ 'Summarycontainer','InjuryDeathRatio','ShootingsThisYear','TopFiveCityStateGrid','topFiveDepartments','TotalShootings', 'RacePercentage', 'RacePercentage2', 'SuspectGender' ],
             layout: {
               type: 'vbox',
               align: 'center'
-            },   
+            },
+             html: '<h1 style="color: #4C72A4; text-align: center; font-weight: 100">Overall Descriptive Statistics</h1>',
             items: [
             {
-            xtype: 'container',
-            html:'<img  height="455" width="420" src="app/resources/images/shotlogo.png">'
+            xtype: 'Summarycontainer'
+            },
+            {
+            xtype: 'Summarycontainer2'
             }
             ]
         },        { 

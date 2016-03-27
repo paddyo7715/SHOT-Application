@@ -22,7 +22,15 @@ Ext.define('Packt.controller.cont', {
         'incidentsuspects',
         'targetareas',
         'Incidentslist',
-        'suspect_races'
+        'suspect_races',
+        'InjuryDeathStore',
+        'ShootingsThisYearStore',
+        'TopFiveCityStateStore',
+        'topFiveDepartmentsStore',
+        'TotalShootingsStore',
+        'RacePercentageStore',
+        'RacePercentageStore2',
+        'SuspectGenderStore'
     ],
     models: [
         'State',
@@ -46,7 +54,15 @@ Ext.define('Packt.controller.cont', {
         'incidentsuspect',
         'targetarea',
         'Incidentlist',
-        'suspect_race'
+        'suspect_race',
+        'InjuryDeathModel',
+        'ShootingsThisYearModel',
+        'topFiveCitiesStatesModel',
+        'topFiveDepartmentsModel',
+        'TotalShootingsModel',
+        'RacePercentageModel',
+        'RacePercentageModel2',
+        'SuspectGenderModel'
     ],
     views: [
         'appheader',
@@ -67,7 +83,17 @@ Ext.define('Packt.controller.cont', {
         'Incidentgrid',
         'SuspectbyRacePieChart',
         'reportpanel',
-        'reportsgrid'
+        'reportsgrid',
+        'InjuryDeathRatio',
+        'ShootingsThisYear',
+        'TopFiveCityStateGrid',
+        'topFiveDepartments',
+        'TotalShootings',
+        'Summarycontainer',
+        'Summarycontainer2',
+        'RacePercentage',
+        'RacePercentage2',
+        'SuspectGender'
     ],
     refs: [{
         ref: 'sourcesgrid',
@@ -3539,6 +3565,14 @@ Ext.define('Packt.controller.cont', {
                     Ext.getStore('Weapons').loadData(result['Weapons']);
                     Ext.getStore('AggressionTypes').loadData(result['Aggression_Type']);
                     Ext.getStore('targetareas').loadData(result['Target_Area']);
+                    Ext.getStore('InjuryDeathStore').loadData(result['InjuryToDeath']);
+                    Ext.getStore('TopFiveCityStateStore').loadData(result['TopCityState']);
+                    Ext.getStore('topFiveDepartmentsStore').loadData(result['TopFiveDepartments']);
+                    Ext.getStore('ShootingsThisYearStore').loadData(result['ShootingsThisYr']);
+                    Ext.getStore('TotalShootingsStore').loadData(result['Shootings']);
+                    Ext.getStore('RacePercentageStore').loadData(result['RacePercentages']);
+                    Ext.getStore('RacePercentageStore2').loadData(result['RacePercentages2']);
+                    Ext.getStore('SuspectGenderStore').loadData(result['SuspectGenders']);
 
                 } else {
                     if (result.msg == "no_session")

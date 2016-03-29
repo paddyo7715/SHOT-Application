@@ -5,7 +5,7 @@ Ext.define('Packt.view.Incidentgrid', {
     title: 'Existing Incidents',
     height: 400,
     id: 'Incidentgrid',
-    width: 700,
+    width: 800,
     border: 0,
     dockedItems: [{
         xtype: 'toolbar',
@@ -17,7 +17,7 @@ Ext.define('Packt.view.Incidentgrid', {
             // incident name
             xtype: 'textfield',
             emptyText: 'Name',
-            width: 60,
+            width: 150,
             name: 'name'
         }, {
             // Region drop down list box (east, west etc…)

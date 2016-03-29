@@ -116,20 +116,22 @@ if ($success && $where) {
   $where = implode(' AND ', $where);
 
   $sql = "SELECT
+      i.Incident_ID,
       i.Incident_Name,
       i.Date_Occured,
       i.City,
-      st.State,
-      i.Incident_ID
+      st.State
     FROM
       incident AS i
       LEFT JOIN state AS st ON i.State_ID = st.State_ID
-      LEFT JOIN suspect_mapping AS sm ON i.Incident_ID = sm.Incident_Suspect_ID
+      LEFT JOIN incident_suspect AS `is` ON i.Incident_ID = `is`.Incident_ID
+      LEFT JOIN suspect_mapping AS sm ON `is`.Incident_Suspect_ID = sm.Incident_Suspect_ID
       LEFT JOIN suspect AS su ON sm.Suspect_ID = su.Suspect_ID
     WHERE $where
-    ORDER BY
-      i.Incident_Name
+    ORDER BY i.Incident_Name
+    LIMIT 301
   ;";
+  // LIMIT: since we are breaking after 300 a few lines lower, no need to bother the DB for more than 301 rows
   // error_log($sql);
   $success = $mysqli->connect_errno === 0;
   $mysqli_result = $mysqli->query($sql);

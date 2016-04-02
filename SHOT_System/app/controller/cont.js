@@ -680,7 +680,11 @@ Ext.define('Packt.controller.cont', {
      * Click on the Print Preview button
      */
     clickPrintPreviewButton: function() {
-        console.log('here');
+        // console.log('Print Preview');
+        var data = Ext.Object.toQueryString({
+            Incident_Name: Ext.getCmp('id_Incidentname').getValue()
+        });
+        window.open('print-preview.php?' + data, 'PrintPreview');
     },
 
     //Select from the state combo box

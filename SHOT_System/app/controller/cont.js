@@ -696,37 +696,31 @@ Ext.define('Packt.controller.cont', {
         var state = Ext.getStore('States').findRecord('State_ID', Ext.getCmp('id_State').getValue());
         data.State = state ? state.get('State') : '';
         data.Region = state ? state.get('Region') : '';
+
+        // geo
+        data.latitude = Ext.getCmp('id_latitude').getValue();
+        data.longitude = Ext.getCmp('id_longitude').getValue();
         
-        // data.Number_Officers_on_Scene = Ext.getCmp('id_officersscene').getValue();
-        // data.Date_Occured = Ext.getCmp('id_dateoccurred').getValue();
-        
+        // officers and shots
+        data.Number_Officers_on_Scene = Ext.getCmp('id_officersscene').getValue();
+        data.Off_Fired_Guns = Ext.getCmp('id_officersfiredguns').getValue();
+        data.Total_Officer_Shots_Fired = Ext.getCmp('id_officersshotsfired').getValue();
 
-            /*
-            me.setStateRegion(s[0].State_ID);
+        // date and time
+        data.Date_Occured = Ext.getCmp('id_dateoccurred').getValue();
+        data.Time = Ext.getCmp('id_time').getValue();
+        data.Approx_Time = Ext.getCmp('id_approx_time').getValue();
 
-            Ext.getCmp('id_location').getValue(s[0].Location_ID);
-            var loc_val = s[0].Location_ID;
-            if (loc_val == null || loc_val.length == 0)
-                loc_val = "lonval";
-            var LocationsDet = Ext.getStore('LocationsDet');
-            LocationsDet.clearFilter(true);
-            LocationsDet.filter('Location_ID', loc_val);
-            Ext.getCmp('id_locationdet').reset();
-            Ext.getCmp('id_locationdet').getValue(s[0].Location_Detail_ID);
-            
+        // location
+        var location = Ext.getStore('Locations').findRecord('Location_ID', Ext.getCmp('id_location').getValue());
+        data.Location = location ? location.get('Location') : '';
+        var location_det = Ext.getStore('LocationsDet').findRecord('Location_Detail_ID', Ext.getCmp('id_locationdet').getValue());
+        data.LocationDet = location_det ? location_det.get('Location_Details') : '';
+        data.Indoor = Ext.getCmp('id_indoor').getValue();
+        data.Outdoor = Ext.getCmp('id_outdoor').getValue();
 
-            if (s[0].Indoors == "Y")
-                Ext.getCmp('id_indoor').getValue(true);
-            else if (s[0].Indoors == "N")
-                Ext.getCmp('id_outdoor').getValue(true);
-
-            Ext.getCmp('id_officersfiredguns').getValue(s[0].Off_Fired_Guns);
-            Ext.getCmp('id_officersshotsfired').getValue(s[0].Total_Officer_Shots_Fired);
-            Ext.getCmp('id_latitude').getValue(s[0].latitude);
-            Ext.getCmp('id_longitude').getValue(s[0].longitude);
-            Ext.getCmp('id_time').getValue(s[0].Time);
-            Ext.getCmp('id_approx_time').getValue(s[0].Approx_Time);
-            */
+        // format and send
+        console.log(data);
         data = Ext.Object.toQueryString(data);
         window.open('print-preview.php?' + data, 'PrintPreview');
     },

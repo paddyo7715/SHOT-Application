@@ -1,5 +1,7 @@
 <?php 
 
+// PLEASE DO NOT REMOVE THIS COMMENT, it is used in development
+// ini_set('error_log', dirname(dirname(dirname(dirname(__FILE__)))) . '/error.log');
 
 function customError($errno, $errstr) {
 

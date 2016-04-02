@@ -720,9 +720,35 @@ Ext.define('Packt.controller.cont', {
         data.Outdoor = Ext.getCmp('id_outdoor').getValue();
 
         // format and send
-        console.log(data);
-        data = Ext.Object.toQueryString(data);
-        window.open('print-preview.php?' + data, 'PrintPreview');
+        // console.log(data);
+        this.open('POST', 'print-preview.php', data, 'PrintPreview');
+    },
+
+    /**
+     * small library that opens new windows
+     * from here: http://stackoverflow.com/questions/17793183/how-to-replace-window-open-with-a-post
+     * 
+     * @param verb : 'GET'|'POST'
+     * @param url
+     * @param data : payload
+     * @param target : an optional opening target (a name, or "_blank"), defaults to "_self"
+     */
+    open: function(verb, url, data, target) {
+      var form = document.createElement("form");
+      form.action = url;
+      form.method = verb;
+      form.target = target || "_self";
+      if (data) {
+        for (var key in data) {
+          var input = document.createElement("textarea");
+          input.name = key;
+          input.value = Ext.encode(data[key]);
+          form.appendChild(input);
+        }
+      }
+      form.style.display = 'none';
+      document.body.appendChild(form);
+      form.submit();
     },
 
     //Select from the state combo box

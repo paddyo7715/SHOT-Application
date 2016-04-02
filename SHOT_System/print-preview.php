@@ -1,12 +1,16 @@
 <?php
 
-$post = $_REQUEST;
+$post = $_POST;
 
 // fix date and time
 if (! empty($post['Date_Occured'])) {
+    $post['Date_Occured'] = trim($post['Date_Occured']);
+    $post['Date_Occured'] = trim($post['Date_Occured'], '"');
     list($post['Date_Occured']) = explode('T', $post['Date_Occured']);
 }
 if (! empty($post['Time'])) {
+    $post['Time'] = trim($post['Time']);
+    $post['Time'] = trim($post['Time'], '"');
     list(,$post['Time']) = explode('T', $post['Time']);
 }
 

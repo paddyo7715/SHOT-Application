@@ -681,9 +681,53 @@ Ext.define('Packt.controller.cont', {
      */
     clickPrintPreviewButton: function() {
         // console.log('Print Preview');
-        var data = Ext.Object.toQueryString({
-            Incident_Name: Ext.getCmp('id_Incidentname').getValue()
-        });
+        var data = {};
+        data.Incident_ID = Ext.getCmp('id_Incidentnum').getValue();
+        data.Incident_Name = Ext.getCmp('id_Incidentname').getValue();
+        data.Lawsuit = Ext.getCmp('id_lawsuit').getValue();
+
+        // address
+        data.Address_1 = Ext.getCmp('id_Address1').getValue();
+        data.Address_2 = Ext.getCmp('id_address2').getValue();
+        data.City = Ext.getCmp('id_City').getValue();
+        data.zip = Ext.getCmp('id_zipcode').getValue();
+
+        // state and region
+        var state = Ext.getStore('States').findRecord('State_ID', Ext.getCmp('id_State').getValue());
+        data.State = state ? state.get('State') : '';
+        data.Region = state ? state.get('Region') : '';
+        
+        // data.Number_Officers_on_Scene = Ext.getCmp('id_officersscene').getValue();
+        // data.Date_Occured = Ext.getCmp('id_dateoccurred').getValue();
+        
+
+            /*
+            me.setStateRegion(s[0].State_ID);
+
+            Ext.getCmp('id_location').getValue(s[0].Location_ID);
+            var loc_val = s[0].Location_ID;
+            if (loc_val == null || loc_val.length == 0)
+                loc_val = "lonval";
+            var LocationsDet = Ext.getStore('LocationsDet');
+            LocationsDet.clearFilter(true);
+            LocationsDet.filter('Location_ID', loc_val);
+            Ext.getCmp('id_locationdet').reset();
+            Ext.getCmp('id_locationdet').getValue(s[0].Location_Detail_ID);
+            
+
+            if (s[0].Indoors == "Y")
+                Ext.getCmp('id_indoor').getValue(true);
+            else if (s[0].Indoors == "N")
+                Ext.getCmp('id_outdoor').getValue(true);
+
+            Ext.getCmp('id_officersfiredguns').getValue(s[0].Off_Fired_Guns);
+            Ext.getCmp('id_officersshotsfired').getValue(s[0].Total_Officer_Shots_Fired);
+            Ext.getCmp('id_latitude').getValue(s[0].latitude);
+            Ext.getCmp('id_longitude').getValue(s[0].longitude);
+            Ext.getCmp('id_time').getValue(s[0].Time);
+            Ext.getCmp('id_approx_time').getValue(s[0].Approx_Time);
+            */
+        data = Ext.Object.toQueryString(data);
         window.open('print-preview.php?' + data, 'PrintPreview');
     },
 

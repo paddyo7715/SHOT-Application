@@ -164,6 +164,11 @@ Ext.define('Packt.controller.cont', {
             }
         });
         this.control({
+            'incidentdetailform button#printPreview': {
+                click: this.clickPrintPreviewButton
+            }
+        });
+        this.control({
             'incidentdetailform combo#id_State': {
                 select: this.selectstatecomboombo
             }
@@ -670,6 +675,14 @@ Ext.define('Packt.controller.cont', {
         }
 
     },
+
+    /**
+     * Click on the Print Preview button
+     */
+    clickPrintPreviewButton: function() {
+        console.log('here');
+    },
+
     //Select from the state combo box
     selectstatecomboombo: function(combo, e, options) {
 

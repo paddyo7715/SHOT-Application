@@ -485,8 +485,10 @@ Ext.define('Packt.view.incidentdetailform', {
         id: 'idcancelbtn',
         action: 'idcancelbtn',
         formBind: false
-    }
-    ],
+    }, {
+        text: 'Print Preview',
+        itemId: 'printPreview'
+    }],
 
     checkGoogle: function() {
       // toggle google button based on lat and lon fields values

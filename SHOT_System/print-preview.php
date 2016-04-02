@@ -50,6 +50,9 @@ if (! empty($post['Time'])) {
     <p>Date_Occured: $post[Date_Occured]</p>
     <p>Time: $post[Time]</p>
     <p>Approx_Time: $post[Approx_Time]</p>
+
+    <button>Print</button>
+    <button>Cancel</button>
     
 OUT;
 ?>

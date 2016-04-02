@@ -47,13 +47,30 @@ foreach ($post['subjects'] as $source) {
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>SHOT System | Print Preview</title>
+    <style type="text/css">
+        <?php /*
+        from here: http://stackoverflow.com/questions/355313/how-do-i-hide-an-element-when-printing-a-web-page
+        */ ?>
+        @media print {
+            .no-print,
+            .no-print * {
+                display: none !important;
+            }
+        }
+    </style>
 </head>
 <body>
 <?php echo <<<OUT
 
-    <h1>Print Preview</h1>
+    <h1>$post[Incident_Name]</h1>
     Incident_ID: $post[Incident_ID]<br>
-    Incident_Name: $post[Incident_Name]<br>
+    Lawsuit: $post[Lawsuit]<br>
+    Number_Officers_on_Scene: $post[Number_Officers_on_Scene]<br>
+    Off_Fired_Guns: $post[Off_Fired_Guns]<br>
+    Total_Officer_Shots_Fired: $post[Total_Officer_Shots_Fired]<br>
+    Date_Occured: $post[Date_Occured]<br>
+    Time: $post[Time]<br>
+    Approx_Time: $post[Approx_Time]<br>
 
     <h2>Location</h2>
     Address_1: $post[Address_1]<br>
@@ -69,15 +86,6 @@ foreach ($post['subjects'] as $source) {
     Indoor: $post[Indoor]<br>
     Outdoor: $post[Outdoor]<br>
 
-    <h2>Details</h2>
-    Lawsuit: $post[Lawsuit]<br>
-    Number_Officers_on_Scene: $post[Number_Officers_on_Scene]<br>
-    Off_Fired_Guns: $post[Off_Fired_Guns]<br>
-    Total_Officer_Shots_Fired: $post[Total_Officer_Shots_Fired]<br>
-    Date_Occured: $post[Date_Occured]<br>
-    Time: $post[Time]<br>
-    Approx_Time: $post[Approx_Time]<br>
-
     <h2>Sources</h2>
     <ol>$sources</ol>
 
@@ -87,10 +95,13 @@ foreach ($post['subjects'] as $source) {
     <h2>Subjects</h2>
     <ol>$subjects</ol>
 
-    <button>Print</button>
-    <button>Cancel</button>
     
 OUT;
 ?>
+
+    <div class="no-print">
+        <button onclick="window.print()">Print</button>
+        <button onclick="self.close()">Cancel</button>
+    </div>
 </body>
 </html>

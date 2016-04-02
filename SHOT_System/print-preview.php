@@ -52,31 +52,31 @@ foreach ($post['subjects'] as $source) {
 <?php echo <<<OUT
 
     <h1>Print Preview</h1>
-    <p>Incident_ID: $post[Incident_ID]</p>
-    <p>Incident_Name: $post[Incident_Name]</p>
+    Incident_ID: $post[Incident_ID]<br>
+    Incident_Name: $post[Incident_Name]<br>
 
     <h2>Location</h2>
-    <p>Address_1: $post[Address_1]</p>
-    <p>Address_2: $post[Address_2]</p>
-    <p>City: $post[City]</p>
-    <p>State: $post[State]</p>
-    <p>Region: $post[Region]</p>
-    <p>zip: $post[zip]</p>
-    <p>latitude: $post[latitude]</p>
-    <p>longitude: $post[longitude]</p>
-    <p>Location: $post[Location]</p>
-    <p>LocationDet: $post[LocationDet]</p>
-    <p>Indoor: $post[Indoor]</p>
-    <p>Outdoor: $post[Outdoor]</p>
+    Address_1: $post[Address_1]<br>
+    Address_2: $post[Address_2]<br>
+    City: $post[City]<br>
+    State: $post[State]<br>
+    Region: $post[Region]<br>
+    zip: $post[zip]<br>
+    latitude: $post[latitude]<br>
+    longitude: $post[longitude]<br>
+    Location: $post[Location]<br>
+    LocationDet: $post[LocationDet]<br>
+    Indoor: $post[Indoor]<br>
+    Outdoor: $post[Outdoor]<br>
 
     <h2>Details</h2>
-    <p>Lawsuit: $post[Lawsuit]</p>
-    <p>Number_Officers_on_Scene: $post[Number_Officers_on_Scene]</p>
-    <p>Off_Fired_Guns: $post[Off_Fired_Guns]</p>
-    <p>Total_Officer_Shots_Fired: $post[Total_Officer_Shots_Fired]</p>
-    <p>Date_Occured: $post[Date_Occured]</p>
-    <p>Time: $post[Time]</p>
-    <p>Approx_Time: $post[Approx_Time]</p>
+    Lawsuit: $post[Lawsuit]<br>
+    Number_Officers_on_Scene: $post[Number_Officers_on_Scene]<br>
+    Off_Fired_Guns: $post[Off_Fired_Guns]<br>
+    Total_Officer_Shots_Fired: $post[Total_Officer_Shots_Fired]<br>
+    Date_Occured: $post[Date_Occured]<br>
+    Time: $post[Time]<br>
+    Approx_Time: $post[Approx_Time]<br>
 
     <h2>Sources</h2>
     <ol>$sources</ol>

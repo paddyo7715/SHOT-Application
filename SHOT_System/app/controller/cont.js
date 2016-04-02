@@ -719,13 +719,97 @@ Ext.define('Packt.controller.cont', {
         data.Indoor = Ext.getCmp('id_indoor').getValue();
         data.Outdoor = Ext.getCmp('id_outdoor').getValue();
 
+        // sources
+        var s;
+        data.sources = [];
+        s = Ext.getStore('sources');
+        if (s.getCount()) {
+            s = s.getRange();
+            for (var item in s) {
+                data.sources.push({
+                    'Title': s[item].get('Title'),
+                    'Author': s[item].get('Author'),
+                    'Source_Date': s[item].get('Source_Date'),
+                    'Link': s[item].get('Link'),
+                    'Newspaper': s[item].get('Newspaper')
+                    // "Source_ID"
+                    // "Source_Type_ID"
+                    // "Source"
+                    // "Newspaper_ID"
+                    // "Abstract"
+                });
+            }
+        }
+
+        // officers
+        data.officers = [];
+        s = Ext.getStore('incidentofficers');
+        if (s.getCount()) {
+            s = s.getRange();
+            for (var item in s) {
+                data.officers.push({
+                    'Name': s[item].get('Name'),
+                    'Age': s[item].get('Age'),
+                    'Call_Type': s[item].get('Call_Type'),
+                    'Dept_Type': s[item].get('Dept_Type'),
+                    'Department': s[item].get('Department')
+                    // 'Assignment_ID'
+                    // 'Call_Type_ID'
+                    // 'Department_ID'
+                    // 'Dept_Type_ID'
+                    // 'Exp_in_Cluster'
+                    // 'Experience'
+                    // 'Gender'
+                    // 'Incident_Officer_ID'
+                    // 'Officer_Casualty'
+                    // 'Officer_ID'
+                    // 'Outside_Agency_Assist'
+                    // 'Race'
+                    // 'Race_ID'
+                    // 'Shots_Files'
+                    // 'Status_ID'
+                });
+            }
+        }
+
+        // subjects
+        data.subjects = [];
+        s = Ext.getStore('incidentsuspects');
+        if (s.getCount()) {
+            s = s.getRange();
+            for (var item in s) {
+                data.subjects.push({
+                    'Name': s[item].get('Suspect_Name'),
+                    'Gender': s[item].get('Gender'),
+                    'Race': s[item].get('Race'),
+                    'Fatality': s[item].get('Fatality'),
+                    'Weapon_Type': s[item].get('Weapons_Type'),
+                    'Aggression': s[item].get('Aggression_Type')
+                    // 'Age'
+                    // 'Foot_Chase'
+                    // 'Gang_Affiliation'
+                    // 'Incident_Suspect_ID'
+                    // 'Injury'
+                    // 'Mental_Status_ID'
+                    // 'Race_ID'
+                    // 'Shots_Fired'
+                    // 'Suspect_ID'
+                    // 'Type_of_Agression_ID'
+                    // 'US_Citizen'
+                    // 'Vehicle_Chase'
+                    // 'Vehicle_Use_hit_and_run'
+                    // 'Weapons_ID'
+                    // 'shot_string'
+                });
+            }
+        }
+
         // format and send
-        // console.log(data);
         this.open('POST', 'print-preview.php', data, 'PrintPreview');
     },
 
     /**
-     * small library that opens new windows
+     * small library that opens new windows (pop-up)
      * from here: http://stackoverflow.com/questions/17793183/how-to-replace-window-open-with-a-post
      * 
      * @param verb : 'GET'|'POST'
@@ -742,7 +826,7 @@ Ext.define('Packt.controller.cont', {
         for (var key in data) {
           var input = document.createElement("textarea");
           input.name = key;
-          input.value = Ext.encode(data[key]);
+          input.value = typeof data[key] === 'object' ? Ext.encode(data[key]) : data[key];
           form.appendChild(input);
         }
       }

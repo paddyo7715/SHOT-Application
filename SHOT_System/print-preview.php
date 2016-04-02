@@ -14,6 +14,33 @@ if (! empty($post['Time'])) {
     list(,$post['Time']) = explode('T', $post['Time']);
 }
 
+$sources = '';
+$post['sources'] = json_decode($post['sources']);
+foreach ($post['sources'] as $source) {
+    $sources .= '<li>';
+    foreach ($source as $key => $value) {
+        $sources .= $key . ': ' . $value . '<br>';
+    }
+}
+
+$officers = '';
+$post['officers'] = json_decode($post['officers']);
+foreach ($post['officers'] as $source) {
+    $officers .= '<li>';
+    foreach ($source as $key => $value) {
+        $officers .= $key . ': ' . $value . '<br>';
+    }
+}
+
+$subjects = '';
+$post['subjects'] = json_decode($post['subjects']);
+foreach ($post['subjects'] as $source) {
+    $subjects .= '<li>';
+    foreach ($source as $key => $value) {
+        $subjects .= $key . ': ' . $value . '<br>';
+    }
+}
+
 ?><!DOCTYPE html>
 <html>
 <head>
@@ -50,6 +77,15 @@ if (! empty($post['Time'])) {
     <p>Date_Occured: $post[Date_Occured]</p>
     <p>Time: $post[Time]</p>
     <p>Approx_Time: $post[Approx_Time]</p>
+
+    <h2>Sources</h2>
+    <ol>$sources</ol>
+
+    <h2>Officers</h2>
+    <ol>$officers</ol>
+
+    <h2>Subjects</h2>
+    <ol>$subjects</ol>
 
     <button>Print</button>
     <button>Cancel</button>

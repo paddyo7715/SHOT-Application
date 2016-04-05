@@ -681,6 +681,8 @@ Ext.define('Packt.controller.cont', {
      */
     clickPrintPreviewButton: function() {
         // console.log('Print Preview');
+        // for speed consider using Ext.ComponentQuery with caching instead of multiple Ext.getCmp
+
         var data = {};
         data.Incident_ID = Ext.getCmp('id_Incidentnum').getValue();
         data.Incident_Name = Ext.getCmp('id_Incidentname').getValue();
@@ -707,8 +709,9 @@ Ext.define('Packt.controller.cont', {
         data.Total_Officer_Shots_Fired = Ext.getCmp('id_officersshotsfired').getValue();
 
         // date and time
-        data.Date_Occured = Ext.getCmp('id_dateoccurred').getValue();
-        data.Time = Ext.getCmp('id_time').getValue();
+        data.Date_Occured = Ext.getCmp('id_dateoccurred').getValue(); // full Date JS object, e.g. Wed Dec 16 2015 00:00:00 GMT-0500 (Eastern Standard Time)
+        // careful! Date JS objects may be timezone-sensitive depending on the client (browser) location
+        data.Time = Ext.getCmp('id_time').getValue(); // full Date JS object, with the date part of it set to Tue Jan 01 2008
         data.Approx_Time = Ext.getCmp('id_approx_time').getValue();
 
         // location
@@ -723,13 +726,13 @@ Ext.define('Packt.controller.cont', {
         var s;
         data.sources = [];
         s = Ext.getStore('sources');
-        if (s.getCount()) {
+        if (s.getCount()) { // redundant? the for loop won't start if getRange() returns empty
             s = s.getRange();
             for (var item in s) {
                 data.sources.push({
                     'Title': s[item].get('Title'),
                     'Author': s[item].get('Author'),
-                    'Source_Date': s[item].get('Source_Date'),
+                    'Source_Date': s[item].get('Source_Date'), // short string, e.g. "2015-12-15"
                     'Link': s[item].get('Link'),
                     'Newspaper': s[item].get('Newspaper')
                     // "Source_ID"
@@ -804,7 +807,7 @@ Ext.define('Packt.controller.cont', {
             }
         }
 
-        // format and send
+        // send
         this.open('POST', 'print-preview.php', data, 'PrintPreview');
     },
 
@@ -833,16 +836,13 @@ Ext.define('Packt.controller.cont', {
       form.style.display = 'none';
       document.body.appendChild(form);
       form.submit();
+      // ideally we should form.destroy() here, to avoid memory leaks
     },
 
     //Select from the state combo box
     selectstatecomboombo: function(combo, e, options) {
-
-
-
         var val = combo.getValue();
         this.setStateRegion(val);
-
     }, // end selectstatecomboombo
     //Select from the location combo box
     selectlocationcomboombo: function(combo, e, options) {

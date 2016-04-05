@@ -1,17 +1,18 @@
 <?php
 
 $post = $_POST;
+// echo '<pre>' . print_r($post, 1) . '</pre>';
 
 // fix date and time
 if (! empty($post['Date_Occured'])) {
-    $post['Date_Occured'] = trim($post['Date_Occured']);
-    $post['Date_Occured'] = trim($post['Date_Occured'], '"');
-    list($post['Date_Occured']) = explode('T', $post['Date_Occured']);
+    $post['Date_Occured'] = trim(trim($post['Date_Occured']), '"'); // get rid of whitespace and quotes
+    $post['Date_Occured'] = explode('T', $post['Date_Occured']);
+    $post['Date_Occured'] = reset($post['Date_Occured']); // first half before the "T" letter
 }
 if (! empty($post['Time'])) {
-    $post['Time'] = trim($post['Time']);
-    $post['Time'] = trim($post['Time'], '"');
-    list(,$post['Time']) = explode('T', $post['Time']);
+    $post['Time'] = trim(trim($post['Time']), '"');
+    $post['Time'] = explode('T', $post['Time']);
+    $post['Time'] = end($post['Time']); // second half after the "T" letter
 }
 
 $sources = '';

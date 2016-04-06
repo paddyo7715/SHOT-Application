@@ -47,18 +47,8 @@ foreach ($post['subjects'] as $source) {
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>SHOT System | Print Preview</title>
-    <style type="text/css">
-        <?php /*
-        from here: http://stackoverflow.com/questions/355313/how-do-i-hide-an-element-when-printing-a-web-page
-        */ ?>
-        @media print {
-            .no-print,
-            .no-print * {
-                display: none !important;
-            }
-        }
-    </style>
+    <title><?php echo $post['Incident_Name'] ?> | SHOT System</title>
+    <link rel="stylesheet" href="app/resources/css/app.css">
 </head>
 <body>
 <?php echo <<<OUT
@@ -96,7 +86,6 @@ foreach ($post['subjects'] as $source) {
     <h2>Subjects</h2>
     <ol>$subjects</ol>
 
-    
 OUT;
 ?>
 

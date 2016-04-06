@@ -88,3 +88,10 @@
 .google_button {
 	margin-left: 10px;
 }
+
+@media print {
+    .no-print,
+    .no-print * {
+        display: none !important;
+    }
+}

@@ -5,30 +5,79 @@ Ext.define('Packt.view.Incidentgrid', {
     title: 'Existing Incidents',
     height: 400,
     id: 'Incidentgrid',
-    width: 700,
+    width: 800,
     border: 0,
     dockedItems: [{
         xtype: 'toolbar',
+        itemId: 'ig_search_toolbar',
         //               flex: 1,
         width: 700,
         dock: 'top',
         items: [{
-            labelAlign: 'left',
+            // incident name
             xtype: 'textfield',
-            name: 'ig_search',
-            itemId: 'ig_search',
-            fieldLabel: 'Search Name',
-            inputWidth: 180
+            emptyText: 'Name',
+            width: 150,
+            name: 'name'
+        }, {
+            // Region drop down list box (east, west etc…)
+            xtype: 'combo',
+            emptyText: 'Region',
+            width: 60,
+            store: 'Regions',
+            queryMode: 'local',
+            displayField: 'Region',
+            valueField: 'Region',
+            name: 'region'
+        }, {
+            // City (textbox) can be partial match
+            xtype: 'textfield',
+            emptyText: 'City',
+            width: 60,
+            name: 'city'
+        }, {
+            // State (drop down list box)
+            xtype: 'combo',
+            emptyText: 'State',
+            width: 55,
+            store: 'States',
+            queryMode: 'local',
+            displayField: 'State',
+            valueField: 'State_ID',
+            name: 'state'
+        }, {
+            // Zip code (text box)
+            xtype: 'textfield',
+            emptyText: 'ZIP',
+            width: 45,
+            name: 'zip'
+        }, {
+            // Incident date (to and from dates)
+            xtype: 'datefield',
+            emptyText: 'From',
+            width: 70,
+            format: 'n/j/y',
+            name: 'date_from'
+        }, {
+            // to
+            xtype: 'datefield',
+            emptyText: 'To',
+            width: 70,
+            format: 'n/j/y',
+            name: 'date_to'
+        }, {
+            // Subject Name (textbox) can be partial match
+            xtype: 'textfield',
+            emptyText: 'Subject',
+            width: 70,
+            name: 'subject'
         }, {
             xtype: 'button',
             text: 'Search',
-            width: 70,
             itemId: 'ig_searchbtn'
         }, {
-            xtype: 'displayfield',
-            fieldLabel: '',
-            id: 'displayf',
-            width: 200
+            xtype: 'tbspacer',
+            flex: 1
         }, {
             xtype: 'button',
             text: 'Edit',
@@ -47,6 +96,15 @@ Ext.define('Packt.view.Incidentgrid', {
             hidden: true,
             id: 'ig_view',
             itemId: 'ig_view'
+        }]
+    }, {
+        xtype: 'toolbar',
+        itemId: 'ig_foot_toolbar',
+        dock: 'bottom',
+        items: [{
+            xtype: 'component',
+            itemId: 'ig_footer',
+            html: ''
         }]
     }],
 

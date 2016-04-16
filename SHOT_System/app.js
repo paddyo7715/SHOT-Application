@@ -88,16 +88,29 @@ Ext.application({
         },
         { 
           xtype: 'panel', 
-          id: 'rptpanel',        
+          id: 'rptpanel',   
           layout: 'card',
           items: [
           { 
-             xtype: 'reportsgrid'
+             xtype: 'panel', 
+             padding: '10 0 0 0',
+             requires: [ 'reportfieldform' ],   
+             layout: {
+               type: 'vbox',
+               align: 'center'
+             },  
+             items: [
+             {
+               xtype: 'reportfieldform'
+             }]
           },
           { 
-             xtype: 'reportpanel'
+
+               xtype: 'reportpanel'
           }]
        }
+
+
         ]
       }
 

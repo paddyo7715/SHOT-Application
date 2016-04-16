@@ -23,7 +23,6 @@ Ext.define('Packt.controller.cont', {
         'incidentsuspects',
         'targetareas',
         'Incidentslist',
-        'suspect_races',
         'InjuryDeathStore',
         'ShootingsThisYearStore',
         'TopFiveCityStateStore',
@@ -31,7 +30,9 @@ Ext.define('Packt.controller.cont', {
         'TotalShootingsStore',
         'RacePercentageStore',
         'RacePercentageStore2',
-        'SuspectGenderStore'
+        'SuspectGenderStore',
+        'chart_reports'
+
     ],
     models: [
         'State',
@@ -55,7 +56,6 @@ Ext.define('Packt.controller.cont', {
         'incidentsuspect',
         'targetarea',
         'Incidentlist',
-        'suspect_race',
         'InjuryDeathModel',
         'ShootingsThisYearModel',
         'topFiveCitiesStatesModel',
@@ -63,7 +63,8 @@ Ext.define('Packt.controller.cont', {
         'TotalShootingsModel',
         'RacePercentageModel',
         'RacePercentageModel2',
-        'SuspectGenderModel'
+        'SuspectGenderModel',
+        'chart_report'
     ],
     views: [
         'appheader',
@@ -83,8 +84,6 @@ Ext.define('Packt.controller.cont', {
         'suspectsearch',
         'Incidentgrid',
         'SuspectbyRacePieChart',
-        'reportpanel',
-        'reportsgrid',
         'InjuryDeathRatio',
         'ShootingsThisYear',
         'TopFiveCityStateGrid',
@@ -94,7 +93,13 @@ Ext.define('Packt.controller.cont', {
         'Summarycontainer2',
         'RacePercentage',
         'RacePercentage2',
-        'SuspectGender'
+        'SuspectGender',
+        'ReportPieChart',
+        'ReportGridChart',
+        'ReportBarChart',
+        'reportpanel',
+        'reportsgrid',
+        'reportfieldform'
     ],
     refs: [{
         ref: 'sourcesgrid',
@@ -410,10 +415,16 @@ Ext.define('Packt.controller.cont', {
             }
         });
         this.control({
-            'reportsgrid button#rgrunbtn': {
+            'reportfieldform button#rpt_fltr_submitbtn': {
                 click: this.onButtonClickrunreport
             }
         });
+        this.control({
+            'reportfieldform combo#rpt_fltr_location': {
+                select: this.selectlocationcomboomborpt
+            }
+        });
+
 
         this.loadinitstores();
 
@@ -3322,31 +3333,144 @@ Ext.define('Packt.controller.cont', {
         }
 
     },
-
-
-    //Reports Grid
+    //Reports 
     //=============================
     //Click of the run report button
     onButtonClickrunreport: function(button, e, options) {
 
+        var errm = "";
+        var msgerr = "All invalid fields are highlighted in red.  To see specific field error, place mouse cursor over the field.  Please resubmit form once all fields have been corrected. .";
+        var d1 = Ext.getCmp('rpt_fltr_startdate').getValue();
+        var d2 = Ext.getCmp('rpt_fltr_enddate').getValue();
+        var frm = Ext.getCmp('reportfieldform');
 
-        var g = Ext.getCmp('reportsgrid');
-        if (!g.getSelectionModel().hasSelection()) {
+        if ((d1 != null && d2 == null) || (d2 != null && d1 == null)) {
+            errm = "If you select a Location then you must also select a Location Detail!";
+            msgerr = errm;
+        }
+
+        if (!frm.isValid() || errm.length > 0) {
             Ext.Msg.show({
-                title: 'Error!',
-                msg: 'You must first select a report to run.',
+                title: 'Error Forn not Submitted!',
+                msg: msgerr,
                 icon: Ext.Msg.ERROR,
                 buttons: Ext.Msg.OK
             });
-        } else {
-            var rec = g.getSelectionModel().getSelection()[0];
-            var report_code = rec.get("rptcode");
-            if (report_code == "pie_sbr") {
-                this.dataforsuspectbyrace();
-            }
-        }
+            return;
+        } 
+
+        var fields = button.up().up().query('combobox, datefield');
+//        console.log(fields);
+        var paramfields = {};
+        
+        for (i=0; i < fields.length; i++)
+        {
+           var f = fields[i]['name'];
+           var v = ""; 
+
+           if (f == "rpt_fltr_startdate" || f == "rpt_fltr_enddate")  
+             v = this.formatdatedb(fields[i]['value']);
+           else       
+             v = fields[i]['value'];
+           paramfields[f] = v;
+           
+           if (f == "rpt_fltr_approx_time" || f == "rpt_fltr_State" || f == "rpt_fltr_location" || f == "rpt_fltr_locationdet"  ||
+               f == "rpt_fltr_off_race" || f == "rpt_fltr_off_fate" || f == "rpt_fltr_off_offassignment" || f == "rpt_fltr_off_calltype"  ||
+               f == "rpt_fltr_off_depttype" || f == "rpt_fltr_off_status" || f == "rpt_fltr_off_exp_in_cluster" || f == "rpt_fltr_sus_race"  ||
+               f == "rpt_fltr_sus_fate" || f == "rpt_fltr_MentalState" || f == "rpt_fltr_Weapons" || f == "rpt_fltr_aggression")  
+           {
+             var r = fields[i]['rawValue'];
+             paramfields[f + "_display"] = r;
+           }
+
+        }  
+
+//        console.log(paramfields);
+
+        Ext.Ajax.timeout = 30000; // this changes the 30 second  
+        Ext.Ajax.request({
+        url: 'app/php/genreports.php',
+        params: paramfields,
+        failure: function(conn, response, options, eOpts)
+        {
+            var errmsg = conn.responseText;
+            if (errmsg == null || errmsg == '') errmsg = "No response from server.";
+              Ext.Msg.show({
+              title: 'Error!',
+              msg: errmsg,
+              icon: Ext.Msg.ERROR,
+              buttons: Ext.Msg.OK
+            });
+        }, 
+        success: function(conn, response, options, eOpts)
+                {
+                  var result = Ext.JSON.decode(conn.responseText, true);
+                  if (!result)
+                  {
+                    result = {};
+                    result.success = false;
+                    result.msg = conn.responseText;
+                  } 
+                  if (result.success)
+                  {
+                     if (result['report_data'].length == 0)
+                     {
+                        Ext.Msg.show({
+                        title: 'Fail!',
+                        msg: 'No Data to Produce Report',
+                        icon: Ext.Msg.ERROR,
+                        buttons: Ext.Msg.OK
+                    });
+                     }
+                     else
+                     {
+                       Ext.getStore('chart_reports').loadData(result['report_data']);
+//                       console.log(result);
+                       var f_text = result['filter'];
+                       var t_text = result['title'];
+                       var r_type = result['RPT_Type'];
+                       
+                     
+                       Ext.getCmp('rpt_filter_text').update('<p>' + f_text +'</p>');
+                       Ext.getCmp('reportpanel').setTitle(t_text);
+                       var rptpanel = Ext.getCmp('rptpanel'); 
+                       var crtpanel = Ext.getCmp('chartpanel'); 
+                       crtpanel.getLayout().setActiveItem(parseInt(r_type)-1);
+                       rptpanel.getLayout().setActiveItem(1);
+
+                     }  
+                  }     
+                  else
+                  {
+                    if (result.msg == "no_session")
+                                window.location="index.html";
+                    else
+                      Ext.Msg.show({
+                      title: 'Fail!',
+                      msg: result.msg,
+                      icon: Ext.Msg.ERROR,
+                      buttons: Ext.Msg.OK
+                    });
+                  }             
+                  
+                }  
+              });         
+
 
     },
+
+    //Select from the location combo box
+    selectlocationcomboomborpt: function(combo, e, options) {
+
+        var val = combo.getValue();
+//        console.log("Val: " + val);
+        var LocationsDet = Ext.getStore('LocationsDet');
+        LocationsDet.clearFilter(true);
+        LocationsDet.filter('Location_ID', val);
+        Ext.getCmp('rpt_fltr_locationdet').reset();
+
+    }, // end selectlocationdetcomboomborpt
+
 
 
 
@@ -3763,61 +3887,6 @@ Ext.define('Packt.controller.cont', {
 
     },
 
-    //This function will get the data for the Suspect by Race Pie Chart under reports 
-    dataforsuspectbyrace: function() {
-        Ext.Ajax.timeout = 30000; // this changes the 30 second  
-        Ext.Ajax.request({
-            url: 'app/php/suspect_race.php',
-            //        url: 'app/data/suspect_race.json',
-            params: {},
-            failure: function(conn, response, options, eOpts) {
-                var errmsg = conn.responseText;
-                if (errmsg == null || errmsg == '') errmsg = "No response from server.";
-                //             loadMask.hide();
-                Ext.Msg.show({
-                    title: 'Error!',
-                    msg: errmsg,
-                    icon: Ext.Msg.ERROR,
-                    buttons: Ext.Msg.OK
-                });
-            },
-            success: function(conn, response, options, eOpts) {
-                var result = Ext.JSON.decode(conn.responseText, true);
-                if (!result) {
-                    result = {};
-                    result.success = false;
-                    result.msg = conn.responseText;
-                }
-                if (result.success) {
-                    if (result['suspect_race'].length == 0) {
-                        Ext.Msg.show({
-                            title: 'Fail!',
-                            msg: 'No Data to Produce Report',
-                            icon: Ext.Msg.ERROR,
-                            buttons: Ext.Msg.OK
-                        });
-                    } else
-                        Ext.getStore('suspect_races').loadData(result['suspect_race']);
-                    var rptpanel = Ext.getCmp('rptpanel');
-                    rptpanel.getLayout().setActiveItem(1);
-
-                } else {
-                    if (result.msg == "no_session")
-                        window.location = "index.html";
-                    else
-                        Ext.Msg.show({
-                            title: 'Fail!',
-                            msg: result.msg,
-                            icon: Ext.Msg.ERROR,
-                            buttons: Ext.Msg.OK
-                        });
-                }
-
-            }
-        });
-
-    },
-
     /**
      * Search incidents
      * @param  {object} fields - search params (optional)
@@ -4036,6 +4105,19 @@ Ext.define('Packt.controller.cont', {
         return y;
     },
 
+    //This method formats datepickers to be sent as a parameter to the server.
+    formatdatedb: function(d) {
+        var y = "";
+
+//        console.log(d); 
+        if (d != null) {
+            var x = new Date(d);
+            var y = x.getFullYear() + "-" + (x.getMonth() + 1) + "-" + x.getDate();
+        }
+
+//        console.log(y);
+        return y;
+    },
 
     //This method formats datepickers to be sent as a parameter to the server.
     formatdate: function(d) {

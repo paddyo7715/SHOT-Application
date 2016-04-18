@@ -15,39 +15,81 @@
 
   if ($Action == "A")
   {
-  $sql = "INSERT INTO mental_states (Mental_Status) VALUES ('$Mental_Status')"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Adding Mental Status to Database!");
+	
+	$emsg = "Error Adding Mental Status to Database!";
+    $stmtx = $mysqli->prepare("INSERT INTO mental_states (Mental_Status) VALUES (?)");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+
+    $rc = $stmtx->bind_param('s', $Mental_Status);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
+	
   }  
   elseif ($Action == "U")
   {
-    $sql = "UPDATE mental_states set Mental_Status = '$Mental_Status' WHERE Mental_Status_ID = $Mental_Status_ID"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Updating Mental Status in Database!");
+	
+	$emsg = "Error Updating Mental Status in Database!";
+    $stmtx = $mysqli->prepare("UPDATE mental_states set Mental_Status = ? WHERE Mental_Status_ID = ?");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+
+    $rc = $stmtx->bind_param('si', $Mental_Status, $Mental_Status_ID);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
+	
   }  
   elseif ($Action == "D")
   {
-    $sql = "DELETE FROM mental_states WHERE  Mental_Status_ID = $Mental_Status_ID"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Deleting Mental Status from Database!  This Aggression Type may be used in an Incident");
+	
+	$emsg = "Error Deleting Mental Status from Database!  This Aggression Type may be used in an Incident";
+    $stmtx = $mysqli->prepare("DELETE FROM mental_states WHERE  Mental_Status_ID = ?");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+
+    $rc = $stmtx->bind_param('i', $Mental_Status_ID);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
+	
   }  
 
-
-  $sql = "SELECT Mental_Status_ID, Mental_Status FROM mental_states order by Mental_Status";
-
-  if ($resultdb = $mysqli->query($sql)) {
+  $emsg = "Error Retrieving Mental Status from Database!";
+  $stmt = $mysqli->prepare("SELECT Mental_Status_ID, Mental_Status FROM mental_states order by Mental_Status"); 
+  if ( false===$stmt ) {
+      trigger_error($emsg);
+  }
+  $rslt = $stmt->execute();
+  if ($rslt == TRUE) {
+    if ($resultdb = $stmt->get_result()) {
 	while($record = $resultdb->fetch_assoc()) {
 		array_push($result, $record);
 	}
-       $resultdb->close();
+       $stmt->close();
+    }
+    else { trigger_error($emsg); } 
   }
-  else { trigger_error("Error Retrieving Mental Status from Database!"); } 
+  else { trigger_error($emsg); }
 
 
 //send back information to extjs

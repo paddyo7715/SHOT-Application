@@ -15,38 +15,81 @@
 
   if ($Action == "A")
   {
-    $sql = "INSERT INTO source_type (Source) VALUES ('$Source')"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Adding Source Type to Database!");
+	
+	$emsg = "Error Adding Source Type to Database!";
+    $stmtx = $mysqli->prepare("INSERT INTO source_type (Source) VALUES (?)");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+
+    $rc = $stmtx->bind_param('s', $Source);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
+	
   }  
   elseif ($Action == "U")
   {
-    $sql = "UPDATE source_type set Source = '$Source' WHERE Source_Type_ID = $Source_Type_ID"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Updating Source Type in Database!");
+	
+	$emsg = "Error Updating Source Type in Database!";
+    $stmtx = $mysqli->prepare("UPDATE source_type set Source = ? WHERE Source_Type_ID = ?");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+
+    $rc = $stmtx->bind_param('si', $Source, $Source_Type_ID);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
+	
   }  
   elseif ($Action == "D")
   {
-    $sql = "DELETE FROM source_type WHERE Source_Type_ID = $Source_Type_ID"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Deleting Source Type from Database!  This Source Type may be used in an Incident");
+	
+	$emsg = "Error Deleting Source Type from Database!  This Source Type may be used in an Incident";
+    $stmtx = $mysqli->prepare("DELETE FROM source_type WHERE Source_Type_ID = ?");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+
+    $rc = $stmtx->bind_param('i', $Source_Type_ID);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
+	
   }  
 
-  $sql = "SELECT Source_Type_ID, Source FROM source_type order by Source";
-
-  if ($resultdb = $mysqli->query($sql)) {
+  $emsg = "Error Retrieving sources from Database!";
+  $stmt = $mysqli->prepare("SELECT Source_Type_ID, Source FROM source_type order by Source"); 
+  if ( false===$stmt ) {
+      trigger_error($emsg);
+  }
+  $rslt = $stmt->execute();
+  if ($rslt == TRUE) {
+    if ($resultdb = $stmt->get_result()) {
 	while($record = $resultdb->fetch_assoc()) {
 		array_push($result, $record);
 	}
-       $resultdb->close();
+       $stmt->close();
+    }
+    else { trigger_error($emsg); } 
   }
-  else { trigger_error("Error Retrieving sources from Database!"); } 
+  else { trigger_error($emsg); }
 
 
 //send back information to extjs

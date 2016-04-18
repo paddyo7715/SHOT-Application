@@ -15,40 +15,81 @@
 
   if ($Action == "A")
   {
-    $sql = "INSERT INTO race (Race) VALUES ('$Race')"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Adding Race to Database!");
+	
+	$emsg = "Error Adding Race to Database!";
+    $stmtx = $mysqli->prepare("INSERT INTO race (Race) VALUES (?)");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+
+    $rc = $stmtx->bind_param('s', $Race);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
+	
   }  
   elseif ($Action == "U")
   {
-    $sql = "UPDATE race set Race = '$Race' WHERE Race_ID = $Race_ID"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Updating Race in Database!");
+	
+	$emsg = "Error Updating Race in Database!";
+    $stmtx = $mysqli->prepare("UPDATE race set Race = ? WHERE Race_ID = ?");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+
+    $rc = $stmtx->bind_param('si', $Race, $Race_ID);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
+	
   }  
   elseif ($Action == "D")
   {
-    $sql = "DELETE FROM race WHERE Race_ID = $Race_ID"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Deleting Race from Database!  This Race may be used by an officer or subject");
+	
+	$emsg = "Error Deleting Race from Database!  This Race may be used by an officer or subject";
+    $stmtx = $mysqli->prepare("DELETE FROM race WHERE Race_ID = ?");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+
+    $rc = $stmtx->bind_param('i', $Race_ID);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
+	
   }  
 
-
-
-  $sql = "SELECT Race_ID, Race FROM race order by Race";
-
-  if ($resultdb = $mysqli->query($sql)) {
+  $emsg = "Error Retrieving Race from Database!";
+  $stmt = $mysqli->prepare("SELECT Race_ID, Race FROM race order by Race"); 
+  if ( false===$stmt ) {
+      trigger_error($emsg);
+  }
+  $rslt = $stmt->execute();
+  if ($rslt == TRUE) {
+    if ($resultdb = $stmt->get_result()) {
 	while($record = $resultdb->fetch_assoc()) {
 		array_push($result, $record);
 	}
-       $resultdb->close();
+       $stmt->close();
+    }
+    else { trigger_error($emsg); } 
   }
-  else { trigger_error("Error Retrieving Race from Database!"); } 
+  else { trigger_error($emsg); }
 
 
 //send back information to extjs

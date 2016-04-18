@@ -22,43 +22,86 @@
 
   if ($Action == "A")
   {
-    $sql = "INSERT INTO officer (Name,Gender,Race_ID,Additional_Info) VALUES ('$Name', '$Gender', $Race_ID, '$AdditionalInfo')"; 
-//error_log($sql);
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Adding Officer to Database!");
+	
+	$emsg = "Error Adding Officer to Database!";
+    $stmtx = $mysqli->prepare("INSERT INTO officer (Name,Gender,Race_ID,Additional_Info) VALUES (?, ?, ?, ?)");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+
+    $rc = $stmtx->bind_param('ssis', $Name, $Gender, $Race_ID, $AdditionalInfo);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
 
     $last_id = $mysqli->insert_id;
   }  
   elseif ($Action == "U")
   {
-    $sql = "UPDATE officer set Name = '$Name', Gender = '$Gender', Race_ID = $Race_ID, Additional_Info = '$AdditionalInfo' WHERE Officer_ID = $Officer_ID"; 
-//error_log($sql);
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Updating Officer in Database!");
+	
+	$emsg = "Error Updating Officer in Database!";
+    $stmtx = $mysqli->prepare("UPDATE officer set Name = ?, Gender = ?, Race_ID = ?, Additional_Info = ? WHERE Officer_ID = ?");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+
+    $rc = $stmtx->bind_param('ssisi', $Name, $Gender, $Race_ID, $AdditionalInfo, $Officer_ID);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
+	
   }  
   elseif ($Action == "D")
   {
-    $sql = "DELETE FROM officer WHERE Officer_ID = $Officer_ID"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Deleting Officer from Database!  This officer may be used in an Incident");
+	
+	$emsg = "Error Deleting Officer from Database!  This officer may be used in an Incident";
+    $stmtx = $mysqli->prepare("DELETE FROM officer WHERE Officer_ID = ?");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+
+    $rc = $stmtx->bind_param('i', $Officer_ID);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
+	
   }  
 
 //Only send back all officers if this is call is from the DB Main page
   if ($Function == "D")
   {
-    $sql = "SELECT Officer_ID, Name, Gender, Race, Additional_Info FROM officer o, race r where o.Race_ID = r.Race_ID order by Name";
-//    error_log($sql);
-    if ($resultdb = $mysqli->query($sql)) {
+	
+	$emsg = "Error Retrieving Officers from Database!";
+  $stmt = $mysqli->prepare("SELECT Officer_ID, Name, Gender, Race, Additional_Info FROM officer o, race r where o.Race_ID = r.Race_ID order by Name"); 
+  if ( false===$stmt ) {
+      trigger_error($emsg);
+  }
+  $rslt = $stmt->execute();
+  if ($rslt == TRUE) {
+    if ($resultdb = $stmt->get_result()) {
 	while($record = $resultdb->fetch_assoc()) {
 		array_push($result, $record);
 	}
-       $resultdb->close();
+       $stmt->close();
     }
-    else { trigger_error("Error Retrieving Officers from Database!"); } 
+    else { trigger_error($emsg); } 
+  }
+  else { trigger_error($emsg); }
 
 //  error_log($mysqli);
 }

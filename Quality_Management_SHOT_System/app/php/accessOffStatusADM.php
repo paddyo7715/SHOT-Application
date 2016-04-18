@@ -15,41 +15,81 @@
 
   if ($Action == "A")
   {
-    $sql = "INSERT INTO officer_status (Status) VALUES ('$Status')"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Adding Officer Status to Database!");
+	
+	$emsg = "Error Adding Officer Status to Database!";
+    $stmtx = $mysqli->prepare("INSERT INTO officer_status (Status) VALUES (?)");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+
+    $rc = $stmtx->bind_param('s', $Status);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
+	
   }  
   elseif ($Action == "U")
   {
-    $sql = "UPDATE officer_status set Status = '$Status' WHERE Status_ID = $Status_ID"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Updating Status in Database!");
+	
+	$emsg = "Error Updating Status in Database!";
+    $stmtx = $mysqli->prepare("UPDATE officer_status set Status = ? WHERE Status_ID = ?");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+
+    $rc = $stmtx->bind_param('si', $Status, $Status_ID);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
+	
   }  
   elseif ($Action == "D")
   {
-    $sql = "DELETE FROM officer_status WHERE Status_ID = $Status_ID"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Deleting Status from Database!  This Status may be used by an officer");
+	
+	$emsg = "Error Deleting Status from Database!  This Status may be used by an officer";
+    $stmtx = $mysqli->prepare("DELETE FROM officer_status WHERE Status_ID = ?");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+
+    $rc = $stmtx->bind_param('i', $Status_ID);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
+	
   }  
 
-
-
-  $sql = "SELECT Status_ID, Status FROM officer_status order by Status";
-
-  if ($resultdb = $mysqli->query($sql)) {
+  $emsg = "Error Retrieving Status from Database!";
+  $stmt = $mysqli->prepare("SELECT Status_ID, Status FROM officer_status order by Status"); 
+  if ( false===$stmt ) {
+      trigger_error($emsg);
+  }
+  $rslt = $stmt->execute();
+  if ($rslt == TRUE) {
+    if ($resultdb = $stmt->get_result()) {
 	while($record = $resultdb->fetch_assoc()) {
 		array_push($result, $record);
 	}
-       $resultdb->close();
+       $stmt->close();
+    }
+    else { trigger_error($emsg); } 
   }
-  else { trigger_error("Error Retrieving Status from Database!"); } 
-
+  else { trigger_error($emsg); }
 
 //send back information to extjs
   echo json_encode(array(

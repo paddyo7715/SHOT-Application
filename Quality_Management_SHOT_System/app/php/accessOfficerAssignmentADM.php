@@ -15,39 +15,81 @@
 
   if ($Action == "A")
   {
-    $sql = "INSERT INTO officer_assignment (Assignment) VALUES ('$Assignment')"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Adding Officer Assignment to Database!");
+	
+	$emsg = "Error Adding Officer Assignment to Database!";
+    $stmtx = $mysqli->prepare("INSERT INTO officer_assignment (Assignment) VALUES (?)");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+
+    $rc = $stmtx->bind_param('s', $Assignment);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
+	
   }  
   elseif ($Action == "U")
   {
-    $sql = "UPDATE officer_assignment set Assignment = '$Assignment' WHERE Assignment_ID = $Assignment_ID"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Updating Officer Assignment in Database!");
+	
+	$emsg = "Error Updating Officer Assignment in Database!";
+    $stmtx = $mysqli->prepare("UPDATE officer_assignment set Assignment = ? WHERE Assignment_ID = ?");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+
+    $rc = $stmtx->bind_param('si', $Assignment, $Assignment_ID);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
+	
   }  
   elseif ($Action == "D")
   {
-    $sql = "DELETE FROM officer_assignment WHERE Assignment_ID = $Assignment_ID"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Deleting Officer Assignment in Database!  This officer assignment may be used in an Incident");
+	
+	$emsg = "Error Deleting Officer Assignment in Database!  This officer assignment may be used in an Incident";
+    $stmtx = $mysqli->prepare("DELETE FROM officer_assignment WHERE Assignment_ID = ?");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+
+    $rc = $stmtx->bind_param('i', $Assignment_ID);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
+	
   }  
 
-
-  $sql = "SELECT Assignment_ID, Assignment FROM officer_assignment order by Assignment";
-
-  if ($resultdb = $mysqli->query($sql)) {
+  $emsg = "Error Retrieving Assignments from Database!";
+  $stmt = $mysqli->prepare("SELECT Assignment_ID, Assignment FROM officer_assignment order by Assignment"); 
+  if ( false===$stmt ) {
+      trigger_error($emsg);
+  }
+  $rslt = $stmt->execute();
+  if ($rslt == TRUE) {
+    if ($resultdb = $stmt->get_result()) {
 	while($record = $resultdb->fetch_assoc()) {
 		array_push($result, $record);
 	}
-       $resultdb->close();
+       $stmt->close();
+    }
+    else { trigger_error($emsg); } 
   }
-  else { trigger_error("Error Retrieving Assignments from Database!"); } 
+  else { trigger_error($emsg); }
 
 
 //send back information to extjs

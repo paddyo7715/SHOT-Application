@@ -15,40 +15,80 @@
 
   if ($Action == "A")
   {
-    $sql = "INSERT INTO newspapers (Newspaper) VALUES ('$Newspaper')"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Adding Newspaper to Database!");
+	
+	$emsg = "Error Adding Newspaper to Database!";
+    $stmtx = $mysqli->prepare("INSERT INTO newspapers (Newspaper) VALUES (?)");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+
+    $rc = $stmtx->bind_param('s', $Newspaper);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
+
   }  
   elseif ($Action == "U")
   {
-    $sql = "UPDATE newspapers set Newspaper = '$Newspaper' WHERE Newspaper_ID = $Newspaper_ID"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Updating Newspaper in Database!");
+	$emsg = "Error Updating Newspaper in Database!";
+    $stmtx = $mysqli->prepare("UPDATE newspapers set Newspaper = ? WHERE Newspaper_ID = ?");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+
+    $rc = $stmtx->bind_param('si', $Newspaper, $Newspaper_ID);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
+	
   }  
   elseif ($Action == "D")
   {
-    $sql = "DELETE FROM newspapers WHERE Newspaper_ID = $Newspaper_ID"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Deleting Newspaper from Database!  This Newspaper may be used in an Incident");
+	
+	$emsg = "Error Deleting Newspaper from Database!  This Newspaper may be used in an Incident";
+    $stmtx = $mysqli->prepare("DELETE FROM newspapers WHERE Newspaper_ID = ?");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+
+    $rc = $stmtx->bind_param('i', $Newspaper_ID);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
+	
   }  
 
-
-
-  $sql = "SELECT Newspaper_ID, Newspaper FROM newspapers order by Newspaper";
-
-  if ($resultdb = $mysqli->query($sql)) {
+  $emsg = "Error Retrieving Newspapers from Database!";
+  $stmt = $mysqli->prepare("SELECT Newspaper_ID, Newspaper FROM newspapers order by Newspaper"); 
+  if ( false===$stmt ) {
+      trigger_error($emsg);
+  }
+  $rslt = $stmt->execute();
+  if ($rslt == TRUE) {
+    if ($resultdb = $stmt->get_result()) {
 	while($record = $resultdb->fetch_assoc()) {
 		array_push($result, $record);
 	}
-       $resultdb->close();
+       $stmt->close();
+    }
+    else { trigger_error($emsg); } 
   }
-  else { trigger_error("Error Retrieving Newspapers from Database!"); } 
+  else { trigger_error($emsg); }
 
 
 //send back information to extjs

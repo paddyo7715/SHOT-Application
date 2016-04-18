@@ -1,8 +1,9 @@
 <?php
 
   $Name_search = $_POST['Name_search']; 
-  $likeclause = " Name like '%$Name_search%' and ";
-
+  //$likeclause = " Name like '%$Name_search%' and ";
+  if ($Name_search != "") $likeParam = "%$Name_search%";
+  else $likeParam = "%%";
 
   $result = array();
 
@@ -15,16 +16,29 @@
   Verify_Security($func, $needed_access_functions);
 
   $num_rows = 0;
-  $sql = "SELECT Officer_ID, Name, Gender, Race, Additional_Info FROM officer o, race r where $likeclause  o.Race_ID = r.Race_ID order by Officer_ID";
-//  error_log($sql);
-  if ($resultdb = $mysqli->query($sql)) {
+  
+  $emsg = "Error Retrieving incidents from Database!";
+  $stmt = $mysqli->prepare("SELECT Officer_ID, Name, Gender, Race, Additional_Info FROM officer o, race r where  Name like ? and  o.Race_ID = r.Race_ID order by Officer_ID"); 
+  if ( false===$stmt ) {
+      trigger_error($emsg);
+  }
+  $rc = $stmt->bind_param('s', $likeParam);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+  $rslt = $stmt->execute();
+  if ($rslt == TRUE) {
+    if ($resultdb = $stmt->get_result()) {
 	while($record = $resultdb->fetch_assoc()) {
 		array_push($result, $record);
-                $num_rows++;
+		$num_rows++;
 	}
-       $resultdb->close();
+       $stmt->close();
+    }
+    else { trigger_error($emsg); } 
   }
-  else { trigger_error("Error Retrieving incidents from Database!"); } 
+  else { trigger_error($emsg); }
 
 
 //send back information to extjs

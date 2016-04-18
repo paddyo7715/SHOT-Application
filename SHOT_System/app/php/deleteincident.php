@@ -15,13 +15,22 @@
 // Set autocommit to off
     mysqli_autocommit($mysqli,FALSE);
 
-    $sql = "DELETE from incident WHERE Incident_ID = $Incident_ID"; 
-
-//    error_log($sql);
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      $mysqli->rollback();
-      trigger_error("Error deleting Incident Database!");
+	$emsg = "Error deleting Incident Database!";
+    $stmtx = $mysqli->prepare("DELETE from incident WHERE Incident_ID = ?");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+    $rc = $stmtx->bind_param('i', $Incident_ID);
+    if (false===$rc)
+    {
+	  $mysqli->rollback();
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+	  $mysqli->rollback();
+      trigger_error($emsg);
+    }
+    $stmtx->close();
 
 
 // Commit transaction
@@ -32,15 +41,23 @@
 //    error_log($last_id);
 
   $result = array();
-//  $sql = "SELECT Incident_ID, Incident_Name, Date_Occured, City, State FROM incident I, state S where I.State_ID = S.State_ID order by Incident_Name";
-////  error_log($sql);
-//  if ($resultdb = $mysqli->query($sql)) {
+  
+//  $emsg = "Error Retrieving incidents from Database!";
+//  $stmt = $mysqli->prepare("SELECT Incident_ID, Incident_Name, Date_Occured, City, State FROM incident I, state S where I.State_ID = S.State_ID order by Incident_Name"); 
+//  if ( false===$stmt ) {
+//      trigger_error($emsg);
+//  }
+//  $rslt = $stmt->execute();
+//  if ($rslt == TRUE) {
+//    if ($resultdb = $stmt->get_result()) {
 //	while($record = $resultdb->fetch_assoc()) {
 //		array_push($result, $record);
 //	}
-//       $resultdb->close();
+//       $stmt->close();
+//    }
+//    else { trigger_error($emsg); } 
 //  }
-//  else { trigger_error("Error Retrieving incidents from Database!"); } 
+//  else { trigger_error($emsg); } 
 
 
 //send back information to extjs

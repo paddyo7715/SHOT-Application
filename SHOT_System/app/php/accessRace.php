@@ -15,25 +15,44 @@
 
   if ($Action == "A")
   {
-    $sql = "INSERT INTO race (Race) VALUES ('$Race')"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Adding Race to Database!");
+	
+	$emsg = "Error Adding Race to Database!";
+    $stmtx = $mysqli->prepare("INSERT INTO race (Race) VALUES (?)");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+
+    $rc = $stmtx->bind_param('s', $Race);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
+	
   }  
 
-
-  $sql = "SELECT Race_ID, Race FROM race order by Race";
-
-  if ($resultdb = $mysqli->query($sql)) {
+  
+  $emsg = "Error Retrieving Race from Database!";
+  $stmt = $mysqli->prepare("SELECT Race_ID, Race FROM race order by Race"); 
+  if ( false===$stmt ) {
+      trigger_error($emsg);
+  }
+  $rslt = $stmt->execute();
+  if ($rslt == TRUE) {
+    if ($resultdb = $stmt->get_result()) {
 	while($record = $resultdb->fetch_assoc()) {
 		array_push($result, $record);
 	}
-       $resultdb->close();
+       $stmt->close();
+    }
+    else { trigger_error($emsg); } 
   }
-  else { trigger_error("Error Retrieving Race from Database!"); } 
+  else { trigger_error($emsg); } 
 
-
+  
 //send back information to extjs
   echo json_encode(array(
 	"success" => $mysqli->connect_errno == 0,

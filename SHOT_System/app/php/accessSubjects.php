@@ -22,11 +22,21 @@
 
   if ($Action == "A")
   {
-    $sql = "INSERT INTO suspect (Suspect_Name,Gender,Race_ID) VALUES ('$Suspect_Name', '$Gender', $Race_ID)"; 
-//error_log($sql);
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Adding Subject to Database!");
+	$emsg = "Error Adding Subject to Database!";
+    $stmtx = $mysqli->prepare("INSERT INTO suspect (Suspect_Name,Gender,Race_ID) VALUES (?,?,?)");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+
+    $rc = $stmtx->bind_param('ssi', $Suspect_Name, $Gender, $Race_ID);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
 
     $last_id = $mysqli->insert_id;
   }  
@@ -35,17 +45,24 @@
 //Only send back all officers if this is call is from the DB Main page
   if ($Function == "D")
   {
-  $sql = "SELECT Suspect_ID, Suspect_Name, Gender, Race FROM suspect s, race r where s.Race_ID = r.Race_ID order by Suspect_ID";
-//    error_log($sql);
-    if ($resultdb = $mysqli->query($sql)) {
+	
+  $emsg = "Error Retrieving Subjects from Database!";
+  $stmt = $mysqli->prepare("SELECT Suspect_ID, Suspect_Name, Gender, Race FROM suspect s, race r where s.Race_ID = r.Race_ID order by Suspect_ID"); 
+  if ( false===$stmt ) {
+      trigger_error($emsg);
+  }
+  $rslt = $stmt->execute();
+  if ($rslt == TRUE) {
+    if ($resultdb = $stmt->get_result()) {
 	while($record = $resultdb->fetch_assoc()) {
 		array_push($result, $record);
 	}
-       $resultdb->close();
+       $stmt->close();
     }
-    else { trigger_error("Error Retrieving Subjects from Database!"); } 
-
-//  error_log($mysqli);
+    else { trigger_error($emsg); } 
+  }
+  else { trigger_error($emsg); } 
+	
   }
 
 //send back information to extjs

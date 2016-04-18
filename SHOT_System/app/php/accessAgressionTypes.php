@@ -34,7 +34,7 @@
   }  
 
   $emsg = "Error Retrieving Aggression Type from Database!";
-  $stmt = $mysqli->prepare("SELECT Type_of_Agression_ID , Aggression_Type FROM aggression_type order by Aggression_Type "); 
+  $stmt = $mysqli->prepare("SELECT Type_of_Agression_ID , Aggression_Type FROM aggression_type order by Aggression_Type"); 
   if ( false===$stmt ) {
       trigger_error($emsg);
   }

@@ -15,23 +15,41 @@
 
   if ($Action == "A")
   {
-    $sql = "INSERT INTO weapons (Weapons_Type) VALUES ('$Weapons_Type')"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Adding Weapon to Database!");
+	
+	$emsg = "Error Adding Weapon to Database!";
+    $stmtx = $mysqli->prepare("INSERT INTO weapons (Weapons_Type) VALUES (?)");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+
+    $rc = $stmtx->bind_param('s', $Weapons_Type);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
+	
   }  
 
-
-  $sql = "SELECT Weapons_ID, Weapons_Type FROM weapons order by Weapons_Type";
-
-  if ($resultdb = $mysqli->query($sql)) {
+  $emsg = "Error Retrieving Weapons from Database!";
+  $stmt = $mysqli->prepare("SELECT Weapons_ID, Weapons_Type FROM weapons order by Weapons_Type"); 
+  if ( false===$stmt ) {
+      trigger_error($emsg);
+  }
+  $rslt = $stmt->execute();
+  if ($rslt == TRUE) {
+    if ($resultdb = $stmt->get_result()) {
 	while($record = $resultdb->fetch_assoc()) {
 		array_push($result, $record);
 	}
-       $resultdb->close();
+       $stmt->close();
+    }
+    else { trigger_error($emsg); } 
   }
-  else { trigger_error("Error Retrieving Weapons from Database!"); } 
+  else { trigger_error($emsg); }
 
 
 //send back information to extjs

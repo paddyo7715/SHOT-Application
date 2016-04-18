@@ -26,11 +26,21 @@
 
   if ($Action == "A")
   {
-    $sql = "INSERT INTO officer (Name,Gender,Race_ID,Additional_Info) VALUES ('$Name', '$Gender', $Race_ID, '$AdditionalInfo')"; 
-//error_log($sql);
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Adding Officer to Database!");
+	$emsg = "Error Adding Officer to Database!";
+    $stmtx = $mysqli->prepare("INSERT INTO officer (Name,Gender,Race_ID,Additional_Info) VALUES (?,?,?,?)");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+
+    $rc = $stmtx->bind_param('ssis', $Name, $Gender, $Race_ID, $AdditionalInfo);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
 
     $last_id = $mysqli->insert_id;
   }  
@@ -38,18 +48,26 @@
 //Only send back all officers if this is call is from the DB Main page
   if ($Function == "D")
   {
-    $sql = "SELECT Officer_ID, Name, Gender, Race, Additional_Info FROM officer o, race r where o.Race_ID = r.Race_ID order by Name";
-//    error_log($sql);
-    if ($resultdb = $mysqli->query($sql)) {
-	while($record = $resultdb->fetch_assoc()) {
-		array_push($result, $record);
+	$emsg = "Error Retrieving Officers from Database!";
+	$stmt = $mysqli->prepare("SELECT Officer_ID, Name, Gender, Race, Additional_Info FROM officer o, race r where o.Race_ID = r.Race_ID order by Name"); 
+	if ( false===$stmt ) {
+		trigger_error($emsg);
 	}
-       $resultdb->close();
-    }
-    else { trigger_error("Error Retrieving Officers from Database!"); } 
-
+	$rslt = $stmt->execute();
+	if ($rslt == TRUE) {
+	  if ($resultdb = $stmt->get_result()) {
+	  while($record = $resultdb->fetch_assoc()) {
+		  array_push($result, $record);
+	  }
+		 $stmt->close();
+	  }
+	  else { trigger_error($emsg); } 
+	}
+	else { trigger_error($emsg); } 
+	
+//    error_log($sql);
 //  error_log($mysqli);
-}
+  }
 
 //send back information to extjs
   echo json_encode(array(

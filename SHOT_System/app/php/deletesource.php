@@ -13,22 +13,46 @@
 
 //Delete the Incident Source
 
-    $sql = "DELETE from incident_source WHERE Source_ID = $sourceid and Incident_ID = $Incident_ID";
-//    error_log($sql);
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Deleting Incident Source Record in Database!");
+	$emsg = "Error Deleting Incident Source Record in Database!";
+    $stmtx = $mysqli->prepare("DELETE from incident_source WHERE Source_ID = ? and Incident_ID = ?");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+    $rc = $stmtx->bind_param('ii', $sourceid, $Incident_ID);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
+
 
   $result = array();
-  $sql = "SELECT Source_ID, I.Source_Type_ID, Source, Title, Author, Source_Date, Link, I.Newspaper_ID, Newspaper, Abstract  FROM incident_source I LEFT OUTER JOIN source_type s on i.Source_Type_ID = s.Source_Type_ID left outer join newspapers n on i.Newspaper_ID = n.Newspaper_ID where Incident_ID = $Incident_ID  order by Source_ID";
-//  error_log($sql);
-  if ($resultdb = $mysqli->query($sql)) {
+  
+  $emsg = "Error Retrieving incidents sources from Database!";
+  $stmt = $mysqli->prepare("SELECT Source_ID, I.Source_Type_ID, Source, Title, Author, Source_Date, Link, I.Newspaper_ID, Newspaper, Abstract  FROM incident_source I LEFT OUTER JOIN source_type s on i.Source_Type_ID = s.Source_Type_ID left outer join newspapers n on i.Newspaper_ID = n.Newspaper_ID where Incident_ID = ?  order by Source_ID"); 
+  if ( false===$stmt ) {
+      trigger_error($emsg);
+  }
+  $rc = $stmt->bind_param('i', $Incident_ID);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+  $rslt = $stmt->execute();
+  if ($rslt == TRUE) {
+    if ($resultdb = $stmt->get_result()) {
 	while($record = $resultdb->fetch_assoc()) {
 		array_push($result, $record);
 	}
-       $resultdb->close();
+       $stmt->close();
+    }
+    else { trigger_error($emsg); } 
   }
-  else { trigger_error("Error Retrieving incidents sources from Database!"); } 
+  else { trigger_error($emsg); } 
+  
 
 //send back information to extjs
   echo json_encode(array(

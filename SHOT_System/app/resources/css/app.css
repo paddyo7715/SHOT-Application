@@ -95,3 +95,10 @@
         display: none !important;
     }
 }
+
+.rptFiltertext {
+  font-family: Arial;
+  color:#4f82bd;
+  font-size: 11px;
+  text-decoration: none;
+}

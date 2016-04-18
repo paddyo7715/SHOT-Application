@@ -18,14 +18,15 @@
 //  error_log($indoors);
 
 
-  $sd_Title = StringorNULL($sd_Title);
-  $sd_Author = StringorNULL($sd_Author);
-  $sd_datewritten = StringorNULL($sd_datewritten);
-  $sd_newspaper = NumberorNULL($sd_newspaper);
-  $sd_Link = StringorNULL($sd_Link);
-  $sd_SourceType = NumberorNULL($sd_SourceType);
-  $sd_abstract = StringorNULL($sd_abstract);
+  $sd_Title = StringorNULLp($sd_Title);
+  $sd_Author = StringorNULLp($sd_Author);
+  $sd_datewritten = StringorNULLp($sd_datewritten);
+  $sd_newspaper = NumberorNULLp($sd_newspaper);
+  $sd_Link = StringorNULLp($sd_Link);
+  $sd_SourceType = NumberorNULLp($sd_SourceType);
+  $sd_abstract = StringorNULLp($sd_abstract);
 
+  
   if ($sourceid == "")
   {
     $func = "Create Incident source";
@@ -46,36 +47,66 @@
 //Add or update depending on if an incident_source number is supplied or not
   if ($sourceid == "")
   {
-    $sql = "INSERT INTO incident_source (Incident_ID, Source_Type_ID, Title, Author, Source_Date, Link, Newspaper_ID, Abstract) VALUES ($Incident_ID, $sd_SourceType, $sd_Title, $sd_Author, $sd_datewritten, $sd_Link, $sd_newspaper, $sd_abstract)"; 
-
-//    error_log($sql);
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Adding Incident Source to Database!");
+	$emsg = "Error Adding Incident Source to Database!";
+    $stmtx = $mysqli->prepare("INSERT INTO incident_source (Incident_ID, Source_Type_ID, Title, Author, Source_Date, Link, Newspaper_ID, Abstract) VALUES (?,?,?,?,?,?,?,?)");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+    $rc = $stmtx->bind_param('iissssis', $Incident_ID, $sd_SourceType, $sd_Title, $sd_Author, $sd_datewritten, $sd_Link, $sd_newspaper, $sd_abstract);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg." ".$mysqli->error." sadf=".$sd_newspaper);
+    }
+    $stmtx->close();
+	
     $last_id = $mysqli->insert_id;
 //    error_log($last_id);
   }
   else
   {
-    $sql = "UPDATE incident_source set Source_Type_ID = $sd_SourceType, Title = $sd_Title, Author = $sd_Author, Source_Date = $sd_datewritten, Link = $sd_Link, Newspaper_ID = $sd_newspaper, Abstract = $sd_abstract WHERE Incident_ID = $Incident_ID";
-//    error_log($sql);
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Updating Incident Source Record in Database!");
+	$emsg = "Error Updating Incident Source Record in Database!";
+    $stmtx = $mysqli->prepare("UPDATE incident_source set Source_Type_ID = ?, Title = ?, Author = ?, Source_Date = ?, Link = ?, Newspaper_ID = ?, Abstract = ? WHERE Incident_ID = ? and Source_ID = ?");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
-
+    $rc = $stmtx->bind_param('issssisii', $sd_SourceType, $sd_Title, $sd_Author, $sd_datewritten, $sd_Link, $sd_newspaper, $sd_abstract, $Incident_ID, $sourceid);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
 
   }
 
   $result = array();
-  $sql = "SELECT Source_ID, I.Source_Type_ID, Source, Title, Author, Source_Date, Link, I.Newspaper_ID, Newspaper, Abstract  FROM incident_source I LEFT OUTER JOIN source_type s on I.Source_Type_ID = s.Source_Type_ID left outer join newspapers n on I.Newspaper_ID = n.Newspaper_ID where Incident_ID = $Incident_ID  order by Source_ID";
-//  error_log($sql);
-  if ($resultdb = $mysqli->query($sql)) {
+  
+  $emsg = "Error Retrieving incidents sources from Database!";
+  $stmt = $mysqli->prepare("SELECT Source_ID, I.Source_Type_ID, Source, Title, Author, Source_Date, Link, I.Newspaper_ID, Newspaper, Abstract  FROM incident_source I LEFT OUTER JOIN source_type s on I.Source_Type_ID = s.Source_Type_ID left outer join newspapers n on I.Newspaper_ID = n.Newspaper_ID where Incident_ID = ?  order by Source_ID"); 
+  if ( false===$stmt ) {
+      trigger_error($emsg);
+  }
+  $rc = $stmt->bind_param('i', $Incident_ID);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+  $rslt = $stmt->execute();
+  if ($rslt == TRUE) {
+    if ($resultdb = $stmt->get_result()) {
 	while($record = $resultdb->fetch_assoc()) {
 		array_push($result, $record);
 	}
-       $resultdb->close();
+       $stmt->close();
+    }
+    else { trigger_error($emsg); } 
   }
-  else { trigger_error("Error Retrieving incidents sources from Database!"); } 
+  else { trigger_error($emsg); } 
 
 //send back information to extjs
   echo json_encode(array(

@@ -4,7 +4,44 @@
   require("common.php");
   set_error_handler("customError");
 
-
+/*
+function getShotStrings($mysqli,$f){
+  
+  $shot_s = "";
+  
+  $emsg = "Error Retrieving incidents shots from Database!";
+  $stmt = $mysqli->prepare("SELECT Target_Area_ID FROM incident_shot where Suspect_Incident_ID = ? order by Target_Area_ID"); 
+  if ( false===$stmt ) {
+      trigger_error($emsg);
+  }
+  $rc = $stmt->bind_param('i', $f);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+  $rslt = $stmt->execute();
+  if ($rslt == TRUE) {
+    if ($resultdb = $stmt->get_result()) {
+	while($record = $resultdb->fetch_assoc()) {
+		if ($shot_s == "")
+                {
+                  $shot_s = $record["Target_Area_ID"];
+                }
+                else
+                {
+                  $shot_s = $shot_s . "," . $record["Target_Area_ID"];
+                }
+	}
+       $stmt->close();
+    }
+    else { trigger_error($emsg); } 
+  }
+  else { trigger_error($emsg); } 
+  
+  return $shot_s;  
+  
+}
+*/
 function getShotStrings($mysqli,$f){
   
   $shot_s = "";
@@ -29,7 +66,6 @@ function getShotStrings($mysqli,$f){
   
 }
 
-
   $Incident_ID = $_POST['Incident_ID'];   
   $Incident_Suspect_ID = $_POST['Incident_Suspect_ID'];   
   $Suspect_ID = $_POST['Suspect_ID']; 
@@ -47,18 +83,18 @@ function getShotStrings($mysqli,$f){
   $Age = $_POST['Age']; 
   $SHOT_String = $_POST['SHOT_String']; 
 
-  $Vehicle_Use_hit_and_run = setDBBoolean($Vehicle_Use_hit_and_run);
-  $Vehicle_Chase = setDBBoolean($Vehicle_Chase);
-  $Foot_Chase = setDBBoolean($Foot_Chase);
-  $US_Citizen = setDBBoolean($US_Citizen);
-  $Gang_Affiliation = setDBBoolean($Gang_Affiliation);
-  $Fatality = setDBBoolean($Fatality);
-  $Injury = setDBBoolean($Injury);
-  $Mental_Status_ID = NumberorNULL($Mental_Status_ID);
-  $Weapons_ID = NumberorNULL($Weapons_ID);
-  $Type_of_Agression_ID = NumberorNULL($Type_of_Agression_ID);
-  $alt_motive = StringorNULL($alt_motive);
-  $Age = NumberorNULL($Age);
+  $Vehicle_Use_hit_and_run = setDBBooleanp($Vehicle_Use_hit_and_run);
+  $Vehicle_Chase = setDBBooleanp($Vehicle_Chase);
+  $Foot_Chase = setDBBooleanp($Foot_Chase);
+  $US_Citizen = setDBBooleanp($US_Citizen);
+  $Gang_Affiliation = setDBBooleanp($Gang_Affiliation);
+  $Fatality = setDBBooleanp($Fatality);
+  $Injury = setDBBooleanp($Injury);
+  $Mental_Status_ID = NumberorNULLp($Mental_Status_ID);
+  $Weapons_ID = NumberorNULLp($Weapons_ID);
+  $Type_of_Agression_ID = NumberorNULLp($Type_of_Agression_ID);
+  $alt_motive = StringorNULLp($alt_motive);
+  $Age = NumberorNULLp($Age);
 
   if ($Incident_Suspect_ID == "")
   {
@@ -88,33 +124,69 @@ function getShotStrings($mysqli,$f){
 
 //    $mysqli->beginTransaction();
 
-    $sql = "INSERT INTO incident_suspect (Incident_ID, Mental_Status_ID, Weapons_ID, Vehicle_Use_hit_and_run, Vehicle_Chase, Foot_Chase, Alt_Motive, Type_of_Agression_ID, Age, US_Citizen, Gang_Affiliation, Fatality, Injury) VALUES ($Incident_ID, $Mental_Status_ID, $Weapons_ID, $Vehicle_Use_hit_and_run, $Vehicle_Chase, $Foot_Chase, $alt_motive, $Type_of_Agression_ID, $Age, $US_Citizen, $Gang_Affiliation, $Fatality, $Injury)"; 
-
-//    error_log($sql);
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      $mysqli->rollback();
-      trigger_error("Error Adding Incident Subject to Database!");
+    $emsg = "Error Adding Incident Subject to Database";
+    $stmtx = $mysqli->prepare("INSERT INTO incident_suspect (Incident_ID, Mental_Status_ID, Weapons_ID, Vehicle_Use_hit_and_run, Vehicle_Chase, Foot_Chase, Alt_Motive, Type_of_Agression_ID, Age, US_Citizen, Gang_Affiliation, Fatality, Injury)
+    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+
+    $rc = $stmtx->bind_param('iiissssiissss', $Incident_ID, $Mental_Status_ID, $Weapons_ID, $Vehicle_Use_hit_and_run, $Vehicle_Chase, $Foot_Chase, $alt_motive, $Type_of_Agression_ID, $Age, $US_Citizen, $Gang_Affiliation, $Fatality, $Injury);
+    if (false===$rc)
+    {
+	  $mysqli->rollback();
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+	  $mysqli->rollback();
+      trigger_error($emsg);
+    }
+    $stmtx->close();
+	
     $last_id = $mysqli->insert_id;
 
-    $sql = "INSERT INTO suspect_mapping (Suspect_ID, Incident_Suspect_ID) VALUES ($Suspect_ID, $last_id)"; 
-
-//    error_log($sql);
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      $mysqli->rollback();
-      trigger_error("Error Adding Subject Mapping to Database!");
+	$emsg = "Error Adding Subject Mapping to Database!";
+    $stmtx = $mysqli->prepare("INSERT INTO suspect_mapping (Suspect_ID, Incident_Suspect_ID) VALUES (?,?)");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
 
+    $rc = $stmtx->bind_param('ii', $Suspect_ID, $last_id);
+    if (false===$rc)
+    {
+	  $mysqli->rollback();
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+	  $mysqli->rollback();
+      trigger_error($emsg);
+    }
+    $stmtx->close();
    
-    foreach($myArray as $element) {
-      $sql = "INSERT INTO incident_shot (Suspect_Incident_ID, Target_Area_ID) VALUES ($last_id, $element)"; 
-//      error_log($sql);
-      if ($resultdb = $mysqli->query($sql) != TRUE) {
-        $mysqli->rollback();
-        trigger_error("Error Adding incident shot to Database!");
-      }      
+   $emsg = "Error Adding incident shot to Database!";
+    $stmtx = $mysqli->prepare("INSERT INTO incident_shot (Suspect_Incident_ID, Target_Area_ID) VALUES (?,?)");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+	$element = "";
+	$rc = $stmtx->bind_param('ii', $last_id, $element);
+    if (false===$rc)
+    {
+	  $mysqli->rollback();
+      trigger_error($emsg);
+    }
+	
+foreach($myArray as $element) {
+    
+    if ($resultdb = $stmtx->execute() != TRUE) {
+	  $mysqli->rollback();
+      trigger_error($emsg);
+    }
+    
+}
 
+	$stmtx->close();
+	
 // Commit transaction
     $mysqli->commit();
     
@@ -127,32 +199,58 @@ function getShotStrings($mysqli,$f){
 // Set autocommit to off
     mysqli_autocommit($mysqli,FALSE);
 
-
-
-
-    $sql = "UPDATE incident_suspect set Mental_Status_ID = $Mental_Status_ID, Weapons_ID = $Weapons_ID, Vehicle_Use_hit_and_run = $Vehicle_Use_hit_and_run, Vehicle_Chase = $Vehicle_Chase, Foot_Chase = $Foot_Chase, Alt_Motive = $alt_motive, Type_of_Agression_ID = $Type_of_Agression_ID, Age = $Age, US_Citizen = $US_Citizen, Gang_Affiliation = $Gang_Affiliation, Fatality = $Fatality, Injury = $Injury WHERE Incident_ID = $Incident_ID and Incident_Suspect_ID = $Incident_Suspect_ID";
-//    error_log($sql);
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Updating Incident Suspect Record in Database!");
+    $emsg = "Error Updating Incident Suspect Record in Database!";
+    $stmtx = $mysqli->prepare("UPDATE incident_suspect set Mental_Status_ID = ?, Weapons_ID = ?, Vehicle_Use_hit_and_run = ?, Vehicle_Chase = ?, Foot_Chase = ?, Alt_Motive = ?, Type_of_Agression_ID = ?, Age = ?, US_Citizen = ?, Gang_Affiliation = ?, Fatality = ?, Injury = ? WHERE Incident_ID = ? and Incident_Suspect_ID = ?");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
-
-    $sql = "DELETE FROM incident_shot WHERE Suspect_Incident_ID = $Incident_Suspect_ID"; 
-//    error_log($sql);
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      $mysqli->rollback();
-      trigger_error("Error deleting Incident shot from Database!");
+    $rc = $stmtx->bind_param('iissssiissssii', $Mental_Status_ID, $Weapons_ID, $Vehicle_Use_hit_and_run, $Vehicle_Chase, $Foot_Chase, $alt_motive, $Type_of_Agression_ID, $Age, $US_Citizen, $Gang_Affiliation, $Fatality, $Injury, $Incident_ID, $Incident_Suspect_ID);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
     }
-
-
-    foreach($myArray as $element) {
-      $sql = "INSERT INTO incident_shot (Suspect_Incident_ID, Target_Area_ID) VALUES ($Incident_Suspect_ID, $element)"; 
-//      error_log($sql);
-      if ($resultdb = $mysqli->query($sql) != TRUE) {
-        $mysqli->rollback();
-        trigger_error("Error Adding incident shot to Database!");
-      }      
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
     }
+    $stmtx->close();
 
+	$emsg = "Error deleting Incident shot from Database!";
+    $stmtx = $mysqli->prepare("DELETE FROM incident_shot WHERE Suspect_Incident_ID = ?");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
+    }
+    $rc = $stmtx->bind_param('i', $Incident_Suspect_ID);
+    if (false===$rc)
+    {
+	  $mysqli->rollback();
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+	  $mysqli->rollback();
+      trigger_error($emsg);
+    }
+    $stmtx->close();
+
+	$emsg = "Error Adding incident shot to Database!";
+    $stmtx = $mysqli->prepare("INSERT INTO incident_shot (Suspect_Incident_ID, Target_Area_ID) VALUES (?,?)");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
+    }
+foreach($myArray as $element) {
+    $rc = $stmtx->bind_param('ii', $Incident_Suspect_ID, $element);
+    if (false===$rc)
+    {
+	  $mysqli->rollback();
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+	  $mysqli->rollback();
+      trigger_error($emsg);
+    }
+    
+}
+
+	$stmtx->close();
 
 // Commit transaction
     $mysqli->commit();
@@ -160,17 +258,32 @@ function getShotStrings($mysqli,$f){
   }
 
   $result = array();
-  $sql = "SELECT I.Incident_Suspect_ID, M.Suspect_ID, S.Suspect_Name, I.Mental_Status_ID, I.Weapons_ID, case I.Vehicle_Use_hit_and_run when 'Y' THEN 'true' else 'false' end as Vehicle_Use_hit_and_run, case I.Vehicle_Chase when 'Y' THEN 'true' else 'false' end as Vehicle_Chase, case I.Foot_Chase when 'Y' THEN 'true' else 'false' end as Foot_Chase, I.Type_of_Agression_ID, I.Age, case I.US_Citizen when 'Y' THEN 'true' else 'false' end as US_Citizen, case I.Gang_Affiliation when 'Y' THEN 'true' else 'false' end as Gang_Affiliation, case I.Fatality when 'Y' THEN 'true' else 'false' end as Fatality, case I.Injury when 'Y' THEN 'true' else 'false' end as Injury, S.Gender, R.Race, R.Race_ID, W.Weapons_Type, A.Aggression_Type  FROM incident_suspect I JOIN suspect_mapping M on I.Incident_Suspect_ID = M.Incident_Suspect_ID join suspect S on M.Suspect_ID = S.Suspect_ID join race R on S.Race_ID = R.Race_ID left outer join weapons W on I.Weapons_ID = W.Weapons_ID left outer join aggression_type A on I.Type_of_Agression_ID = A.Type_of_Agression_ID where Incident_ID = $Incident_ID  order by I.Incident_Suspect_ID";
-//  error_log($sql);
-  if ($resultdb = $mysqli->query($sql)) {
+  
+  $emsg = "Error Retrieving incidents Subjects from Database!";
+  $stmt = $mysqli->prepare("SELECT I.Incident_Suspect_ID, M.Suspect_ID, S.Suspect_Name, I.Mental_Status_ID, I.Weapons_ID, case I.Vehicle_Use_hit_and_run when 'Y' THEN 'true' else 'false' end as Vehicle_Use_hit_and_run, case I.Vehicle_Chase when 'Y' THEN 'true' else 'false' end as Vehicle_Chase, case I.Foot_Chase when 'Y' THEN 'true' else 'false' end as Foot_Chase, I.Type_of_Agression_ID, I.Age, case I.US_Citizen when 'Y' THEN 'true' else 'false' end as US_Citizen, case I.Gang_Affiliation when 'Y' THEN 'true' else 'false' end as Gang_Affiliation, case I.Fatality when 'Y' THEN 'true' else 'false' end as Fatality, case I.Injury when 'Y' THEN 'true' else 'false' end as Injury, S.Gender, R.Race, R.Race_ID, W.Weapons_Type, A.Aggression_Type  FROM incident_suspect I JOIN suspect_mapping M on I.Incident_Suspect_ID = M.Incident_Suspect_ID join suspect S on M.Suspect_ID = S.Suspect_ID join race R on S.Race_ID = R.Race_ID left outer join weapons W on I.Weapons_ID = W.Weapons_ID left outer join aggression_type A on I.Type_of_Agression_ID = A.Type_of_Agression_ID where Incident_ID = ?  order by I.Incident_Suspect_ID"); 
+  if ( false===$stmt ) {
+      trigger_error($emsg);
+  }
+  $rc = $stmt->bind_param('i', $Incident_ID);
+    if (false===$rc)
+    {
+	  $mysqli->rollback();
+      trigger_error($emsg);
+    }
+  $rslt = $stmt->execute();
+  if ($rslt == TRUE) {
+    if ($resultdb = $stmt->get_result()) {
 	while($record = $resultdb->fetch_assoc()) {
-                $shot_s = getShotStrings($mysqli, $record["Incident_Suspect_ID"]);
+		$shot_s = getShotStrings($mysqli, $record["Incident_Suspect_ID"]);
 		$record["shot_string"] = $shot_s;
 		array_push($result, $record);
 	}
-       $resultdb->close();
+       $stmt->close();
+    }
+    else { trigger_error($emsg); } 
   }
-  else { trigger_error("Error Retrieving incidents Subjects from Database!"); } 
+  else { trigger_error($emsg); } 
+
 
 //send back information to extjs
   echo json_encode(array(

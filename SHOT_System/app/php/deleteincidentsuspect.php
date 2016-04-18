@@ -28,7 +28,7 @@ function getShotStrings($mysqli,$f){
   }
   else { trigger_error("Error Retrieving incidents shots from Database!"); } 
   
-  return $shot_s;  
+  return $shot_s;
   
 }
 
@@ -41,14 +41,20 @@ function getShotStrings($mysqli,$f){
 // Set autocommit to off
     mysqli_autocommit($mysqli,FALSE);
 
-    $sql = "delete from incident_suspect  where Incident_ID = $Incident_ID and Incident_Suspect_ID = $Incident_Suspect_ID"; 
-
-//    error_log($sql);
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      $mysqli->rollback();
-      trigger_error("Error deleting Incident Suspect to Database!");
+    $emsg = "Error deleting Incident Suspect to Database!";
+    $stmtx = $mysqli->prepare("delete from incident_suspect  where Incident_ID = ? and Incident_Suspect_ID = ?");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
-
+    $rc = $stmtx->bind_param('ii', $Incident_ID, $Incident_Suspect_ID);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
 
 
 // Commit transaction

@@ -15,24 +15,41 @@
 
   if ($Action == "A")
   {
-    $sql = "INSERT INTO officer_status (Status) VALUES ('$Status')"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Adding Officer Status to Database!");
+	$emsg = "Error Adding Officer Status to Database!";
+    $stmtx = $mysqli->prepare("INSERT INTO officer_status (Status) VALUES (?)");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+
+    $rc = $stmtx->bind_param('s', $Status);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
+	
   }  
 
-
-  $sql = "SELECT Status_ID, Status FROM officer_status order by Status";
-
-  if ($resultdb = $mysqli->query($sql)) {
+  $emsg = "Error Retrieving Status from Database!";
+  $stmt = $mysqli->prepare("SELECT Status_ID, Status FROM officer_status order by Status"); 
+  if ( false===$stmt ) {
+      trigger_error($emsg);
+  }
+  $rslt = $stmt->execute();
+  if ($rslt == TRUE) {
+    if ($resultdb = $stmt->get_result()) {
 	while($record = $resultdb->fetch_assoc()) {
 		array_push($result, $record);
 	}
-       $resultdb->close();
+       $stmt->close();
+    }
+    else { trigger_error($emsg); } 
   }
-  else { trigger_error("Error Retrieving Status from Database!"); } 
-
+  else { trigger_error($emsg); }
+  
 
 //send back information to extjs
   echo json_encode(array(

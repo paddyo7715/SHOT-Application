@@ -15,23 +15,40 @@
 
   if ($Action == "A")
   {
-    $sql = "INSERT INTO officer_call_type (Call_Type) VALUES ('$Call_Type')"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Adding Call Type to Database!");
+	$emsg = "Error Adding Call Type to Database!";
+    $stmtx = $mysqli->prepare("INSERT INTO officer_call_type (Call_Type) VALUES (?)");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+
+    $rc = $stmtx->bind_param('s', $Call_Type);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
+	
   }  
 
-
-  $sql = "SELECT Call_Type_ID, Call_Type FROM officer_call_type order by Call_Type";
-
-  if ($resultdb = $mysqli->query($sql)) {
+  $emsg = "Error Retrieving Call_Type from Database!";
+  $stmt = $mysqli->prepare("SELECT Call_Type_ID, Call_Type FROM officer_call_type order by Call_Type"); 
+  if ( false===$stmt ) {
+      trigger_error($emsg);
+  }
+  $rslt = $stmt->execute();
+  if ($rslt == TRUE) {
+    if ($resultdb = $stmt->get_result()) {
 	while($record = $resultdb->fetch_assoc()) {
 		array_push($result, $record);
 	}
-       $resultdb->close();
+       $stmt->close();
+    }
+    else { trigger_error($emsg); } 
   }
-  else { trigger_error("Error Retrieving Call_Type from Database!"); } 
+  else { trigger_error($emsg); } 
 
 
 //send back information to extjs

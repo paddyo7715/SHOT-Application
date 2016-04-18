@@ -15,24 +15,38 @@
 
   if ($Action == "A")
   {
-  $sql = "INSERT INTO mental_states (Mental_Status) VALUES ('$Mental_Status')"; 
-
-    if ($resultdb = $mysqli->query($sql) != TRUE) {
-      trigger_error("Error Adding Mental Status to Database!");
+	$emsg = "Error Adding Mental Status to Database!";
+	$stmtx = $mysqli->prepare("INSERT INTO mental_states (Mental_Status) VALUES (?)");
+    if ( false===$stmtx ) {
+      trigger_error($emsg);
     }
+    $rc = $stmtx->bind_param('s', $Mental_Status);
+    if (false===$rc)
+    {
+      trigger_error($emsg);
+    }
+    if ($resultdb = $stmtx->execute() != TRUE) {
+      trigger_error($emsg);
+    }
+    $stmtx->close();
   }  
  
-
-
-  $sql = "SELECT Mental_Status_ID, Mental_Status FROM mental_states order by Mental_Status";
-
-  if ($resultdb = $mysqli->query($sql)) {
+  $emsg = "Error Retrieving Mental Status from Database!";
+  $stmt = $mysqli->prepare("SELECT Mental_Status_ID, Mental_Status FROM mental_states order by Mental_Status"); 
+  if ( false===$stmt ) {
+      trigger_error($emsg);
+  }
+  $rslt = $stmt->execute();
+  if ($rslt == TRUE) {
+    if ($resultdb = $stmt->get_result()) {
 	while($record = $resultdb->fetch_assoc()) {
 		array_push($result, $record);
 	}
-       $resultdb->close();
+       $stmt->close();
+    }
+    else { trigger_error($emsg); } 
   }
-  else { trigger_error("Error Retrieving Mental Status from Database!"); } 
+  else { trigger_error($emsg); } 
 
 
 //send back information to extjs

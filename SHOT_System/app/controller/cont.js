@@ -415,6 +415,11 @@ Ext.define('Packt.controller.cont', {
             }
         });
         this.control({
+            'Incidentgrid button#download': {
+                click: this.onButtonClickDownload
+            }
+        });
+        this.control({
             'reportfieldform button#rpt_fltr_submitbtn': {
                 click: this.onButtonClickrunreport
             }
@@ -429,6 +434,14 @@ Ext.define('Packt.controller.cont', {
         this.loadinitstores();
 
     },
+
+    onButtonClickDownload: function(button) {
+        var items = button.up('grid').getStore().data.items;
+        for (var i in items) {
+            console.log(items[i].get('City'));
+        }
+    },
+
     //Page Header functions
     //=======================================
     //Logout button in Page Header

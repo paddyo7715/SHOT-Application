@@ -102,6 +102,10 @@ Ext.define('Packt.view.Incidentgrid', {
         itemId: 'ig_foot_toolbar',
         dock: 'bottom',
         items: [{
+            xtype: 'button',
+            itemId: 'download',
+            text: 'Download'
+        }, {
             xtype: 'component',
             itemId: 'ig_footer',
             html: ''

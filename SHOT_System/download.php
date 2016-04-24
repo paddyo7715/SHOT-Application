@@ -36,11 +36,11 @@ foreach ($post[0] as $key => $value) { // value is not used
 }
 
 // data
-for ($row = 2; $row <= $length; $row++) {
+for ($row = 0; $row < $length; $row++) {
     $column = 'A';
-    foreach ($post[0] as $value) {
+    foreach ($post[$row] as $value) {
         // echo "$column $row: $value<br>";
-        $objPHPExcel->getActiveSheet()->setCellValue($column++ . $row, $value);
+        $objPHPExcel->getActiveSheet()->setCellValue($column++ . ($row + 2), $value);
     }
 }
 

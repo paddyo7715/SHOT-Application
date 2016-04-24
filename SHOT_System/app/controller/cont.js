@@ -436,10 +436,13 @@ Ext.define('Packt.controller.cont', {
     },
 
     onButtonClickDownload: function(button) {
-        var items = button.up('grid').getStore().data.items;
-        for (var i in items) {
-            console.log(items[i].get('City'));
+        var data = [];
+        s = button.up('grid').getStore().getRange();
+        for (var item in s) {
+            data.push(s[item].data);
         }
+        console.log(data);
+        this.open('POST', 'download.php', data, 'Download');
     },
 
     //Page Header functions

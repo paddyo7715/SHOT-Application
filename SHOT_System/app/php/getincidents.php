@@ -120,7 +120,9 @@ if ($success && $where) {
       i.Incident_Name,
       i.Date_Occured,
       i.City,
-      st.State
+      st.State,
+      i.latitude,
+      i.longitude
     FROM
       incident AS i
       LEFT JOIN state AS st ON i.State_ID = st.State_ID
@@ -132,7 +134,6 @@ if ($success && $where) {
     LIMIT 301
   ;";
   // LIMIT: since we are breaking after 300 a few lines lower, no need to bother the DB for more than 301 rows
-  // error_log($sql);
   $success = $mysqli->connect_errno === 0;
   $mysqli_result = $mysqli->query($sql);
   if ( ! $mysqli_result) {

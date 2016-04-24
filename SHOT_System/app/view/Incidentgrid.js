@@ -118,21 +118,36 @@ Ext.define('Packt.view.Incidentgrid', {
 
     initComponent: function() {
         this.columns = [{
+            header: 'Incident_ID',
+            dataIndex: 'Incident_ID',
+            hidden: true,
+            flex: 1
+        }, {
             header: 'Name',
             dataIndex: 'Incident_Name',
-            flex: 7
+            flex: 2
         }, {
             header: 'Date',
             dataIndex: 'Date_Occured',
-            flex: 4
+            flex: 1
         }, {
             header: 'City',
             dataIndex: 'City',
-            flex: 4
+            flex: 1
         }, {
             header: 'State',
             dataIndex: 'State',
-            flex: 4
+            flex: 1
+        }, {
+            header: 'latitude',
+            dataIndex: 'latitude',
+            hidden: true,
+            flex: 1
+        }, {
+            header: 'longitude',
+            dataIndex: 'longitude',
+            hidden: true,
+            flex: 1
         }];
 
         this.callParent(arguments);

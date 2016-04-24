@@ -3927,7 +3927,9 @@ Ext.define('Packt.controller.cont', {
                 }
                 fields[name] = value;
             });
-            footer.setHTML('Last search: ' + html.join('; '));
+            if (html.length) {
+                footer.setHTML('Last search: ' + html.join('; '));
+            }
         } else {
             // console.log('this is reset');
             fields = false;
@@ -3973,6 +3975,9 @@ Ext.define('Packt.controller.cont', {
                         Ext.getStore('Incidentslist').loadData(result['Incident']);
                         var cpanel = Ext.getCmp('centerpanel');
                         cpanel.getLayout().setActiveItem(2);
+                        if (footer.getHTML().length) {
+                            footer.setHTML(' Rows: ' + result.num_rows + '. ' + footer.getHTML());
+                        }
                     }
                 } else {
                     if (result.msg == "no_session")

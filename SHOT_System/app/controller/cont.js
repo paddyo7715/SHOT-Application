@@ -441,7 +441,6 @@ Ext.define('Packt.controller.cont', {
         for (var item in s) {
             data.push(s[item].data);
         }
-        console.log(data);
         this.open('POST', 'download.php', data, 'Download');
     },
 

@@ -2180,6 +2180,8 @@ Ext.define('Packt.controller.cont', {
             }
 
             Ext.getCmp('io_outsideagency').setValue(rec.get("Outside_Agency_Assist"));
+            console.log("outside agency: " + rec.get("Outside_Agency_Assist"));
+
             Ext.getCmp('io_incidentofficer_id').setValue(rec.get("Incident_Officer_ID"));
             Ext.getCmp('io_officer_id').setValue(rec.get("Officer_ID"));
             Ext.getCmp('io_race_id').setValue(rec.get("Race_ID"));
@@ -2194,6 +2196,7 @@ Ext.define('Packt.controller.cont', {
             Ext.getCmp('io_gender').setValue(label_gender);
             Ext.getCmp('io_race').setValue(rec.get("Race"));
             Ext.getCmp('io_offassignment').setValue(rec.get("Assignment_ID"));
+            console.log(rec.get("Assignment_ID"));
             Ext.getCmp('io_calltype').setValue(rec.get("Call_Type_ID"));
             Ext.getCmp('io_depttype').setValue(rec.get("Dept_Type_ID"));
             Ext.getCmp('io_department').setValue(rec.get("Department_ID"));
@@ -3217,9 +3220,12 @@ Ext.define('Packt.controller.cont', {
                         Ext.getCmp('id_locationdet').setValue(s[0].Location_Detail_ID);
                         Ext.getCmp('id_lawsuit').setValue(s[0].Lawsuit);
 
-                        if (s[0].Indoors == "Y")
+//                        console.log(s[0].Lawsuit);
+//                        console.log(s[0].Indoors);
+
+                        if (s[0].Indoors == "true")
                             Ext.getCmp('id_indoor').setValue(true);
-                        else if (s[0].Indoors == "N")
+                        else if (s[0].Indoors == "false")
                             Ext.getCmp('id_outdoor').setValue(true);
 
                         Ext.getCmp('id_officersfiredguns').setValue(s[0].Off_Fired_Guns);

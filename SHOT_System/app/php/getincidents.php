@@ -118,7 +118,7 @@ if ($success && $where) {
   $sql = "SELECT
       i.Incident_ID,
       i.Incident_Name,
-      i.Date_Occured,
+      date(i.Date_Occured) as Date_Occured,
       i.City,
       st.State
     FROM

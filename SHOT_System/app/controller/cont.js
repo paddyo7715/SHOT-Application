@@ -415,6 +415,11 @@ Ext.define('Packt.controller.cont', {
             }
         });
         this.control({
+            'Incidentgrid button#download': {
+                click: this.onButtonClickDownload
+            }
+        });
+        this.control({
             'reportfieldform button#rpt_fltr_submitbtn': {
                 click: this.onButtonClickrunreport
             }
@@ -429,6 +434,16 @@ Ext.define('Packt.controller.cont', {
         this.loadinitstores();
 
     },
+
+    onButtonClickDownload: function(button) {
+        var data = [];
+        s = button.up('grid').getStore().getRange();
+        for (var item in s) {
+            data.push(s[item].data);
+        }
+        this.open('POST', 'download.php', data, 'Download');
+    },
+
     //Page Header functions
     //=======================================
     //Logout button in Page Header
@@ -3918,7 +3933,9 @@ Ext.define('Packt.controller.cont', {
                 }
                 fields[name] = value;
             });
-            footer.setHTML('Last search: ' + html.join('; '));
+            if (html.length) {
+                footer.setHTML('Last search: ' + html.join('; '));
+            }
         } else {
             // console.log('this is reset');
             fields = false;
@@ -3964,6 +3981,9 @@ Ext.define('Packt.controller.cont', {
                         Ext.getStore('Incidentslist').loadData(result['Incident']);
                         var cpanel = Ext.getCmp('centerpanel');
                         cpanel.getLayout().setActiveItem(2);
+                        if (footer.getHTML().length) {
+                            footer.setHTML(' Rows: ' + result.num_rows + '. ' + footer.getHTML());
+                        }
                     }
                 } else {
                     if (result.msg == "no_session")

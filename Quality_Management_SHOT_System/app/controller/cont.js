@@ -271,6 +271,7 @@ Ext.define('Packt.controller.cont', {
     onButtonClickDatabase: function(button, e, options) {
 
            this.getAggressionTypes();
+           this.getRaces();
            this.getDBMaintTabPanel().setActiveTab(0);
            var cpanel = Ext.getCmp('centerpanel'); 
            cpanel.getLayout().setActiveItem(2);

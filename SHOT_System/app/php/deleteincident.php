@@ -42,23 +42,13 @@
 
   $result = array();
   
-//  $emsg = "Error Retrieving incidents from Database!";
-//  $stmt = $mysqli->prepare("SELECT Incident_ID, Incident_Name, Date_Occured, City, State FROM incident I, state S where I.State_ID = S.State_ID order by Incident_Name"); 
-//  if ( false===$stmt ) {
-//      trigger_error($emsg);
-//  }
-//  $rslt = $stmt->execute();
-//  if ($rslt == TRUE) {
-//    if ($resultdb = $stmt->get_result()) {
-//	while($record = $resultdb->fetch_assoc()) {
-//		array_push($result, $record);
-//	}
-//       $stmt->close();
-//    }
-//    else { trigger_error($emsg); } 
-//  }
-//  else { trigger_error($emsg); } 
-
+  $img_files = glob('../../app/suspect-images/*'); // get all file names
+  $fstart = $Incident_ID . "_";
+  foreach($img_files as $img_file){ // iterate files
+//  error_log(basename($img_file).PHP_EOL);
+  if(is_file($img_file) && strpos(basename($img_file).PHP_EOL, $fstart) === 0)
+    unlink($img_file); // delete file
+  }
 
 //send back information to extjs
   echo json_encode(array(

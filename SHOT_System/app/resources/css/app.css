@@ -23,6 +23,28 @@
     background-color: #FFFFC2;  
 }
 
+.x-item-selected {
+    background-color:  #CAE1F9;
+    margin:2px 2px 2px 2px;
+}
+
+.thumb-wrap {
+    float: left;
+    display: block;
+    margin: 5px;
+}
+
+.thumb {
+    padding: 4px;
+}
+
+.thumb-img {
+    width: 100px;
+    height: 75px;
+    border: 1px solid #999;
+    padding: 5px;
+    background-image:url(slide-bg.jpg);
+}
 
 
 .logoutbutton {

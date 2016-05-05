@@ -31,7 +31,8 @@ Ext.define('Packt.controller.cont', {
         'RacePercentageStore',
         'RacePercentageStore2',
         'SuspectGenderStore',
-        'chart_reports'
+        'chart_reports',
+        'SuspectImageStore'
 
     ],
     models: [
@@ -64,7 +65,8 @@ Ext.define('Packt.controller.cont', {
         'RacePercentageModel',
         'RacePercentageModel2',
         'SuspectGenderModel',
-        'chart_report'
+        'chart_report',
+        'SuspectImageModel'
     ],
     views: [
         'appheader',
@@ -99,7 +101,10 @@ Ext.define('Packt.controller.cont', {
         'ReportBarChart',
         'reportpanel',
         'reportsgrid',
-        'reportfieldform'
+        'reportfieldform',
+        'ImageUploadWindow',
+        'uploadImageBox',
+        'suspectImageDataView'
     ],
     refs: [{
         ref: 'sourcesgrid',
@@ -516,6 +521,7 @@ Ext.define('Packt.controller.cont', {
         Ext.getCmp('idsubmitbtn').setVisible(true);
         Ext.getCmp('IncidentTabPanel').setVisible(false);
         Ext.getCmp('id_action').setValue('Add');
+        Ext.getCmp('imageUpload_button').disable();
         var cpanel = Ext.getCmp('centerpanel');
         cpanel.getLayout().setActiveItem(1);
 
@@ -534,6 +540,7 @@ Ext.define('Packt.controller.cont', {
         this.searchIncidents(); // reset grid
         Ext.getCmp('IncidentTabPanel').setVisible(true);
         Ext.getCmp('IncidentTabPanel').setActiveTab(0);
+        Ext.getCmp('imageUpload_button').enable();
     },
     //Reports
     onButtonClickReports: function(button, e, options) {
@@ -662,7 +669,7 @@ Ext.define('Packt.controller.cont', {
                                         //                       Ext.getCmp('IncidentTabPanel').setActiveItem(0);
                                         var oid = result['LAST_INSERT_ID'];
                                         Ext.getCmp('id_Incidentnum').setValue(oid);
-
+                                        Ext.getCmp('imageUpload_button').enable();
                                         Ext.getCmp('IncidentTabPanel').setVisible(true);
                                         Ext.getCmp('IncidentTabPanel').setActiveTab(0);
                                         var cpanel = Ext.getCmp('incsourcepanel');

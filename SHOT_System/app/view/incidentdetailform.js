@@ -83,6 +83,73 @@ Ext.define('Packt.view.incidentdetailform', {
           checked: false
         },
         {
+          xtype: 'button',
+          text: 'Suspect Image',
+          itemId: 'imageUpload_button',
+          id: 'imageUpload_button',
+          action: 'imageUpload_button',
+          style: 'margin-left:25px',
+          cls: 'imageUpload_button',
+          disabled: true,
+          listeners: {
+            click: function(button) {
+              //button.up('panel').googleButton();
+              //button.up('panel').imageUploadButton();
+ //             console.log("inc num:" + Ext.getCmp('id_Incidentnum').getValue().trim());
+              var inc_id = Ext.getCmp('id_Incidentnum').getValue().trim();
+
+
+          Ext.Ajax.timeout = 30000; // this changes the 30 second  
+          Ext.Ajax.request({
+          url: 'app/php/getIncidentImages.php',
+            params: {
+               Incident_ID: inc_id
+            },
+          failure: function(conn, response, options, eOpts) {
+                var errmsg = conn.responseText;
+                if (errmsg == null || errmsg == '') errmsg = "No response from server.";
+                //             loadMask.hide();
+                Ext.Msg.show({
+                    title: 'Error!',
+                    msg: errmsg,
+                    icon: Ext.Msg.ERROR,
+                    buttons: Ext.Msg.OK
+                });
+          },
+          success: function(conn, response, options, eOpts) {
+                var result = Ext.JSON.decode(conn.responseText, true);
+                if (!result) {
+                    result = {};
+                    result.success = false;
+                    result.msg = conn.responseText;
+                }
+                if (result.success) {
+                    Ext.getStore('SuspectImageStore').loadData(result['SuspectImages']);
+
+                } else {
+                    if (result.msg == "no_session")
+                        window.location = "index.html";
+                    else
+                        Ext.Msg.show({
+                            title: 'Fail!',
+                            msg: result.msg,
+                            icon: Ext.Msg.ERROR,
+                            buttons: Ext.Msg.OK
+                        });
+                }
+
+            }
+        });
+
+
+              var uploadwin = Ext.create('Packt.view.ImageUploadWindow');
+              Ext.getCmp('img_upld_incident_id').setValue(inc_id);
+              Ext.getCmp('img_upld_incident_id2').setValue(inc_id);
+              uploadwin.show();
+            }
+          }
+        },
+        {
           xtype: 'displayfield',
           fieldLabel: '',
           width: 2
